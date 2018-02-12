@@ -1,0 +1,27 @@
+{
+    "name": "netojose/laravel-bootstrap4-forms",
+    "description": "Bootstrap 4 forms for Laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "José Sousa",
+            "email": "sputinykster@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "NetoJose\\Bootstrap4Forms\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsServiceProvider"
+            ],
+            "aliases": {
+                "Form": "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsFacade"
+            }
+        }
+    }
+}
