@@ -155,6 +155,7 @@ $user = ['name' => 'Jesus', 'age' => 33];
 
 ### Button
 ```
+// Submit button
 {!!Form::submit("Send form")!!}
 
 // Reset button
