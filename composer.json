@@ -1,11 +1,13 @@
 {
     "name": "netojose/laravel-bootstrap4-forms",
     "type": "package",
-    "description": "Bootstrap 4 forms for Laravel 5",
+    "description": "Bootstrap 4 form builder for Laravel 5",
     "keywords": [
         "laravel",
         "bootstrap",
-        "forms"
+        "forms",
+        "php",
+        "form-builder"
     ],
     "license": "MIT",
     "authors": [

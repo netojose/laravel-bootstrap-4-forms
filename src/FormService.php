@@ -199,14 +199,14 @@ class FormService {
         return $this;
     }
     
-    public function checkbox(string $name, string $value = 'on', string $label = null) : FormService {
+    public function checkbox(string $name, string $label = null, string $value = 'on') : FormService {
         $this->type('checkbox');
         $this->_render = 'CheckboxRadio';
         $this->_props  = ['name' => $name, 'label' => $label, 'value' => $value];
         return $this;
     }
     
-    public function radio(string $name, string $value = 'on', string $label = null) : FormService {
+    public function radio(string $name, string $label = null, string $value = 'on') : FormService {
         $this->type('radio');
         $this->_render = 'CheckboxRadio';
         $this->_props  = ['name' => $name, 'label' => $label, 'value' => $value];
@@ -463,7 +463,7 @@ class FormService {
         if(!$id && isset($this->_props['name'])){
             $id = $this->_props['name'];
             if($this->_type == 'radio'){
-                $id .= '-' . $this->_props['value'];
+                $id .= '-' . str_slug($this->_props['value']);
             }
         }
         return $id;
@@ -481,7 +481,7 @@ class FormService {
 
     private function _e($key){
         $fieldKey = $key ?: $this->_props['name'];
-        return $this->_Flocale ? trans($this->_Flocale . '.' . $fieldKey) : $fieldKey;
+        return $this->_Flocale ? __($this->_Flocale . '.' . $fieldKey) : $fieldKey;
     }
 
     private function _getValidationFieldClass() : string {
