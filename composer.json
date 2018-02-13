@@ -1,35 +1,38 @@
 {
-    "name": "netojose/laravel-bootstrap4-forms",
-    "type": "package",
-    "description": "Bootstrap 4 form builder for Laravel 5",
-    "keywords": [
-        "laravel",
-        "bootstrap",
-        "forms",
-        "php",
-        "form-builder"
-    ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "José Sousa",
-            "email": "sputinykster@gmail.com"
-        }
-    ],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "NetoJose\\Bootstrap4Forms\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsServiceProvider"
-            ],
-            "aliases": {
-                "Form": "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsFacade"
-            }
-        }
+  "name": "netojose/laravel-bootstrap4-forms",
+  "type": "package",
+  "description": "Bootstrap 4 form builder for Laravel 5",
+  "keywords": [
+    "laravel",
+    "bootstrap",
+    "forms",
+    "php",
+    "form-builder",
+    "composer",
+    "package"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "José Sousa",
+      "email": "sputinykster@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "NetoJose\\Bootstrap4Forms\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsServiceProvider"
+      ],
+      "aliases": {
+        "Form": "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsFacade"
+      }
+    }
+  }
 }
