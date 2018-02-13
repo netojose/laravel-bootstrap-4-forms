@@ -193,7 +193,7 @@ class FormService {
         return $this;
     }
     
-    public function select(string $name, array $options = [], string $label) : FormService {
+    public function select(string $name, array $options = [], string $label = null) : FormService {
         $this->_render = 'Select';
         $this->_props  = ['name' => $name, 'label' => $label, 'options' => $options];
         return $this;
@@ -206,7 +206,7 @@ class FormService {
         return $this;
     }
     
-    public function radio(string $name, string $value = 'on', string $label) : FormService {
+    public function radio(string $name, string $value = 'on', string $label = null) : FormService {
         $this->type('radio');
         $this->_render = 'CheckboxRadio';
         $this->_props  = ['name' => $name, 'label' => $label, 'value' => $value];
@@ -415,9 +415,10 @@ class FormService {
     private function _pts(array $props = []) : string {
         $ret = "";
 
-        $props['type']  = $this->_type;
-        $props['name']  = isset($this->_props['name']) ? $this->_props['name'] : null;
-        $props['id']    = $this->_getId();
+        $props['type']          = $this->_type;
+        $props['name']          = isset($this->_props['name']) ? $this->_props['name'] : null;
+        $props['id']            = $this->_getId();
+        $props['autocomplete']  = $props['name'];
         
         if($this->_placeholder){
             $props['placeholder'] = $this->_placeholder;
@@ -458,7 +459,14 @@ class FormService {
     }
 
     private function _getId(){
-        return $this->_id ?: (isset($this->_props['name']) ? $this->_props['name'] : null);
+        $id = $this->_id;
+        if(!$id && isset($this->_props['name'])){
+            $id = $this->_props['name'];
+            if($this->_type == 'radio'){
+                $id .= '-' . $this->_props['value'];
+            }
+        }
+        return $id;
     }
 
     private function _getIdHelp(){
@@ -472,8 +480,8 @@ class FormService {
     }
 
     private function _e($key){
-        $key = $key ?: $this->_props['name'];
-        return $key ? ($this->_Flocale ? trans($this->_Flocale . '.' . $key) : $key) : '';
+        $fieldKey = $key ?: $this->_props['name'];
+        return $this->_Flocale ? trans($this->_Flocale . '.' . $fieldKey) : $fieldKey;
     }
 
     private function _getValidationFieldClass() : string {
