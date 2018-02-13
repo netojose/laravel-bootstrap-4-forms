@@ -1,9 +1,9 @@
-
 # Bootstrap 4 forms for Laravel 5
 
 This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 
 ## Features
+
 * Labels
 * Error messages
 * Bootstrap 4 markup and classes (including state, colors, and sizes)
@@ -16,6 +16,7 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 ## Introduction
 
 ### Before
+
 ```html
 <div class="form-group">
     <label for="username">Username</label>
@@ -29,6 +30,7 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 ```
 
 ### After
+
 ```php
 Form::text('username', 'Username')
 ```
@@ -36,6 +38,7 @@ Form::text('username', 'Username')
 ## Installation
 
 #### Require the package using Composer.
+
 ```bash
 composer require netojose/laravel-bootstrap-4-forms
 ```
@@ -47,14 +50,16 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ### Laravel 5.4
 
 #### Add the service provider to your config/app.php file
+
 ```php
 'providers' => [
     //...
-	 NetoJose\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
+	NetoJose\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
 ],
 ```
 
 #### Add the BootForm facade to the aliases array in config/app.php:
+
 ```php
 'aliases' => [
     //...
@@ -65,6 +70,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ## Usage
 
 ### Opening a form
+
 ```php
 // Opening a form using POST method
 {!!Form::open()!!}
@@ -94,11 +100,13 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ```
 
 ### Closing a form
+
 ```php
 {!!Form::close()!!}
 ```
 
 ### Fieldset
+
 ```php
 {!!Form::fieldsetOpen('Legend title')!!}
 // ... fieldset content
@@ -106,21 +114,25 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ```
 
 ### Text inputs
+
 ```php
 {!!Form::text('name', 'User name')!!}
 ```
 
 ### Textarea inputs
+
 ```php
 {!!Form::textarea('description', 'Description')!!}
 ```
 
 ### Select inputs
+
 ```php
 {!!Form::select('city', [1 => 'Gotham City', 2 => 'Springfield'], 'Escolha sua cidade')!!}
 ```
 
 ### Checkbox inputs
+
 ```php
 {!!Form::checkbox('orange', 'Orange')!!}
 
@@ -132,6 +144,7 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ```
 
 ### Radio inputs
+
 ```php
 {!!Form::radio('orange', 'Orange')!!}
 
@@ -142,19 +155,21 @@ $user = ['name' => 'Jesus', 'age' => 33];
 {!!Form::radio('orange', 'Orange')->inline()!!}
 ```
 
-
 ### Placeholder
+
 ```php
 {!!Form::text('name', 'Name')->placeholder('Input placeholder')!!}
 ```
 
 ### Help Text
+
 ```php
 {!!Form::text('name', 'Name')->help('Help text here')!!}
 ```
 
 ### Button
-```
+
+```php
 // Submit button
 {!!Form::submit("Send form")!!}
 
@@ -199,11 +214,13 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ```
 
 ### Custom parameters
+
 ```php
 {!!Form::text('name', 'Name')->params(['data-foo' => 'bar', 'rel'=> 'baz'])!!}
 ```
 
 ### Anchor
+
 ```php
 {!!Form::anchor("Link via parameter", 'foo/bar')!!}
 {!!Form::anchor("Link via url")->url('foo/bar')!!}
@@ -211,6 +228,7 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ```
 
 ### Readonly
+
 ```php
 // Using readonly field
 {!!Form::text('name', 'Name')->readonly()!!}
@@ -220,6 +238,7 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ```
 
 ### Disabled
+
 ```php
 // Disabling a field
 {!!Form::text('name', 'Name')->disabled()!!}
@@ -229,32 +248,33 @@ $user = ['name' => 'Jesus', 'age' => 33];
 
 // You can use FALSE to turn off disabled status
 {!!Form::text('name', 'Name')-> disabled(false)!!}
-
 ```
 
 ### Id
+
 ```php
 {!!Form::text('name', 'Name')->id('user-name')!!}
 ```
 
 ### Type
+
 ```php
 {!!Form::text('age', 'Age')->type('number')!!}
 {!!Form::text('email', 'Email')->type('email')!!}
 ```
 
 ### Chaining propperties
+
 ```php
-// You can use chaining feature to use a lot of setting for each component
+// You can use chaining feature to use a lot of settings for each component
 
 {!!Form::open()->locale('forms.user')->put()->multipart()->route('user.add')->data($user)!!}
 
-{!!Form::text('name', 'Digite seu nome')->placeholder('Este é um placeholder')->lg()!!}
+{!!Form::text('name', 'Name')->placeholder('Type your name')->lg()!!}
 
 {!!Form::anchor("Link as a button")->sm()->info()->outline()!!}
 
 {!!Form::submit('Awesome button')->id('my-btn')->disabled()->danger()->lg()!!}
 
 {!!Form::close()!!}
-
 ```
