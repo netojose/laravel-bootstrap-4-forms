@@ -14,12 +14,17 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 * Zero dependences (without Laravel Collective)
 
 ## Introduction
-###Before
 
+### Before
 ```html
 <div class="form-group">
     <label for="username">Username</label>
-    <input type="text" class="form-control" id="username">
+    <input type="text" class="form-control @if($errors->has('username')) is-invalid @endif " id="username" value="{{old('username', $username)}}">
+    @if($errors->has('username'))
+    <div class="invalid-feedback">
+        {{$errors->first('username')}}
+    </div>
+    @endif
 </div>
 ```
 
