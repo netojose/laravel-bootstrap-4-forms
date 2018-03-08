@@ -368,9 +368,9 @@ class FormService {
         $attrs = $this->_pts();
         $value = $this->_getValue();
         $options = '';
-        foreach ($this->_props['options'] as $value => $label){
-            $checked = $value == $value ? ' selected' : '';
-            $options .= '<option value="'.$value.'"'.$checked.'>'.$label.'</option>';
+        foreach ($this->_props['options'] as $optvalue => $label){
+            $checked = $optvalue == $value ? ' selected' : '';
+            $options .= '<option value="'.$optvalue.'"'.$checked.'>'.$label.'</option>';
         }
         return $this->_renderWarpperCommomField('<select '.$attrs.'>'.$options.'</select>');
     }
