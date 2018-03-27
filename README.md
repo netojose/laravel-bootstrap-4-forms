@@ -176,9 +176,6 @@ $user = ['name' => 'Jesus', 'age' => 33];
 // Reset button
 {!!Form::reset("Reset form button")!!}
 
-// Info button
-{!!Form::button("Button label")->info()!!}
-
 // Warning button
 {!!Form::button("Button label")->warning()!!}
 
