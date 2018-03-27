@@ -1,5 +1,6 @@
 {
   "name": "netojose/laravel-bootstrap-4-forms",
+  "minimum-stability": "dev",
   "type": "package",
   "description": "Bootstrap 4 form builder for Laravel 5",
   "keywords": [
@@ -35,5 +36,4 @@
         "Form": "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsFacade"
       }
     }
-  }
-}
+  },
