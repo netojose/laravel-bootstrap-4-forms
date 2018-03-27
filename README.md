@@ -8,7 +8,7 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 * Error messages
 * Bootstrap 4 markup and classes (including state, colors, and sizes)
 * Error validation messages
-* Form fill (using Model instance, array or after form submition when a validation error occurs)
+* Form fill (using Model instance, array or after form submission when a validation error occurs)
 * Internationalization
 * Add parameters using php chaining approach
 * Zero dependences (without Laravel Collective)
@@ -128,7 +128,7 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ### Select inputs
 
 ```php
-{!!Form::select('city', [1 => 'Gotham City', 2 => 'Springfield'], 'Escolha sua cidade')!!}
+{!!Form::select('city', [1 => 'Gotham City', 2 => 'Springfield'], 'Choose your city')!!}
 ```
 
 ### Checkbox inputs
