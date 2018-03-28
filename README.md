@@ -260,7 +260,7 @@ $user = ['name' => 'Jesus', 'age' => 33];
 {!!Form::text('email', 'Email')->type('email')!!}
 ```
 
-### Chaining propperties
+### Chaining properties
 
 ```php
 // You can use chaining feature to use a lot of settings for each component
