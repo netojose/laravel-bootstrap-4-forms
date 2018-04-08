@@ -89,11 +89,11 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 // With initial data using a Model instance
 $user = User::find(1);
-{!!Form::open()->data($user)!!}
+{!!Form::open()->fill($user)!!}
 
 // With initial array data
 $user = ['name' => 'Jesus', 'age' => 33];
-{!!Form::open()->data($user)!!}
+{!!Form::open()->fill($user)!!}
 
 // With locale (look for a resources/lang/{CURRENT_LANG}/forms/user.php language file and uses labels and help texts as keys for replace texts)
 {!!Form::open()->locale('forms.user')!!}
