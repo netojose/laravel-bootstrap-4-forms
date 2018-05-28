@@ -213,7 +213,7 @@ class FormService {
         return $this;
     }
     
-    public function textarea(string $name, string $label) : FormService {
+    public function textarea(string $name, string $label = null) : FormService {
         $this->_render = 'Textarea';
         $this->_props  = ['name' => $name, 'label' => $label];
         return $this;
