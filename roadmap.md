@@ -1,6 +1,11 @@
 # Roadmap
 - option checked pour les radion et les checkbox
-- supprimer les label si il est false ou null
+- alternative with or without label for each element
+  - null = whitout label
+  - false = without label
+  - true = label with element's name
+  - string = label with this string
 - assinger une valeur par défaut à un input text
 - uniformiser les valeur pour chaque input
 - ajouter les add-on
+- add buttons group
