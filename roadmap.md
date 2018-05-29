@@ -22,5 +22,5 @@
   - https://www.w3.org/wiki/HTML/Elements/input/checkbox
 
 # Future changes
-- ajouter les add-on
+- add addon for inputs
 - add buttons group
