@@ -64,6 +64,7 @@ class FormService
         $this->_outline = false;
         $this->_block = false;
         $this->_value = "";
+        $this->_default = null;
     }
 
     private function _resetFormFlags() {
