@@ -1,11 +1,25 @@
 # Roadmap
-- option checked pour les radion et les checkbox
-- alternative with or without label for each element
-  - null = whitout label
-  - false = without label
+- choose if you need label for element
+  - null or false = whitout label
   - true = label with element's name
   - string = label with this string
-- assinger une valeur par défaut à un input text
+- we can assign default value to inputs, if we don't use `->fill();`
+  - `Form::text(name, lablel, default)`
+  - `Form::textarea(name, lablel, default)`
 - uniformiser les valeur pour chaque input
 - ajouter les add-on
 - add buttons group
+- change behavior of radio and checkbox for the value
+  - `Form::element(name, lablel, value)`
+  - if `value` is null or not declared, the value will be element's name
+- `checked` property of radio and checkbox with data filling
+  - if `data` is `value`, will be checked
+  - if `data` is `'true', 't', true, 1, '1'`, will be checked 
+  - if `data` is `'false', 'f', false, 0, '0'`, will be not checked 
+- `checked` property of radio and checkbox, without data filling
+  - `Form::radio(name, lablel)->checked()`
+  - `Form::checkbox(name, lablel)->checked()`
+  - by default is not checked (`Form::checkbox(name, lablel)`)
+- for radio and checkbox, 
+  - the correct syntax isn't `... checked="checked">` but just `... checked>`
+  - https://www.w3.org/wiki/HTML/Elements/input/checkbox
