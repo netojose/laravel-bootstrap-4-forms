@@ -10,9 +10,9 @@
   - `Form::element(name, lablel, value)`
   - if `value` is null or not declared, the value will be element's name
 - `checked` property of radio and checkbox *with data filling*
-  - if `data` is `value`, will be checked
-  - if `data` is `'true', 't', true, 1, '1'`, will be checked 
-  - if `data` is `'false', 'f', false, 0, '0'`, will be not checked 
+  - if `data` == `value`, will be checked
+  - if `data` == `'true', 't', true, 1, '1'`, will be checked 
+  - if `data` == `'false', 'f', false, 0, '0'`, will be not checked 
 - `checked` property of radio and checkbox, *without data filling*
   - `Form::radio(name, lablel)->checked()`
   - `Form::checkbox(name, lablel)->checked()`
