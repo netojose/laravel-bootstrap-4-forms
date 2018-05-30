@@ -7,7 +7,8 @@ namespace NetoJose\Bootstrap4Forms;
  *
  * @author neto
  */
-class FormService {
+class FormService
+{
     private $_Flocale;
     private $_Fmethod;
     private $_Fmultipart;
@@ -22,478 +23,660 @@ class FormService {
     private $_size;
     private $_readonly;
     private $_disabled;
+    private $_checked = false;
     private $_id;
     private $_help;
     private $_color;
     private $_outline;
     private $_block;
     private $_value;
-    
+    private $_default;
+
     public function __construct() {
+
         $this->_resetFlags();
         $this->_resetFormFlags();
     }
-    
-    public function __toString(){
-        $output = $this->{'_render'.$this->_render}();
+
+    public function __toString() {
+
+        $output = $this->{'_render' . $this->_render}();
         $this->_resetFlags();
+
         return $output;
     }
-    
-    private function _resetFlags(){
-        $this->_render      = null;
-        $this->_props       = [];
-        $this->_params      = [];
-        $this->_type        = null;
-        $this->_url         = null;
+
+    private function _resetFlags() {
+
+        $this->_render = null;
+        $this->_props = [];
+        $this->_params = [];
+        $this->_type = null;
+        $this->_url = null;
         $this->_placeholder = null;
-        $this->_checkInline = false;        
-        $this->_size        = null;        
-        $this->_readonly    = false;
-        $this->_disabled    = false;
-        $this->_id          = null;
-        $this->_help        = null;
-        $this->_color       = "primary";
-        $this->_outline     = false;
-        $this->_block       = false;
-        $this->_value       = "";
+        $this->_checkInline = false;
+        $this->_size = null;
+        $this->_readonly = false;
+        $this->_disabled = false;
+        $this->_id = null;
+        $this->_help = null;
+        $this->_color = "primary";
+        $this->_outline = false;
+        $this->_block = false;
+        $this->_value = "";
+        $this->_default = null;
     }
 
-    private function _resetFormFlags(){
-        $this->_Flocale     = null;
-        $this->_Fmethod     = 'post';
-        $this->_Fmultipart  = false;
-        $this->_Fdata       = null;
-    }
-    
-    public function open() : FormService {
-        $this->_render = 'Open';
-        return $this;
-    }
+    private function _resetFormFlags() {
 
-    public function close() : FormService {
-        $this->_render = 'Close';
-        return $this;
-    }
-
-    public function multipart(bool $multipart = true) : FormService {
-        $this->_Fmultipart = $multipart;
-        return $this;
-    }
-
-    public function get() : FormService {
-        $this->_Fmethod = 'get';
-        return $this;
-    }
-
-    public function post() : FormService {
+        $this->_Flocale = null;
         $this->_Fmethod = 'post';
+        $this->_Fmultipart = false;
+        $this->_Fdata = null;
+    }
+
+    public function open(): FormService {
+
+        $this->_render = 'Open';
+
         return $this;
     }
 
-    public function put() : FormService {
+    public function close(): FormService {
+
+        $this->_render = 'Close';
+
+        return $this;
+    }
+
+    public function multipart(bool $multipart = true): FormService {
+
+        $this->_Fmultipart = $multipart;
+
+        return $this;
+    }
+
+    public function get(): FormService {
+
+        $this->_Fmethod = 'get';
+
+        return $this;
+    }
+
+    public function post(): FormService {
+
+        $this->_Fmethod = 'post';
+
+        return $this;
+    }
+
+    public function put(): FormService {
+
         $this->_Fmethod = 'put';
+
         return $this;
     }
 
-    public function patch() : FormService {
+    public function patch(): FormService {
+
         $this->_Fmethod = 'patch';
+
         return $this;
     }
 
-    public function delete() : FormService {
+    public function delete(): FormService {
+
         $this->_Fmethod = 'delete';
+
         return $this;
     }
 
-    public function fill($data) : FormService {
-        if(method_exists($data, 'toArray')){
+    public function fill($data): FormService {
+
+        if (method_exists($data, 'toArray')) {
             $data = $data->toArray();
         }
         $this->_Fdata = $data;
+
         return $this;
     }
 
-    public function locale($path) : FormService {
+    public function locale($path): FormService {
+
         $this->_Flocale = $path;
+
         return $this;
     }
 
-    public function inline(bool $inline = true) : FormService {
+    public function inline(bool $inline = true): FormService {
+
         $this->_checkInline = $inline;
+
         return $this;
     }
 
-    public function url(string $url) : FormService {
+    public function url(string $url): FormService {
+
         $this->_url = url($url);
+
         return $this;
     }
 
-    public function route(string $route, array $params = []) : FormService {
+    public function route(string $route, array $params = []): FormService {
+
         $this->_url = route($route, $params);
+
         return $this;
     }
 
-    public function fieldsetOpen(string $legend = null) : FormService {
+    public function fieldsetOpen(string $legend = null): FormService {
+
         $this->_render = 'FieldsetOpen';
-        $this->_props  = ['legend' => $legend];
+        $this->_props = ['legend' => $legend];
+
         return $this;
     }
 
-    public function fieldsetClose() : FormService {
+    public function fieldsetClose(): FormService {
+
         $this->_render = 'FieldsetClose';
+
         return $this;
     }
 
-    public function help(string $text) : FormService {
+    public function help(string $text): FormService {
+
         $this->_help = $text;
+
         return $this;
     }
 
-    public function file(string $name, string $label = null) : FormService {
+    public function file(string $name, string $label = null): FormService {
+
         $this->type('file');
         $this->_render = 'File';
-        $this->_props  = ['name' => $name, 'label' => $label];
+        $this->_props = ['name' => $name, 'label' => $label];
+
         return $this;
     }
 
-    public function text(string $name, string $label = null) : FormService {
+    public function text(string $name, $label = null, string $default = null): FormService {
+
         $this->type('text');
         $this->_render = 'Text';
-        $this->_props  = ['name' => $name, 'label' => $label];
+        $this->_default = $default;
+        $this->_props = ['name' => $name, 'label' => $label];
+
         return $this;
     }
 
-    public function button(string $value) : FormService {
+    public function button(string $value): FormService {
+
         $this->type('button');
         $this->_render = 'ButtonOrAnchor';
-        $this->_props  = ['value' => $value, 'name' => null];
+        $this->_props = ['value' => $value, 'name' => null];
+
         return $this;
     }
-    
-    public function submit(string $value) : FormService {
+
+    public function submit(string $value): FormService {
+
         $this->button($value);
         $this->type('submit');
+
         return $this;
     }
 
-    public function reset(string $value) : FormService {
+    public function reset(string $value): FormService {
+
         $this->button($value);
         $this->type('reset');
+
         return $this;
     }
 
-    public function anchor(string $value, $url = null) : FormService {
+    public function anchor(string $value, $url = null): FormService {
+
         $this->button($value);
         $this->type('anchor');
-        if($url){
+        if ($url) {
             $this->url($url);
         }
-        $this->_props  = ['value' => $value, 'name' => null];
+        $this->_props = ['value' => $value, 'name' => null];
+
         return $this;
     }
-    
-    public function select(string $name, array $options = [], string $label = null) : FormService {
+
+    public function select(string $name, array $options = [], string $label = null): FormService {
+
         $this->_render = 'Select';
-        $this->_props  = ['name' => $name, 'label' => $label, 'options' => $options];
+        $this->_props = ['name' => $name, 'label' => $label, 'options' => $options];
+
         return $this;
     }
-    
-    public function checkbox(string $name, string $label = null, string $value = 'on') : FormService {
+
+    public function checkbox(string $name, string $label = null, string $value = null): FormService {
+
         $this->type('checkbox');
         $this->_render = 'CheckboxRadio';
-        $this->_props  = ['name' => $name, 'label' => $label, 'value' => $value];
+
+        $value = ($value === null) ? $name : $value;
+
+        $this->_props = ['name' => $name, 'label' => $label, 'value' => $value];
+
         return $this;
     }
-    
-    public function radio(string $name, string $label = null, string $value = 'on') : FormService {
+
+    public function radio(string $name, string $label = null, string $value = null): FormService {
+
         $this->type('radio');
         $this->_render = 'CheckboxRadio';
-        $this->_props  = ['name' => $name, 'label' => $label, 'value' => $value];
+
+        $value = ($value === null) ? $name : $value;
+        $this->_props = ['name' => $name, 'label' => $label, 'value' => $value];
+
         return $this;
     }
-    
-    public function textarea(string $name, string $label) : FormService {
+
+    public function textarea(string $name, $label = null, string $default = null): FormService {
+
         $this->_render = 'Textarea';
-        $this->_props  = ['name' => $name, 'label' => $label];
+        $this->_default = $default;
+        $this->_props = ['name' => $name, 'label' => $label];
+
         return $this;
     }
 
-    public function type($type) : FormService {
+    public function type($type): FormService {
+
         $this->_type = $type;
+
         return $this;
     }
-    
-    public function id($id) : FormService {
+
+    public function id($id): FormService {
+
         $this->_id = $id;
+
         return $this;
     }
-    
-    public function lg() : FormService {
+
+    public function lg(): FormService {
+
         $this->_size = 'lg';
+
         return $this;
     }
-    
-    public function sm() : FormService {
+
+    public function sm(): FormService {
+
         $this->_size = 'sm';
+
         return $this;
     }
 
-    public function primary() : FormService {
+    public function primary(): FormService {
+
         $this->_color = 'primary';
+
         return $this;
     }
 
-    public function secondary() : FormService {
+    public function secondary(): FormService {
+
         $this->_color = 'secondary';
+
         return $this;
     }
-    
-    public function success() : FormService {
+
+    public function success(): FormService {
+
         $this->_color = 'success';
+
         return $this;
     }
-    
-    public function danger() : FormService {
+
+    public function danger(): FormService {
+
         $this->_color = 'danger';
+
         return $this;
     }
-    
-    public function warning() : FormService {
+
+    public function warning(): FormService {
+
         $this->_color = 'warning';
+
         return $this;
     }
-    
-    public function info() : FormService {
+
+    public function info(): FormService {
+
         $this->_color = 'info';
+
         return $this;
     }
-    
-    public function light() : FormService {
+
+    public function light(): FormService {
+
         $this->_color = 'light';
+
         return $this;
     }
-    
-    public function dark() : FormService {
+
+    public function dark(): FormService {
+
         $this->_color = 'dark';
+
         return $this;
     }
-    
-    public function link() : FormService {
+
+    public function link(): FormService {
+
         $this->_color = 'link';
+
         return $this;
     }
-    
-    public function outline(bool $outline = true) : FormService {
+
+    public function outline(bool $outline = true): FormService {
+
         $this->_outline = $outline;
+
         return $this;
     }
-    
-    public function block(bool $block = true) : FormService {
+
+    public function block(bool $block = true): FormService {
+
         $this->_block = $block;
+
         return $this;
     }
-    
-    public function readonly($status = true) : FormService{
+
+    public function readonly($status = true): FormService {
+
         $this->_readonly = $status;
+
         return $this;
     }
-    
-    public function disabled($status = true) : FormService{
+
+    public function disabled($status = true): FormService {
+
         $this->_disabled = $status;
+
         return $this;
     }
-    
-    public function placeholder($placeholder) : FormService {
+
+    public function placeholder($placeholder): FormService {
+
         $this->_placeholder = $placeholder;
+
         return $this;
     }
-    
-    public function params(array $params = []) : FormService {
+
+    public function params(array $params = []): FormService {
+
         $this->_params = $params;
+
         return $this;
     }
-    
-    private function _renderOpen() : string {
+
+    public function checked(): string {
+
+        $this->_checked = true;
+
+        return $this;
+    }
+
+    private function _renderOpen(): string {
+
         $method = $this->_Fmethod === 'get' ? 'get' : 'post';
-        $multipart = $this->_Fmultipart ? ' enctype="multipart/form-data"': '';
-        $ret = '<form method="'.$method.'" action="'.$this->_url.'"'.$multipart.'>';
-        if($this->_Fmethod !== 'get'){
+        $multipart = $this->_Fmultipart ? ' enctype="multipart/form-data"' : '';
+        $ret = '<form method="' . $method . '" action="' . $this->_url . '"' . $multipart . '>';
+        if ($this->_Fmethod !== 'get') {
             $ret .= csrf_field();
-            if ($this->_Fmethod !== 'post'){
+            if ($this->_Fmethod !== 'post') {
                 $ret .= method_field($this->_Fmethod);
             }
         }
+
         return $ret;
     }
-    
-    private function _renderClose() : string {
+
+    private function _renderClose(): string {
+
         $ret = '</form>';
         $this->_resetFormFlags();
-        return $ret;
-    }
-    
-    private function _renderFieldsetOpen() : string {
-        $attrs = $this->_pts();
-        $ret = '<fieldset'.($attrs ? (' '.$attrs) : '').'>';
-        if($this->_props['legend']){
-            $ret .= '<legend>'.$this->_e($this->_props['legend']).'</legend>';
-        }
-        return $ret;
-    }
-    
-    private function _renderFieldsetClose() : string {
-        $ret = '</fieldset>';
+
         return $ret;
     }
 
-    private function _renderFile() : string {
+    private function _renderFieldsetOpen(): string {
+
         $attrs = $this->_pts();
-        return $this->_renderWarpperCommomField('<input '.$attrs.'>');
+        $ret = '<fieldset' . ($attrs ? (' ' . $attrs) : '') . '>';
+        if ($this->_props['legend']) {
+            $ret .= '<legend>' . $this->_e($this->_props['legend']) . '</legend>';
+        }
+
+        return $ret;
     }
-    
-    private function _renderText() : string {
+
+    private function _renderFieldsetClose(): string {
+
+        $ret = '</fieldset>';
+
+        return $ret;
+    }
+
+    private function _renderFile(): string {
+
+        $attrs = $this->_pts();
+
+        return $this->_renderWarpperCommomField('<input ' . $attrs . '>');
+    }
+
+    private function _renderText(): string {
+
         $value = $this->_getValue();
         $attrs = $this->_pts(['value' => $value]);
-        return $this->_renderWarpperCommomField('<input '.$attrs.'>');
+
+        return $this->_renderWarpperCommomField('<input ' . $attrs . '>');
     }
 
-    private function _renderTextarea() : string {
+    private function _renderTextarea(): string {
+
         $attrs = $this->_pts(['rows' => 3]);
         $value = $this->_getValue();
-        return $this->_renderWarpperCommomField('<textarea '.$attrs.'>'.$value.'</textarea>');
+
+        return $this->_renderWarpperCommomField('<textarea ' . $attrs . '>' . $value . '</textarea>');
     }
-    
-    private function _renderSelect() : string {
+
+    private function _renderSelect(): string {
+
         $attrs = $this->_pts();
         $value = $this->_getValue();
         $options = '';
-        foreach ($this->_props['options'] as $optvalue => $label){
+        foreach ($this->_props['options'] as $optvalue => $label) {
             $checked = $optvalue == $value ? ' selected' : '';
-            $options .= '<option value="'.$optvalue.'"'.$checked.'>'.$label.'</option>';
+            $options .= '<option value="' . $optvalue . '"' . $checked . '>' . $label . '</option>';
         }
-        return $this->_renderWarpperCommomField('<select '.$attrs.'>'.$options.'</select>');
+
+        return $this->_renderWarpperCommomField('<select ' . $attrs . '>' . $options . '</select>');
     }
 
-    private function _renderWarpperCommomField($field) : string {
+    private function _renderWarpperCommomField($field): string {
+
         $label = $this->_getLabel();
-        $help  = $this->_getHelpText();
+        $help = $this->_getHelpText();
         $error = $this->_getValidationFieldMessage();
-        return '<div class="form-group">'.$label.$field.$help.$error.'</div>';
+
+        return '<div class="form-group">' . $label . $field . $help . $error . '</div>';
     }
 
-    private function _renderCheckboxRadio() : string {
-        $checked = $this->_getValue() == $this->_props['value'] ? 'checked' : null;
-        $attrs = $this->_pts(["class" => "form-check-input", "type" => $this->_type, "value" => $this->_props['value'], 'checked' => $checked]);
-        $inline = $this->_checkInline ? ' form-check-inline': '';
-        return '<div class="form-check'.$inline.'"><label class="form-check-label"><input '.$attrs.'>'.$this->_e($this->_props['label']).'</label></div>';
+    private function _renderCheckboxRadio(): string {
+
+        $prop = $this->_props['value'];
+        $value = $this->_getValue();
+        $falseValues = ['false', 'f', false, 0, '0'];
+        $trueValues = ['true', 't', true, 1, '1'];
+
+        if ($value == $prop) {
+            $this->_checked = true;
+        } elseif (in_array($value, $trueValues)) {
+            $this->_checked = true;
+        } elseif (in_array($value, $falseValues)) {
+            $this->_checked = false;
+        }
+        
+        $attrs = $this->_pts(["class" => "form-check-input", "type" => $this->_type, "value" => $this->_props['value']]);
+        $inline = $this->_checkInline ? ' form-check-inline' : '';
+
+        return '<div class="form-check' . $inline . '"><label class="form-check-label"><input ' . $attrs . '>' . $this->_e($this->_props['label']) . '</label></div>';
     }
-    
-    private function _renderButtonOrAnchor() : string {
-        $size = $this->_size ? ' btn-'.$this->_size : '';
+
+    private function _renderButtonOrAnchor(): string {
+
+        $size = $this->_size ? ' btn-' . $this->_size : '';
         $outline = $this->_outline ? 'outline-' : '';
         $block = $this->_block ? ' btn-block' : '';
         $disabled = $this->_disabled ? ' disabled' : '';
         $value = $this->_e($this->_props['value']);
-        $cls = 'btn btn-'.$outline.$this->_color.$size.$block;
-        if($this->_type == 'anchor'){
+        $cls = 'btn btn-' . $outline . $this->_color . $size . $block;
+        if ($this->_type == 'anchor') {
             $href = $this->_url ?: 'javascript:void(0)';
-            $attrs = $this->_pts(['class' => $cls.$disabled, 'href' => $href, 'role' => 'button', 'aria-disabled' => $disabled ? 'true' : null]);
-            $ret = '<a '.$attrs.'>'.$value.'</a>';
+            $attrs = $this->_pts(['class' => $cls . $disabled, 'href' => $href, 'role' => 'button', 'aria-disabled' => $disabled ? 'true' : null]);
+            $ret = '<a ' . $attrs . '>' . $value . '</a>';
         } else {
             $attrs = $this->_pts(['class' => $cls, 'type' => $this->_type]);
-            $ret = '<button '.$attrs.' '.$disabled.'>'.$value.'</button>';
+            $ret = '<button ' . $attrs . ' ' . $disabled . '>' . $value . '</button>';
         }
+
         return $ret;
     }
-    
-    private function _getLabel() : string {
-        $for = $this->_id ?: $this->_props['name'];
-        return '<label for="'.$for.'">'.$this->_e($this->_props['label']).'</label>';
-    }
-    
-    private function _pts(array $props = []) : string {
-        $ret = "";
 
-        $props['type']          = $this->_type;
-        $props['name']          = isset($this->_props['name']) ? $this->_props['name'] : null;
-        $props['id']            = $this->_getId();
-        $props['autocomplete']  = $props['name'];
-        
-        if($this->_placeholder){
+    private function _getLabel(): string {
+
+        $label = ($this->_props['label'] === true) ? $this->_props['name'] : $this->_props['label'];
+        $result = null;
+
+        if (is_string($label) || is_bool($label) && $label) {
+            $for = $this->_id ?: $this->_props['name'];
+            $result = '<label for="' . $for . '">' . $this->_e($label) . '</label>';
+        } else {
+            $result = '';
+        }
+
+        return $result;
+
+    }
+
+    private function _pts(array $props = []): string {
+
+        $ret = "";
+        $radioCheckbox = ['radio', 'checkbox'];
+
+        $props['type'] = $this->_type;
+        $props['name'] = isset($this->_props['name']) ? $this->_props['name'] : null;
+        $props['id'] = $this->_getId();
+        $props['autocomplete'] = $props['name'];
+
+        if ($this->_placeholder) {
             $props['placeholder'] = $this->_placeholder;
         }
 
-        if($this->_help){
+        if ($this->_help) {
             $props['aria-describedby'] = $this->_getIdHelp();
         }
-        
-        if(!isset($props['class'])){
-            $props['class'] = "form-control".($this->_size ? ' form-control-'.$this->_size : '');
+
+        if (!isset($props['class'])) {
+            $props['class'] = "form-control" . ($this->_size ? ' form-control-' . $this->_size : '');
         }
         $props['class'] .= $this->_getValidationFieldClass();
 
         $allProps = array_merge($props, $this->_params);
-        
-        foreach($allProps as $key => $value){
-            if($value !== null){
-                $ret .= $key.'="'.htmlspecialchars($value).'" ';
+
+        foreach ($allProps as $key => $value) {
+            if ($value !== null) {
+                $ret .= $key . '="' . htmlspecialchars($value) . '" ';
             }
         }
-        
-        if($this->_readonly){
+
+        if ($this->_readonly) {
             $ret .= 'readonly ';
         }
-        
-        if($this->_disabled){
+
+        if ($this->_disabled) {
             $ret .= 'disabled';
         }
-        
+
+        if (in_array($this->_type, $radioCheckbox)) {
+            if ($this->_checked) {
+                $ret .= 'checked';
+            }
+        }
+
         return trim($ret);
     }
 
-    private function _getValue(){
+    private function _getValue() {
+
         $name = $this->_props['name'];
-        $default = isset($this->_Fdata[$name]) ? $this->_Fdata[$name] : null;
+
+        if (isset($this->_Fdata[$name])) {
+            $default = $this->_Fdata[$name];
+        } else {
+            $default = $this->_default;
+        }
+
+
         return old($name, $default);
     }
 
-    private function _getId(){
+    private function _getId() {
+
         $id = $this->_id;
-        if(!$id && isset($this->_props['name'])){
+        if (!$id && isset($this->_props['name'])) {
             $id = $this->_props['name'];
-            if($this->_type == 'radio'){
+            if ($this->_type == 'radio') {
                 $id .= '-' . str_slug($this->_props['value']);
             }
         }
+
         return $id;
     }
 
-    private function _getIdHelp(){
+    private function _getIdHelp() {
+
         $id = $this->_getId();
-        return $id ? 'help-'.$id : '';
+
+        return $id ? 'help-' . $id : '';
     }
 
-    private function _getHelpText() : string {
+    private function _getHelpText(): string {
+
         $id = $this->_getIdHelp();
-        return $this->_help ? '<small id="'.$id.'" class="form-text text-muted">'.$this->_e($this->_help).'</small>' : '';
+
+        return $this->_help ? '<small id="' . $id . '" class="form-text text-muted">' . $this->_e($this->_help) . '</small>' : '';
     }
 
-    private function _e($key){
+    private function _e($key) {
+
         $fieldKey = $key ?: $this->_props['name'];
+
         return $this->_Flocale ? __($this->_Flocale . '.' . $fieldKey) : $fieldKey;
     }
 
-    private function _getValidationFieldClass() : string {
-        if(!isset($this->_props['name']) || !$this->_props['name']){
+    private function _getValidationFieldClass(): string {
+
+        if (!isset($this->_props['name']) || !$this->_props['name']) {
             return '';
         }
 
-        if(session('errors') === null){
+        if (session('errors') === null) {
             return '';
         }
 
-        if($this->_getValidationFieldMessage()){
+        if ($this->_getValidationFieldMessage()) {
             return ' is-invalid';
         }
 
@@ -501,13 +684,14 @@ class FormService {
     }
 
     private function _getValidationFieldMessage(string $prefix = '<div class="invalid-feedback">', string $sufix = '</div>') {
+
         $errors = session('errors');
-        if(!$errors){
+        if (!$errors) {
             return null;
         }
         $error = $errors->first($this->_props['name']);
 
-        if(!$error){
+        if (!$error) {
             return null;
         }
 
