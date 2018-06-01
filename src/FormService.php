@@ -23,7 +23,7 @@ class FormService
     private $_size;
     private $_readonly;
     private $_disabled;
-    private $_checked = false;
+    private $_checked;
     private $_id;
     private $_help;
     private $_color;
@@ -31,6 +31,7 @@ class FormService
     private $_block;
     private $_value;
     private $_default;
+    private $_multiple;
 
     public function __construct() {
 
@@ -65,6 +66,8 @@ class FormService
         $this->_block = false;
         $this->_value = "";
         $this->_default = null;
+        $this->_multiple = false;
+
     }
 
     private function _resetFormFlags() {
@@ -210,6 +213,16 @@ class FormService
         return $this;
     }
 
+    public function hidden(string $name, string $default = null): FormService {
+
+        $this->type('hidden');
+        $this->_render = 'Hidden';
+        $this->_default = $default;
+        $this->_props = ['name' => $name, 'label' => null];
+
+        return $this;
+    }
+
     public function button(string $value): FormService {
 
         $this->type('button');
@@ -247,8 +260,13 @@ class FormService
         return $this;
     }
 
-    public function select(string $name, array $options = [], string $label = null): FormService {
+    public function select(string $name, string $label = null, $options = [], $default = []): FormService {
 
+        $this->type('select');
+
+        $options = (is_iterable($options)) ? $options : ['Must be iterable'];
+
+        $this->_default = $default;
         $this->_render = 'Select';
         $this->_props = ['name' => $name, 'label' => $label, 'options' => $options];
 
@@ -420,9 +438,16 @@ class FormService
         return $this;
     }
 
-    public function checked(): string {
+    public function checked(): FormService {
 
         $this->_checked = true;
+
+        return $this;
+    }
+
+    public function multiple(): FormService {
+
+        $this->_multiple = true;
 
         return $this;
     }
@@ -483,6 +508,14 @@ class FormService
         return $this->_renderWarpperCommomField('<input ' . $attrs . '>');
     }
 
+    private function _renderHidden(): string {
+
+        $value = $this->_getValue();
+        $attrs = $this->_pts(['value' => $value]);
+
+        return '<input ' . $attrs . '>';
+    }
+
     private function _renderTextarea(): string {
 
         $attrs = $this->_pts(['rows' => 3]);
@@ -496,9 +529,24 @@ class FormService
         $attrs = $this->_pts();
         $value = $this->_getValue();
         $options = '';
-        foreach ($this->_props['options'] as $optvalue => $label) {
-            $checked = $optvalue == $value ? ' selected' : '';
-            $options .= '<option value="' . $optvalue . '"' . $checked . '>' . $label . '</option>';
+
+        if ($this->_multiple) {
+            foreach ($this->_props['options'] as $key => $label) {
+
+                if (array_key_exists($key, $value)) {
+                    $match = true;
+                } else {
+                    $match = false;
+                }
+
+                $checked = ($match) ? ' selected' : '';
+                $options .= '<option value="' . $key . '"' . $checked . '>' . $label . '</option>';
+            }
+        } else {
+            foreach ($this->_props['options'] as $optvalue => $label) {
+                $checked = $optvalue == $value ? ' selected' : '';
+                $options .= '<option value="' . $optvalue . '"' . $checked . '>' . $label . '</option>';
+            }
         }
 
         return $this->_renderWarpperCommomField('<select ' . $attrs . '>' . $options . '</select>');
@@ -527,8 +575,9 @@ class FormService
         } elseif (in_array($value, $falseValues)) {
             $this->_checked = false;
         }
-        
-        $attrs = $this->_pts(["class" => "form-check-input", "type" => $this->_type, "value" => $this->_props['value']]);
+
+        $attrs = $this->_pts(["class" => "form-check-input", "type" => $this->_type,
+                              "value" => $this->_props['value']]);
         $inline = $this->_checkInline ? ' form-check-inline' : '';
 
         return '<div class="form-check' . $inline . '"><label class="form-check-label"><input ' . $attrs . '>' . $this->_e($this->_props['label']) . '</label></div>';
@@ -544,7 +593,8 @@ class FormService
         $cls = 'btn btn-' . $outline . $this->_color . $size . $block;
         if ($this->_type == 'anchor') {
             $href = $this->_url ?: 'javascript:void(0)';
-            $attrs = $this->_pts(['class' => $cls . $disabled, 'href' => $href, 'role' => 'button', 'aria-disabled' => $disabled ? 'true' : null]);
+            $attrs = $this->_pts(['class'         => $cls . $disabled, 'href' => $href, 'role' => 'button',
+                                  'aria-disabled' => $disabled ? 'true' : null]);
             $ret = '<a ' . $attrs . '>' . $value . '</a>';
         } else {
             $attrs = $this->_pts(['class' => $cls, 'type' => $this->_type]);
@@ -572,13 +622,17 @@ class FormService
 
     private function _pts(array $props = []): string {
 
-        $ret = "";
+        $ret = '';
         $radioCheckbox = ['radio', 'checkbox'];
 
         $props['type'] = $this->_type;
         $props['name'] = isset($this->_props['name']) ? $this->_props['name'] : null;
         $props['id'] = $this->_getId();
         $props['autocomplete'] = $props['name'];
+
+        if ($this->_type == 'select' && $this->_multiple) {
+            $props['name'] = $props['name'] . '[]';
+        }
 
         if ($this->_placeholder) {
             $props['placeholder'] = $this->_placeholder;
@@ -592,6 +646,11 @@ class FormService
             $props['class'] = "form-control" . ($this->_size ? ' form-control-' . $this->_size : '');
         }
         $props['class'] .= $this->_getValidationFieldClass();
+
+        if ($this->_type == 'hidden') {
+            unset($props['autocomplete']);
+            unset($props['class']);
+        }
 
         $allProps = array_merge($props, $this->_params);
 
@@ -615,6 +674,10 @@ class FormService
             }
         }
 
+        if ($this->_type == 'select' && $this->_multiple) {
+            $ret .= 'multiple';
+        }
+
         return trim($ret);
     }
 
@@ -624,10 +687,10 @@ class FormService
 
         if (isset($this->_Fdata[$name])) {
             $default = $this->_Fdata[$name];
+
         } else {
             $default = $this->_default;
         }
-
 
         return old($name, $default);
     }
