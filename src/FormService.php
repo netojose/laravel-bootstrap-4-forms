@@ -593,11 +593,15 @@ class FormService
         }
         $props['class'] .= $this->_getValidationFieldClass();
 
-        $allProps = array_merge($props, $this->_params);
+        if(isset($this->_params['class'])){
+            $props['class'] .= ' ' . $this->_params['class'];
+        }
 
-        foreach ($allProps as $key => $value) {
-            if ($value !== null) {
-                $ret .= $key . '="' . htmlspecialchars($value) . '" ';
+        $allProps = array_merge($this->_params, $props);
+        
+        foreach($allProps as $key => $value){
+            if($value !== null){
+                $ret .= $key.'="'.htmlspecialchars($value).'" ';
             }
         }
 
