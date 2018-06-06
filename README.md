@@ -4,14 +4,14 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 
 ## Features
 
-* Labels
-* Error messages
-* Bootstrap 4 markup and classes (including state, colors, and sizes)
-* Error validation messages
-* Form fill (using Model instance, array or after form submission when a validation error occurs)
-* Internationalization
-* Add parameters using php chaining approach
-* Zero dependences (without Laravel Collective)
+*   Labels
+*   Error messages
+*   Bootstrap 4 markup and classes (including state, colors, and sizes)
+*   Error validation messages
+*   Form fill (using Model instance, array or after form submission when a validation error occurs)
+*   Internationalization
+*   Add parameters using php chaining approach
+*   Zero dependences (without Laravel Collective)
 
 ## Introduction
 
@@ -32,7 +32,7 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 ### After
 
 ```php
-Form::text('username', 'Username')
+Form::text('username', 'Username', $username)
 ```
 
 ## Installation
@@ -128,7 +128,10 @@ $user = ['name' => 'Jesus', 'age' => 33];
 ### Select inputs
 
 ```php
-{!!Form::select('city', [1 => 'Gotham City', 2 => 'Springfield'], 'Choose your city')!!}
+{!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])!!}
+
+// Using a select multiple
+{!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])->multiple()!!}
 ```
 
 ### Checkbox inputs
@@ -153,6 +156,12 @@ $user = ['name' => 'Jesus', 'age' => 33];
 
 // Inline
 {!!Form::radio('orange', 'Orange')->inline()!!}
+```
+
+### Hidden inputs
+
+```php
+{!!Form::hidden('user_id')!!}
 ```
 
 ### Placeholder
