@@ -11,7 +11,7 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 *   Form fill (using Model instance, array or after form submission when a validation error occurs)
 *   Internationalization
 *   Add parameters using php chaining approach
-*   Zero dependences (without Laravel Collective)
+*   Zero dependences (no Laravel Collective dependency)
 
 ## Introduction
 
@@ -32,7 +32,7 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 ### After
 
 ```php
-Form::text('username', 'Username', $username)
+Form::text('username', 'Username')
 ```
 
 ## Installation
@@ -69,23 +69,168 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ## Usage
 
-### Opening a form
+### Basic form controls
+
+#### Opening and closing a form
 
 ```php
 // Opening a form using POST method
+
 {!!Form::open()!!}
+// ... Form components here
+{!!Form::close()!!}
+```
 
-// Using a different method (get, put, patch, delete)
-{!!Form::open()->get()!!}
+> Opening the form will add \_token field automatically for you
 
-// With multipart
-{!!Form::open()->multipart()!!}
+#### Fieldset
 
-// With custom route
-{!!Form::open()->route('route.name')!!}
+| Param   | Type   | Default | Description     |
+| ------- | ------ | ------- | --------------- |
+| $legend | string | null    | Fieldset Legend |
 
-// With url
-{!!Form::open()->url('user/add')!!}
+```php
+// Example
+{!!Form::fieldsetOpen('Legend title')!!}
+// ... fieldset content
+{!!Form::fieldsetClose()!!}
+```
+
+### Basic inputs
+
+#### Text inputs
+
+| Param    | Type   | Default | Description   |
+| -------- | ------ | ------- | ------------- |
+| $name    | string | null    | Input name    |
+| $label   | string | null    | Input label   |
+| $default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::text('name', 'User name')!!}
+```
+
+##### Textarea
+
+| Param    | Type   | Default | Description   |
+| -------- | ------ | ------- | ------------- |
+| $name    | string | null    | Input name    |
+| $label   | string | null    | Input label   |
+| $default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::textarea('description', 'Description')!!}
+```
+
+##### Select
+
+| Param    | Type   | Default | Description    |
+| -------- | ------ | ------- | -------------- |
+| $name    | string | null    | Input name     |
+| $label   | string | null    | Input label    |
+| $options | array  | []      | Select options |
+| $default | string | null    | Default value  |
+
+```php
+// Example
+{!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])!!}
+```
+
+##### Checkbox
+
+| Param    | Type    | Default | Description   |
+| -------- | ------- | ------- | ------------- |
+| $name    | string  | null    | Input name    |
+| $label   | string  | null    | Input label   |
+| $value   | string  | null    | Input value   |
+| $default | boolean | null    | Default value |
+
+```php
+// Example
+{!!Form::checkbox('orange', 'Orange')!!}
+```
+
+##### Radio
+
+| Param    | Type    | Default | Description   |
+| -------- | ------- | ------- | ------------- |
+| $name    | string  | null    | Input name    |
+| $label   | string  | null    | Input label   |
+| $value   | string  | null    | Input value   |
+| $default | boolean | null    | Default value |
+
+```php
+// Example
+{!!Form::radio('orange', 'Orange')!!}
+```
+
+##### Hidden
+
+| Param    | Type    | Default | Description   |
+| -------- | ------- | ------- | ------------- |
+| $name    | string  | null    | Input name    |
+| $default | boolean | null    | Default value |
+
+```php
+// Example
+{!!Form::hidden('user_id')!!}
+```
+
+##### Anchor
+
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| $value | string | null    | Anchor text |
+| $url   | string | null    | Anchor url  |
+
+```php
+// Example
+{!!Form::anchor("Link via parameter", 'foo/bar')!!}
+```
+
+##### Buttons
+
+| Param  | Type   | Default | Description  |
+| ------ | ------ | ------- | ------------ |
+| $value | string | null    | Button value |
+| $color | string | null    | Button color |
+| $size  | string | null    | button size  |
+
+###### Submit
+
+```php
+// Example
+{!!Form::submit("Send form")!!}
+```
+
+###### Button
+
+```php
+// Example
+{!!Form::button("Do something", "warning", "lg")!!}
+```
+
+###### Reset
+
+```php
+// Example
+{!!Form::reset("Clear form")!!}
+```
+
+### Chainable methods
+
+> This package uses [chaining](https://en.wikipedia.org/wiki/Method_chaining) feature, allowing easly pass more parameters.
+
+### Filling a form
+
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $data | object | array   | null        | DAta fo fill form inputs |
+
+```php
+// Examples
 
 // With initial data using a Model instance
 $user = User::find(1);
@@ -94,148 +239,121 @@ $user = User::find(1);
 // With initial array data
 $user = ['name' => 'Jesus', 'age' => 33];
 {!!Form::open()->fill($user)!!}
-
-// With locale (look for a resources/lang/{CURRENT_LANG}/forms/user.php language file and uses labels and help texts as keys for replace texts)
-{!!Form::open()->locale('forms.user')!!}
 ```
 
-### Closing a form
+### Url
+
+Use in anchors and forms openings
+
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $url  | string | null    | Url         |
 
 ```php
-{!!Form::close()!!}
+// Example
+{!!Form::anchor("Link via url")->url('foo/bar')!!}
 ```
 
-### Fieldset
+### Route
+
+Use in anchors and forms openings
+
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| $route | string | null    | Route name  |
 
 ```php
-{!!Form::fieldsetOpen('Legend title')!!}
-// ... fieldset content
-{!!Form::fieldsetClose()!!}
+// Example
+{!!Form::anchor("Link via route")->route('home')!!}
 ```
 
-### Text inputs
+### Checked
+
+Set the checkbox/radio checked status
+
+| Param    | Type    | Default | Description    |
+| -------- | ------- | ------- | -------------- |
+| $checked | boolean | true    | Checked status |
 
 ```php
-{!!Form::text('name', 'User name')!!}
+// Examples
+
+// Using readonly field
+{!!Form::checkbox('agree', 'I agree')->checked()!!}
+
+// You can use FALSE to turn off checked status
+{!!Form::checkbox('agree', 'I agree')->checked(false)!!}
 ```
 
-### Textarea inputs
+### Inline
+
+Set the checkbox/radio checked status
 
 ```php
-{!!Form::textarea('description', 'Description')!!}
-```
-
-### Select inputs
-
-```php
-{!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])!!}
-
-// Using a select multiple
-{!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])->multiple()!!}
-```
-
-### Checkbox inputs
-
-```php
-{!!Form::checkbox('orange', 'Orange')!!}
-
-// With custom value (default is on)
-{!!Form::checkbox('orange', 'Orange', 'yes')->inline()!!}
-
-// Inline
-{!!Form::checkbox('orange', 'Orange')->inline()!!}
-```
-
-### Radio inputs
-
-```php
-{!!Form::radio('orange', 'Orange')!!}
-
-// With custom value (default is on)
-{!!Form::radio('orange', 'Orange', 'yes')->inline()!!}
-
-// Inline
+// Examples
 {!!Form::radio('orange', 'Orange')->inline()!!}
-```
 
-### Hidden inputs
-
-```php
-{!!Form::hidden('user_id')!!}
+{!!Form::checkbox('orange', 'Orange')->inline()!!}
 ```
 
 ### Placeholder
 
+| Param        | Type   | Default | Description      |
+| ------------ | ------ | ------- | ---------------- |
+| $placeholder | string | null    | Placeholder text |
+
 ```php
+// Example
 {!!Form::text('name', 'Name')->placeholder('Input placeholder')!!}
+```
+
+### Select Multiple
+
+```php
+// Example
+{!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])->multiple()!!}
+```
+
+### Locale
+
+Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/user.php language file and uses labels and help texts as keys for replace texts
+
+```php
+// Example
+{!!Form::open()->locale('forms.user')!!}
 ```
 
 ### Help Text
 
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $text | string | null    | Help text   |
+
 ```php
+// Example
 {!!Form::text('name', 'Name')->help('Help text here')!!}
 ```
 
-### Button
+### Custom attributes
+
+| Param  | Type  | Default | Description             |
+| ------ | ----- | ------- | ----------------------- |
+| $attrs | array | []      | Custom input attributes |
 
 ```php
-// Submit button
-{!!Form::submit("Send form")!!}
-
-// Reset button
-{!!Form::reset("Reset form button")!!}
-
-// Warning button
-{!!Form::button("Button label")->warning()!!}
-
-// Outline button
-{!!Form::button("Button label")->outline()!!}
-
-// Success button
-{!!Form::button("Button label")->success()!!}
-
-// Danger button
-{!!Form::button("Button label")->danger()!!}
-
-// Secondary button
-{!!Form::button("Button label")->secondary()!!}
-
-// Info button
-{!!Form::button("Button label")->info()!!}
-
-// Light button
-{!!Form::button("Button label")->light()!!}
-
-// Dark button
-{!!Form::button("Button label")->dark()!!}
-
-// Link button
-{!!Form::button("Button label")->link()!!}
-
-// Small button
-{!!Form::button("Button label")->sm()!!}
-
-// Large button
-{!!Form::button("Button label")->lg()!!}
-```
-
-### Custom parameters
-
-```php
-{!!Form::text('name', 'Name')->params(['data-foo' => 'bar', 'rel'=> 'baz'])!!}
-```
-
-### Anchor
-
-```php
-{!!Form::anchor("Link via parameter", 'foo/bar')!!}
-{!!Form::anchor("Link via url")->url('foo/bar')!!}
-{!!Form::anchor("Link via route")->route('home')!!}
+// Example
+{!!Form::text('name', 'Name')->attrs(['data-foo' => 'bar', 'rel'=> 'baz'])!!}
 ```
 
 ### Readonly
 
+| Param   | Type    | Default | Description      |
+| ------- | ------- | ------- | ---------------- |
+| $status | boolean | true    | Read only status |
+
 ```php
+// Examples
+
 // Using readonly field
 {!!Form::text('name', 'Name')->readonly()!!}
 
@@ -245,7 +363,13 @@ $user = ['name' => 'Jesus', 'age' => 33];
 
 ### Disabled
 
+| Param   | Type    | Default | Description     |
+| ------- | ------- | ------- | --------------- |
+| $status | boolean | true    | Disabled status |
+
 ```php
+// Examples
+
 // Disabling a field
 {!!Form::text('name', 'Name')->disabled()!!}
 
@@ -253,26 +377,208 @@ $user = ['name' => 'Jesus', 'age' => 33];
 {!!Form::fieldsetOpen('User data')->disabled()!!}
 
 // You can use FALSE to turn off disabled status
-{!!Form::text('name', 'Name')-> disabled(false)!!}
+{!!Form::text('name', 'Name')->disabled(false)!!}
+```
+
+### Block
+
+| Param   | Type    | Default | Description     |
+| ------- | ------- | ------- | --------------- |
+| $status | boolean | true    | Disabled status |
+
+```php
+// Examples
+
+// Disabling a field
+{!!Form::text('name', 'Name')->block()!!}
+
+// You can use FALSE to turn off block status
+{!!Form::text('name', 'Name')->block(false)!!}
 ```
 
 ### Id
 
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $id   | string | null    | Id field    |
+
 ```php
+// Example
 {!!Form::text('name', 'Name')->id('user-name')!!}
+```
+
+### Id prefix
+
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| $prefix | string | null    | Id prefix   |
+
+```php
+// Example
+{!!Form::open()->idPrefix('register')!!}
+```
+
+### Multipart
+
+| Param      | Type    | Default | Description    |
+| ---------- | ------- | ------- | -------------- |
+| $multipart | boolean | true    | Multipart flag |
+
+```php
+// Examples
+{!!Form::open()->multipart()!!}
+
+// You can use FALSE to turn off multipart
+{!!Form::open()->multipart(false)!!}
+```
+
+### Method
+
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| $method | string | null    | HTTP method |
+
+```php
+// Examples
+{!!Form::open()->method('get')!!}
+{!!Form::open()->method('post')!!}
+{!!Form::open()->method('put')!!}
+{!!Form::open()->method('patch')!!}
+{!!Form::open()->method('delete')!!}
+```
+
+### explicit HTTP verbs
+
+```php
+// Examples
+{!!Form::open()->get()!!}
+{!!Form::open()->post()!!}
+{!!Form::open()->put()!!}
+{!!Form::open()->patch()!!}
+{!!Form::open()->delete()!!}
+```
+
+### Color
+
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| $color | string | null    | Color name  |
+
+```php
+// Examples
+{!!Form::button("Do something")->color("warning")!!}
+
+{!!Form::button("Do something")->color("primary")!!}
+```
+
+### explicit color
+
+```php
+// Examples
+{!!Form::button("Button label")->warning()!!}
+{!!Form::button("Button label")->outline()!!}
+{!!Form::button("Button label")->success()!!
+{!!Form::button("Button label")->danger()!!}
+{!!Form::button("Button label")->secondary()!!}
+{!!Form::button("Button label")->info()!!}
+{!!Form::button("Button label")->light()!!}
+{!!Form::button("Button label")->dark()!!}
+{!!Form::button("Button label")->link()!!}
+```
+
+### Size
+
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $size | string | null    | Size name   |
+
+```php
+// Examples
+{!!Form::button("Do something")->size("sm")!!}
+
+{!!Form::button("Do something")->size("lg")!!}
+```
+
+### Explicit size
+
+```php
+// Examples
+{!!Form::button("Button label")->sm()!!}
+{!!Form::button("Button label")->lg()!!}
 ```
 
 ### Type
 
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $type | string | null    | Type field  |
+
 ```php
+// Examples
+
+// Number field
 {!!Form::text('age', 'Age')->type('number')!!}
+
+// Email field
 {!!Form::text('email', 'Email')->type('email')!!}
+```
+
+### Name
+
+| Param | Type   | Default | Description |
+| ----- | ------ | ------- | ----------- |
+| $name | string | null    | Input name  |
+
+```php
+// Examples
+
+// Number field
+{!!Form::text('text')->name('name')!!}
+```
+
+### Label
+
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| $label | string | null    | Input label |
+
+```php
+// Examples
+
+// Number field
+{!!Form::text('age')->label('Your age')!!}
+```
+
+### Default Value
+
+| Param  | Type  | Default | Description |
+| ------ | ----- | ------- | ----------- |
+| $value | mixed | null    | Input value |
+
+```php
+// Example
+{!!Form::text('name', 'Your name')->value('Maria')!!}
+```
+
+### Render
+
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| $render | string | null    | Render name |
+
+```php
+// Examples
+
+// Number field
+{!!Form::render('text')->name('age')->label('Your age')!!}
 ```
 
 ### Chaining properties
 
+You can use chaining feature to use a lot of settings for each component
+
 ```php
-// You can use chaining feature to use a lot of settings for each component
+// Examples
 
 {!!Form::open()->locale('forms.user')->put()->multipart()->route('user.add')->data($user)!!}
 
