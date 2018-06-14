@@ -516,11 +516,14 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 ```php
 // Examples
 
+// Password field
+{!!Form::text('password', 'Your password')->type('password')!!}
+
 // Number field
-{!!Form::text('age', 'Age')->type('number')!!}
+{!!Form::text('age', 'Your age')->type('number')!!}
 
 // Email field
-{!!Form::text('email', 'Email')->type('email')!!}
+{!!Form::text('email', 'Your email')->type('email')!!}
 ```
 
 ### Name
@@ -531,8 +534,6 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ```php
 // Examples
-
-// Number field
 {!!Form::text('text')->name('name')!!}
 ```
 
@@ -544,8 +545,6 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ```php
 // Examples
-
-// Number field
 {!!Form::text('age')->label('Your age')!!}
 ```
 
