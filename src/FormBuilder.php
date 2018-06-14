@@ -6,167 +6,167 @@ class FormBuilder {
 
     /**
      * Form input labels locale
-     * 
+     *
      * @var string
      */
     private $_Flocale;
-    
+
     /**
      * Form method
-     * 
+     *
      * @var string
      */
     private $_Fmethod;
-    
+
     /**
      * Multipart flag
-     * 
+     *
      * @var boolean
      */
     private $_Fmultipart;
-    
+
     /**
      * Form array data
-     * 
+     *
      * @var array
      */
     private $_Fdata;
-    
+
     /**
      * Inputs id prefix
      * @var string
      */
     private $_FidPrefix;
-    
+
     /**
      * Input meta data
-     * 
+     *
      * @var array
      */
     private $_meta;
-    
+
     /**
      * Input attributes
-     * 
+     *
      * @var array
      */
     private $_attrs;
-    
+
     /**
      * Form control type
-     * 
+     *
      * @var string
      */
     private $_type;
-    
+
     /**
      * Form/Link
-     * 
+     *
      * @var string
      */
     private $_url;
-    
+
     /**
      * Input placeholder
-     * 
+     *
      * @var string
      */
     private $_placeholder;
-    
+
     /**
      * Flag to determine checkbox/radio style
-     * 
+     *
      * @var boolean
      */
     private $_checkInline;
-    
+
     /**
      * Input size
-     * 
+     *
      * @var string
      */
     private $_size;
-    
+
     /**
      * Readonly flag
-     * 
+     *
      * @var boolean
      */
     private $_readonly;
-    
+
     /**
      * Disabled flag
-     * 
+     *
      * @var boolean
      */
     private $_disabled;
-    
+
     /**
      * Input id
-     * 
+     *
      * @var string
      */
     private $_id;
-    
+
     /**
      * Input name
-     * 
+     *
      * @var string
      */
     private $_name;
-    
+
     /**
      * Input label
-     * 
+     *
      * @var string
      */
     private $_label;
-    
+
     /**
      * Select options
-     * 
+     *
      * @var array
      */
     private $_options;
-    
+
     /**
      * Input help text
-     * 
+     *
      * @var string
      */
     private $_help;
-    
+
     /**
      * Input color
-     * 
+     *
      * @var string
      */
     private $_color;
-    
+
     /**
      * Input outline flag
-     * 
+     *
      * @var boolean
      */
     private $_outline;
-    
+
     /**
      * Input block flag
-     * 
+     *
      * @var boolean
      */
     private $_block;
-    
+
     /**
      * Input value
-     * 
+     *
      * @var boolean
      */
     private $_value;
-    
+
     /**
      * Select multiple flag
-     * 
+     *
      * @var boolean
      */
     private $_multiple;
@@ -179,7 +179,7 @@ class FormBuilder {
 
     /**
      * Set a class attribute
-     * 
+     *
      * @param string $attr
      * @param mixed $value
      */
@@ -190,7 +190,7 @@ class FormBuilder {
 
     /**
      * Retrieve a class attribute
-     * 
+     *
      * @param string $attr
      * @return mixed
      */
@@ -201,7 +201,7 @@ class FormBuilder {
 
     /**
      * Return a open form tag
-     * 
+     *
      * @return string
      */
     public function open(): string
@@ -217,7 +217,7 @@ class FormBuilder {
                 $ret .= method_field($this->_Fmethod);
             }
         }
-        
+
         $this->_resetFlags();
 
         return $ret;
@@ -225,13 +225,13 @@ class FormBuilder {
 
     /**
      * Return a close form tag
-     * 
+     *
      * @return string
      */
     public function close(): string
     {
         $ret = '</form>';
-        
+
         $this->_resetFormFlags();
         $this->_resetFlags();
 
@@ -240,7 +240,7 @@ class FormBuilder {
 
     /**
      * Return a open fieldset tag
-     * 
+     *
      * @return string
      */
     public function fieldsetOpen(): string
@@ -251,7 +251,7 @@ class FormBuilder {
         if ($this->_meta['legend']) {
             $ret .= '<legend>' . $this->_e($this->_meta['legend']) . '</legend>';
         }
-        
+
         $this->_resetFlags();
 
         return $ret;
@@ -259,19 +259,19 @@ class FormBuilder {
 
     /**
      * Return a close fieldset tag
-     * 
+     *
      * @return string
      */
     public function fieldsetClose(): string
     {
         $this->_resetFlags();
-        
+
         return '</fieldset>';
     }
 
     /**
      * Return a file input tag
-     * 
+     *
      * @return string
      */
     public function file(): string
@@ -283,7 +283,7 @@ class FormBuilder {
 
     /**
      * Return a text input tag
-     * 
+     *
      * @return string
      */
     public function text(): string
@@ -292,8 +292,19 @@ class FormBuilder {
     }
 
     /**
+     * Return a password input tag
+     *
+     * @return string
+     */
+    public function password(): string
+    {
+        return $this->_renderInput('password');
+    }
+
+
+    /**
      * Return a email input tag
-     * 
+     *
      * @return string
      */
     public function email(): string
@@ -303,7 +314,7 @@ class FormBuilder {
 
     /**
      * Return a number input tag
-     * 
+     *
      * @return string
      */
     public function number(): string
@@ -313,14 +324,14 @@ class FormBuilder {
 
     /**
      * Return a hidden input tag
-     * 
+     *
      * @return string
      */
     public function hidden(): string
     {
         $value = $this->_getValue();
         $attrs = $this->_buildAttrs(['value' => $value]);
-        
+
         $this->_resetFlags();
 
         return '<input ' . $attrs . '>';
@@ -328,7 +339,7 @@ class FormBuilder {
 
     /**
      * Return a textarea tag
-     * 
+     *
      * @return string
      */
     public function textarea(): string
@@ -341,7 +352,7 @@ class FormBuilder {
 
     /**
      * Return a select tag
-     * 
+     *
      * @return string
      */
     public function select(): string
@@ -378,7 +389,7 @@ class FormBuilder {
 
     /**
      * Return a checkbox tag
-     * 
+     *
      * @return string
      */
     public function checkbox(): string
@@ -388,7 +399,7 @@ class FormBuilder {
 
     /**
      * Return a radio tag
-     * 
+     *
      * @return string
      */
     public function radio(): string
@@ -398,7 +409,7 @@ class FormBuilder {
 
     /**
      * Return a button tag
-     * 
+     *
      * @return string
      */
     public function button(): string
@@ -408,7 +419,7 @@ class FormBuilder {
 
     /**
      * Return a submit input tag
-     * 
+     *
      * @return string
      */
     public function submit(): string
@@ -418,7 +429,7 @@ class FormBuilder {
 
     /**
      * Return a reset button tag
-     * 
+     *
      * @return string
      */
     public function reset(): string
@@ -428,7 +439,7 @@ class FormBuilder {
 
     /**
      * Return a anchor tag
-     * 
+     *
      * @return string
      */
     public function anchor(): string
@@ -438,7 +449,7 @@ class FormBuilder {
 
     /**
      * Return a generic input tag
-     * 
+     *
      * @param string $type
      * @return string
      */
@@ -452,7 +463,7 @@ class FormBuilder {
 
     /**
      * Return a button or anchor tag
-     * 
+     *
      * @return string
      */
     private function _renderButtonOrAnchor(): string
@@ -479,7 +490,7 @@ class FormBuilder {
             $attrs = $this->_buildAttrs(['class' => $cls, 'type' => $this->_type]);
             $ret = '<button ' . $attrs . ' ' . $disabled . '>' . $value . '</button>';
         }
-        
+
         $this->_resetFlags();
 
         return $ret;
@@ -487,7 +498,7 @@ class FormBuilder {
 
     /**
      * Return a label tag
-     * 
+     *
      * @return string
      */
     private function _getLabel(): string
@@ -506,7 +517,7 @@ class FormBuilder {
 
     /**
      * Return a string with HTML element attributes
-     * 
+     *
      * @param array $props
      * @return string
      */
@@ -582,7 +593,7 @@ class FormBuilder {
 
     /**
      * Return a input value
-     * 
+     *
      * @return mixed
      */
     private function _getValue()
@@ -604,7 +615,7 @@ class FormBuilder {
 
     /**
      * Check if has a old request
-     * 
+     *
      * @return boolean
      */
     private function _hasOldInput()
@@ -614,7 +625,7 @@ class FormBuilder {
 
     /**
      * Return a element id
-     * 
+     *
      * @return string
      */
     private function _getId()
@@ -633,7 +644,7 @@ class FormBuilder {
 
     /**
      * Return a help text id HTML element
-     * 
+     *
      * @return string
      */
     private function _getIdHelp()
@@ -645,7 +656,7 @@ class FormBuilder {
 
     /**
      * Return a help text
-     * 
+     *
      * @return string
      */
     private function _getHelpText(): string
@@ -657,9 +668,9 @@ class FormBuilder {
 
     /**
      * Return a text with translations, if available
-     * 
+     *
      * @param string $key
-     * 
+     *
      * @return string
      */
     private function _e($key): string
@@ -688,7 +699,7 @@ class FormBuilder {
 
     /**
      * Return a checkbox or radio HTML element
-     * 
+     *
      * @return string
      */
     private function _renderCheckboxOrRadio(): string
@@ -696,7 +707,7 @@ class FormBuilder {
         $attrs  = $this->_buildAttrs(["class" => "form-check-input", "type" => $this->_type, "value" => $this->_meta['value']]);
         $inline = $this->_checkInline ? ' form-check-inline' : '';
         $label  = $this->_e($this->_label);
-        
+
         $this->_resetFlags();
 
         return '<div class="form-check' . $inline . '"><label class="form-check-label"><input ' . $attrs . '>' . $label . '</label></div>';
@@ -704,7 +715,7 @@ class FormBuilder {
 
     /**
      * Return a input with a wrapper HTML markup
-     * 
+     *
      * @param type $field
      * @return string
      */
@@ -713,7 +724,7 @@ class FormBuilder {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
         $error = $this->_getValidationFieldMessage();
-        
+
         $this->_resetFlags();
 
         return '<div class="form-group">' . $label . $field . $help . $error . '</div>';
@@ -721,7 +732,7 @@ class FormBuilder {
 
     /**
      * Return a validation error message
-     * 
+     *
      * @param string $prefix
      * @param string $sufix
      * @return string|mull
@@ -740,7 +751,7 @@ class FormBuilder {
 
         return $prefix . $error . $sufix;
     }
-    
+
     /**
      * Reset input flags
      */
@@ -768,7 +779,7 @@ class FormBuilder {
         $this->_value = null;
         $this->_multiple = false;
     }
-    
+
     /**
      * Reset form flags
      */
