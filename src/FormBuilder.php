@@ -206,9 +206,18 @@ class FormBuilder {
      */
     public function open(): string
     {
-        $method = $this->_Fmethod === 'get' ? 'get' : 'post';
-        $multipart = $this->_Fmultipart ? ' enctype="multipart/form-data"' : '';
-        $ret = '<form method="' . $method . '" action="' . $this->_url . '"' . $multipart . '>';
+        $props = [
+            'action' => $this->_url,
+            'method' => $this->_Fmethod === 'get' ? 'get' : 'post'
+        ];
+
+        if($this->_Fmultipart){
+            $props['enctype'] = 'multipart/form-data';
+        }
+
+        $attrs = $this->_buildAttrs($props, ['class-form-control']);
+
+        $ret = '<form ' . $attrs . '>';
 
         if ($this->_Fmethod !== 'get') {
             $ret .= csrf_field();
@@ -510,15 +519,15 @@ class FormBuilder {
      * @param array $props
      * @return string
      */
-    private function _buildAttrs(array $props = []): string
+    private function _buildAttrs(array $props = [], array $ignore = []): string
     {
 
         $ret = '';
 
         $props['type'] = $this->_type;
         $props['name'] = $this->_name;
-        $props['id'] = $this->_getId();
         $props['autocomplete'] = $props['name'];
+        $props['id'] = $this->_getId();
 
         if ($this->_type == 'select' && $this->_multiple) {
             $props['name'] = $props['name'] . '[]';
@@ -532,13 +541,21 @@ class FormBuilder {
             $props['aria-describedby'] = $this->_getIdHelp();
         }
 
-        if (!isset($props['class'])) {
-            $props['class'] = "form-control" . ($this->_size ? ' form-control-' . $this->_size : '');
+        $props['class'] = in_array('class-form-control', $ignore) ? '' : " form-control";
+
+        if ($this->_size) {
+            $props['class'] .= ' form-control-' . $this->_size;
         }
-        $props['class'] .= $this->_getValidationFieldClass();
+        $props['class'] .= ' ' . $this->_getValidationFieldClass();
 
         if (isset($this->_attrs['class'])) {
             $props['class'] .= ' ' . $this->_attrs['class'];
+        }
+
+        $props['class'] = trim($props['class']);
+
+        if(!$props['class']) {
+            $props['class'] = null;
         }
 
         if ($this->_type == 'select' && $this->_multiple) {
@@ -626,6 +643,10 @@ class FormBuilder {
             if ($this->_type == 'radio') {
                 $id .= '-' . str_slug($this->_meta['value']);
             }
+        }
+
+        if(!$id) {
+            return null;
         }
 
         return $this->_FidPrefix . $id;
