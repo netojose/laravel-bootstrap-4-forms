@@ -1,5 +1,5 @@
 {
-	"name": "netojose/laravel-bootstrap-4-forms",
+	"name": "bumerang07/laravel-bootstrap-4-forms",
 	"type": "package",
 	"description": "Bootstrap 4 form builder for Laravel 5",
 	"keywords": [
@@ -21,16 +21,16 @@
 	"require": {},
 	"autoload": {
 		"psr-4": {
-			"NetoJose\\Bootstrap4Forms\\": "src/"
+			"bumerang07\\Bootstrap4Forms\\": "src/"
 		}
 	},
 	"extra": {
 		"laravel": {
 			"providers": [
-				"NetoJose\\Bootstrap4Forms\\Bootstrap4FormsServiceProvider"
+				"bumerang07\\Bootstrap4Forms\\Bootstrap4FormsServiceProvider"
 			],
 			"aliases": {
-				"Form": "NetoJose\\Bootstrap4Forms\\Bootstrap4FormsFacade"
+				"Form": "bumerang07\\Bootstrap4Forms\\Bootstrap4FormsFacade"
 			}
 		}
 	}
