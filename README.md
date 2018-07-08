@@ -40,7 +40,7 @@ Form::text('username', 'Username')
 #### Require the package using Composer.
 
 ```bash
-composer require netojose/laravel-bootstrap-4-forms
+composer require bumerang07/laravel-bootstrap-4-forms
 ```
 
 ### Laravel 5.5 or above
