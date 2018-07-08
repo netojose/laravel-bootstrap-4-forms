@@ -81,6 +81,13 @@ class FormBuilder {
     private $_checkInline;
 
     /**
+     * Flag to determine inputs inline style
+     *
+     * @var boolean
+     */
+    private $_checkInlineForm;
+
+    /**
      * Input size
      *
      * @var string
@@ -745,10 +752,14 @@ class FormBuilder {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
         $error = $this->_getValidationFieldMessage();
+        $inline = $this->_checkInlineForm ? true : false;
 
         $this->_resetFlags();
 
-        return '<div class="form-group">' . $label . $field . $help . $error . '</div>';
+        if(!$inline)
+            return '<div class="form-group ">' . $label . $field . $help . $error . '</div>';
+        else
+            return '<div class="form-group "><div class="col col-md-3  col-lg-2">' . $label .'</div><div class="col-12 col-md-9  col-lg-10">' . $field . $help . $error . '</div></div>';
     }
 
     /**
@@ -786,6 +797,7 @@ class FormBuilder {
         $this->_url = null;
         $this->_placeholder = null;
         $this->_checkInline = false;
+        $this->_checkInlineForm = false;
         $this->_size = null;
         $this->_readonly = false;
         $this->_disabled = false;

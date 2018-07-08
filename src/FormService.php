@@ -201,6 +201,16 @@ class FormService {
     }
 
     /**
+     * Set inline style for all inputs
+     * @param bool $inlineForm
+     * @return \NetoJose\Bootstrap4Forms\FormService
+     */
+    public function inlineForm(bool $inline = true): FormService
+    {
+        return $this->_set('checkInlineForm', $inline);
+    }
+
+    /**
      * Set url for links and form action
      *
      * @param string $url
