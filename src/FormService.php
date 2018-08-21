@@ -672,6 +672,17 @@ class FormService {
     }
 
     /**
+     * Set the input required status
+     *
+     * @param type $status
+     * @return \NetoJose\Bootstrap4Forms\FormService
+     */
+    public function required($status = true) : FormService
+    {
+        return $this->_set('required', $status);
+    }
+
+    /**
      * Set the input placeholder
      *
      * @param type $placeholder
