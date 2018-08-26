@@ -328,6 +328,16 @@ class FormBuilder {
         return $this->_renderInput('password');
     }
 
+    /**
+     * Return a range input tag
+     *
+     * @return string
+     */
+    public function range(): string
+    {
+        return $this->_renderInput('range');
+    }
+
 
     /**
      * Return a email input tag
@@ -575,6 +585,18 @@ class FormBuilder {
 
         if ($this->_help) {
             $props['aria-describedby'] = $this->_getIdHelp();
+        }
+
+        switch($this->_type) {
+            case 'file':
+                $formControlClass = 'form-control-file';
+                break;
+            case 'range':
+            $formControlClass = 'form-control-range';
+                break;
+            default:
+                $formControlClass = 'form-control';
+                break;
         }
 
         $formControlClass = $this->_type == 'file' ? 'form-control-file' : 'form-control';

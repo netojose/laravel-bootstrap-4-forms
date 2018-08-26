@@ -28,7 +28,7 @@ class FormService {
      *
      * @var array
      */
-    private $_allowedRenders = ['open', 'close', 'file', 'text','password', 'email', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
+    private $_allowedRenders = ['open', 'close', 'file', 'text', 'range', 'password', 'email', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
 
     /**
      * Create a new FormSevice instance
@@ -288,6 +288,19 @@ class FormService {
     public function text(string $name = null, $label = null, string $default = null): FormService
     {
         return $this->type('text')->name($name)->label($label)->value($default);
+    }
+
+    /**
+     * Create a range input
+     *
+     * @param string $name
+     * @param string $label
+     * @param string $default
+     * @return \NetoJose\Bootstrap4Forms\FormService
+     */
+    public function range(string $name = null, $label = null, string $default = null): FormService
+    {
+        return $this->type('range')->name($name)->label($label)->value($default);
     }
 
     /**

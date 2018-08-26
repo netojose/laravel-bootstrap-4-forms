@@ -173,6 +173,19 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 {!!Form::radio('orange', 'Orange')!!}
 ```
 
+#### Range inputs
+
+| Param    | Type   | Default | Description   |
+| -------- | ------ | ------- | ------------- |
+| $name    | string | null    | Input name    |
+| $label   | string | null    | Input label   |
+| $default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::range('name', 'User name')!!}
+```
+
 ##### Hidden
 
 | Param    | Type    | Default | Description   |
