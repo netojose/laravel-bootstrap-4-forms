@@ -399,9 +399,9 @@ class FormService {
      * @param string $value
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
-    public function button(string $value = null): FormService
+    public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
-        return $this->type('button')->value($value);
+        return $this->type('button')->color($color)->size($size)->value($value);
     }
 
     /**
@@ -410,9 +410,9 @@ class FormService {
      * @param string $value
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
-    public function submit(string $value): FormService
+    public function submit(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->button($value)->type('submit');
+        return $this->button($value)->type('submit')->color($color)->size($size);
     }
 
     /**
@@ -421,9 +421,9 @@ class FormService {
      * @param string $value
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
-    public function reset(string $value): FormService
+    public function reset(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->type('reset')->button($value);
+        return $this->button($value)->type('reset')->color($color)->size($size);
     }
 
     /**
