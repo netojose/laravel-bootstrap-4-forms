@@ -102,6 +102,13 @@ class FormBuilder {
     private $_disabled;
 
     /**
+     * Required flag
+     *
+     * @var boolean
+     */
+    private $_required;
+
+    /**
      * Input id
      *
      * @var string
