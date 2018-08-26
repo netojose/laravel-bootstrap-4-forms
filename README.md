@@ -4,14 +4,14 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 
 ## Features
 
-*   Labels
-*   Error messages
-*   Bootstrap 4 markup and classes (including state, colors, and sizes)
-*   Error validation messages
-*   Form fill (using Model instance, array or after form submission when a validation error occurs)
-*   Internationalization
-*   Add parameters using php chaining approach
-*   Zero dependences (no Laravel Collective dependency)
+-   Labels
+-   Error messages
+-   Bootstrap 4 markup and classes (including state, colors, and sizes)
+-   Error validation messages
+-   Form fill (using Model instance, array or after form submission when a validation error occurs)
+-   Internationalization
+-   Add parameters using php chaining approach
+-   Zero dependences (no Laravel Collective dependency)
 
 ## Introduction
 
@@ -40,7 +40,7 @@ Form::text('username', 'Username')
 #### Require the package using Composer.
 
 ```bash
-composer require bumerang07/laravel-bootstrap-4-forms
+composer require netojose/laravel-bootstrap-4-forms
 ```
 
 ### Laravel 5.5 or above
@@ -54,7 +54,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 'providers' => [
     //...
-	bumerang07\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
+	netojose\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
 ],
 ```
 
@@ -63,7 +63,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 'aliases' => [
     //...
-    'Form' => bumerang07\Bootstrap4Forms\Bootstrap4FormsFacade::class,
+    'Form' => netojose\Bootstrap4Forms\Bootstrap4FormsFacade::class,
 ],
 ```
 
