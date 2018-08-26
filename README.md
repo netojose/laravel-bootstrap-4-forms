@@ -54,7 +54,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 'providers' => [
     //...
-	netojose\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
+	NetoJose\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
 ],
 ```
 
@@ -63,7 +63,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 'aliases' => [
     //...
-    'Form' => netojose\Bootstrap4Forms\Bootstrap4FormsFacade::class,
+    'Form' => NetoJose\Bootstrap4Forms\Bootstrap4FormsFacade::class,
 ],
 ```
 
