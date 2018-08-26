@@ -396,6 +396,25 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 {!!Form::text('name', 'Name')->block(false)!!}
 ```
 
+### Required
+
+| Param   | Type    | Default | Description     |
+| ------- | ------- | ------- | --------------- |
+| $status | boolean | true    | Required status |
+
+```php
+// Examples
+
+// Disabling a field
+{!!Form::text('name', 'Name')->required()!!}
+
+// Disabling a fieldset
+{!!Form::fieldsetOpen('User data')->required()!!}
+
+// You can use FALSE to turn off required status
+{!!Form::text('name', 'Name')->required(false)!!}
+```
+
 ### Id
 
 | Param | Type   | Default | Description |

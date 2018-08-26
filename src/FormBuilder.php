@@ -109,6 +109,13 @@ class FormBuilder {
     private $_disabled;
 
     /**
+     * Required flag
+     *
+     * @var boolean
+     */
+    private $_required;
+
+    /**
      * Input id
      *
      * @var string
@@ -546,6 +553,7 @@ class FormBuilder {
         $props['name'] = $this->_name;
         $props['autocomplete'] = $props['name'];
         $props['id'] = $this->_getId();
+        $props['class'] = isset($props['class']) ? $props['class'] : '';
 
         if ($this->_type == 'select' && $this->_multiple) {
             $props['name'] = $props['name'] . '[]';
@@ -559,7 +567,9 @@ class FormBuilder {
             $props['aria-describedby'] = $this->_getIdHelp();
         }
 
-        $props['class'] = in_array('class-form-control', $ignore) ? '' : " form-control";
+        if (!$props['class'] && !in_array('class-form-control', $ignore)) {
+            $props['class'] = 'form-control';
+        }
 
         if ($this->_size) {
             $props['class'] .= ' form-control-' . $this->_size;
