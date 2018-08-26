@@ -23,7 +23,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "netojose\\Bootstrap4Forms\\": "src/"
+            "NetoJose\\Bootstrap4Forms\\": "src/"
         }
     },
     "extra": {
