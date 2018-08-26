@@ -83,6 +83,13 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 > Opening the form will add \_token field automatically for you
 
+#### Inline form
+
+```php
+// Making all inputs inline
+{!!Form::inlineForm()!!}
+```
+
 #### Fieldset
 
 | Param   | Type   | Default | Description     |

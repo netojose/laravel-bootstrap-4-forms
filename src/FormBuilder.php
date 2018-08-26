@@ -10,6 +10,13 @@ class FormBuilder {
      * @var string
      */
     private $_Flocale;
+    
+    /**
+     * Form inline form flag
+     *
+     * @var string
+     */
+    private $_FinlineForm;
 
     /**
      * Form method
@@ -79,13 +86,6 @@ class FormBuilder {
      * @var boolean
      */
     private $_checkInline;
-
-    /**
-     * Flag to determine inputs inline style
-     *
-     * @var boolean
-     */
-    private $_checkInlineForm;
 
     /**
      * Input size
@@ -227,6 +227,10 @@ class FormBuilder {
 
         if($this->_Fmultipart){
             $props['enctype'] = 'multipart/form-data';
+        }
+
+        if($this->_FinlineForm) {
+            $props['class'] = 'form-inline';
         }
 
         $attrs = $this->_buildAttrs($props, ['class-form-control']);
@@ -531,8 +535,14 @@ class FormBuilder {
         $result = '';
 
         if ($label) {
+
+            $classStr = '';
+            if($this->_FinlineForm) {
+                $classStr = ' class="sr-only"';
+            }
+
             $id = $this->_getId();
-            $result = '<label for="' . $id . '">' . $this->_e($label) . '</label>';
+            $result = '<label for="' . $id . '"'.$classStr.'>' . $this->_e($label) . '</label>';
         }
 
         return $result;
@@ -574,6 +584,11 @@ class FormBuilder {
         if ($this->_size) {
             $props['class'] .= ' form-control-' . $this->_size;
         }
+
+        if($this->_FinlineForm) {
+            $props['class'] .= ' mb-2 mr-sm-2';
+        }
+
         $props['class'] .= ' ' . $this->_getValidationFieldClass();
 
         if (isset($this->_attrs['class'])) {
@@ -762,14 +777,17 @@ class FormBuilder {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
         $error = $this->_getValidationFieldMessage();
-        $inline = $this->_checkInlineForm ? true : false;
 
         $this->_resetFlags();
 
-        if(!$inline)
-            return '<div class="form-group ">' . $label . $field . $help . $error . '</div>';
-        else
-            return '<div class="form-group "><div class="col col-md-3  col-lg-2">' . $label .'</div><div class="col-12 col-md-9  col-lg-10">' . $field . $help . $error . '</div></div>';
+        $formGroupOpen = '<div class="form-group ">';
+        $formGroupClose = '</div>';
+
+        if($this->_FinlineForm) {
+            $formGroupOpen = $formGroupClose = '';
+        }
+
+        return $formGroupOpen . $label . $field . $help . $error . $formGroupClose;
     }
 
     /**
@@ -807,7 +825,6 @@ class FormBuilder {
         $this->_url = null;
         $this->_placeholder = null;
         $this->_checkInline = false;
-        $this->_checkInlineForm = false;
         $this->_size = null;
         $this->_readonly = false;
         $this->_disabled = false;
@@ -832,6 +849,7 @@ class FormBuilder {
         $this->_Flocale = null;
         $this->_Fmethod = 'post';
         $this->_Fmultipart = false;
+        $this->_FinlineForm = false;
         $this->_Fdata = null;
         $this->_FidPrefix = '';
     }
