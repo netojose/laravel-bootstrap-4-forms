@@ -577,12 +577,14 @@ class FormBuilder {
             $props['aria-describedby'] = $this->_getIdHelp();
         }
 
+        $formControlClass = $this->_type == 'file' ? 'form-control-file' : 'form-control';
+
         if (!$props['class'] && !in_array('class-form-control', $ignore)) {
-            $props['class'] = 'form-control';
+            $props['class'] = $formControlClass;
         }
 
         if ($this->_size) {
-            $props['class'] .= ' form-control-' . $this->_size;
+            $props['class'] .= ' '.$formControlClass.'-' . $this->_size;
         }
 
         if($this->_FinlineForm) {
