@@ -40,7 +40,7 @@ Form::text('username', 'Username')
 #### Require the package using Composer.
 
 ```bash
-composer require netojose/laravel-bootstrap-4-forms
+composer require bumerang07/laravel-bootstrap-4-forms
 ```
 
 ### Laravel 5.5 or above
@@ -54,7 +54,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 'providers' => [
     //...
-	NetoJose\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
+	bumerang07\Bootstrap4Forms\Bootstrap4FormsServiceProvider::class,
 ],
 ```
 
@@ -63,7 +63,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 'aliases' => [
     //...
-    'Form' => NetoJose\Bootstrap4Forms\Bootstrap4FormsFacade::class,
+    'Form' => bumerang07\Bootstrap4Forms\Bootstrap4FormsFacade::class,
 ],
 ```
 
