@@ -393,7 +393,7 @@ class FormService {
      * Create a textarea input
      *
      * @param string $name
-     * @param type $label
+     * @param string $label
      * @param string $default
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
@@ -405,7 +405,7 @@ class FormService {
     /**
      * Set a label
      *
-     * @param type $label
+     * @param string $label
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function label($label): FormService
@@ -450,7 +450,7 @@ class FormService {
      * Create a anchor
      *
      * @param string $value
-     * @param type $url
+     * @param string $url
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function anchor(string $value, $url = null): FormService
@@ -483,7 +483,7 @@ class FormService {
     /**
      * Set a input value
      *
-     * @param type $value
+     * @param string $value
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function value($value = null): FormService
@@ -498,7 +498,7 @@ class FormService {
     /**
      * Set a input type
      *
-     * @param type $type
+     * @param string $type
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function type($type): FormService
@@ -522,7 +522,7 @@ class FormService {
     /**
      * Set a field id
      *
-     * @param type $id
+     * @param string $id
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function id($id): FormService
@@ -533,7 +533,7 @@ class FormService {
     /**
      * Set a field name
      *
-     * @param type $name
+     * @param string $name
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function name($name): FormService
@@ -706,7 +706,7 @@ class FormService {
     /**
      * Set the input disabled status
      *
-     * @param type $status
+     * @param string $status
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function disabled($status = true): FormService
@@ -717,7 +717,7 @@ class FormService {
     /**
      * Set the input required status
      *
-     * @param type $status
+     * @param string $status
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function required($status = true) : FormService
@@ -728,7 +728,7 @@ class FormService {
     /**
      * Set the input placeholder
      *
-     * @param type $placeholder
+     * @param string $placeholder
      * @return \NetoJose\Bootstrap4Forms\FormService
      */
     public function placeholder($placeholder): FormService
