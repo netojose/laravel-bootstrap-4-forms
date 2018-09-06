@@ -10,7 +10,7 @@ class FormBuilder {
      * @var string
      */
     private $_Flocale;
-    
+
     /**
      * Form inline form flag
      *
@@ -562,6 +562,7 @@ class FormBuilder {
      * Return a string with HTML element attributes
      *
      * @param array $props
+     * @param array $ignore
      * @return string
      */
     private function _buildAttrs(array $props = [], array $ignore = []): string
@@ -587,6 +588,10 @@ class FormBuilder {
             $props['aria-describedby'] = $this->_getIdHelp();
         }
 
+        if($this->_required === true) {
+            $props['required'] = "required";
+        }
+
         switch($this->_type) {
             case 'file':
                 $formControlClass = 'form-control-file';
@@ -598,8 +603,6 @@ class FormBuilder {
                 $formControlClass = 'form-control';
                 break;
         }
-
-        $formControlClass = $this->_type == 'file' ? 'form-control-file' : 'form-control';
 
         if (!$props['class'] && !in_array('class-form-control', $ignore)) {
             $props['class'] = $formControlClass;
@@ -794,7 +797,7 @@ class FormBuilder {
     /**
      * Return a input with a wrapper HTML markup
      *
-     * @param type $field
+     * @param string $field
      * @return string
      */
     private function _renderWarpperCommomField(string $field): string
@@ -820,7 +823,7 @@ class FormBuilder {
      *
      * @param string $prefix
      * @param string $sufix
-     * @return string|mull
+     * @return string|null
      */
     private function _getValidationFieldMessage(string $prefix = '<div class="invalid-feedback">', string $sufix = '</div>')
     {
