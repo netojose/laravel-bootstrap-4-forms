@@ -163,7 +163,8 @@ class FormService {
     /**
      * Fill the form values
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param array|object $data
+     * @return FormService
      */
     public function fill($data): FormService
     {
@@ -417,7 +418,9 @@ class FormService {
      * Create a button
      *
      * @param string $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $color
+     * @param null $size
+     * @return FormService
      */
     public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
@@ -428,7 +431,9 @@ class FormService {
      * Create a button type submit
      *
      * @param string $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $color
+     * @param null $size
+     * @return FormService
      */
     public function submit(string $value, $color = 'primary', $size = null): FormService
     {
@@ -439,7 +444,9 @@ class FormService {
      * Create a button type reset
      *
      * @param string $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $color
+     * @param null $size
+     * @return FormService
      */
     public function reset(string $value, $color = 'primary', $size = null): FormService
     {
@@ -676,7 +683,8 @@ class FormService {
     /**
      * Set outline style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $outline
+     * @return FormService
      */
     public function outline(bool $outline = true): FormService
     {
@@ -686,7 +694,8 @@ class FormService {
     /**
      * Set block style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function block(bool $status= true): FormService
     {
@@ -696,7 +705,8 @@ class FormService {
     /**
      * Set readonly style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function readonly($status = true): FormService
     {
@@ -706,8 +716,8 @@ class FormService {
     /**
      * Set the input disabled status
      *
-     * @param string $status
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function disabled($status = true): FormService
     {
@@ -717,8 +727,8 @@ class FormService {
     /**
      * Set the input required status
      *
-     * @param string $status
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function required($status = true) : FormService
     {
