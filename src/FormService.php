@@ -28,7 +28,7 @@ class FormService {
      *
      * @var array
      */
-    private $_allowedRenders = ['open', 'close', 'file', 'text', 'range', 'password', 'email', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
+    private $_allowedRenders = ['open', 'close', 'file', 'text', 'range', 'password', 'email', 'tel', 'url', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
 
     /**
      * Create a new FormSevice instance

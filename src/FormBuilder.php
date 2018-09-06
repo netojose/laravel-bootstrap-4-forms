@@ -386,6 +386,26 @@ class FormBuilder {
     }
 
     /**
+     * Return a tel input tag
+     *
+     * @return string
+     */
+    public function tel(): string
+    {
+        return $this->_renderInput('tel');
+    }
+
+    /**
+     * Return a url input tag
+     *
+     * @return string
+     */
+    public function url(): string
+    {
+        return $this->_renderInput('url');
+    }
+
+    /**
      * Return a number input tag
      *
      * @return string
