@@ -201,6 +201,26 @@ class FormService {
     }
 
     /**
+     * Set autocomplete value ('on', 'off', or one of the permitted values)
+     *
+     * If set on the form, only 'on' or 'off' are valid and are inherited by input fields.
+     * The inherited value can be overridden on individual input fields
+     *
+     * See: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+     *
+     * @param string $value
+     * @return \NetoJose\Bootstrap4Forms\FormService
+     */
+    public function autocomplete(string $value = 'on'): FormService
+    {
+        if ($this->_render == "open") {
+            return $this->_set('Fautocomplete', $value);
+        }
+
+        return $this->_set('autocomplete', $value);
+    }
+
+    /**
      * Set inline style for checkbox and radio inputs
      * @param bool $inline
      * @return \NetoJose\Bootstrap4Forms\FormService

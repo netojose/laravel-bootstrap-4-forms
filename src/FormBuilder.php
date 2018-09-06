@@ -5,6 +5,14 @@ namespace NetoJose\Bootstrap4Forms;
 class FormBuilder {
 
     /**
+     * List of allowed single word
+     * values for autocomplete attribute
+     *
+     * @var array
+     */
+    private $_allowedAutoComplete;
+
+    /**
      * Form input labels locale
      *
      * @var string
@@ -44,6 +52,18 @@ class FormBuilder {
      * @var string
      */
     private $_FidPrefix;
+
+    /**
+     * Form autocomplete attribute
+     * @var string|null
+     */
+    private $_Fautocomplete;
+
+    /**
+     * Input autocomplete attribute
+     * @var string|null
+     */
+    private $_autocomplete;
 
     /**
      * Input meta data
@@ -189,6 +209,18 @@ class FormBuilder {
     {
         $this->_resetFlags();
         $this->_resetFormFlags();
+
+        //All allowed single word autocomplete values. If the name of input field matches,
+        //they will be automatically set as autocomplete value
+        //Flip the array to make searches faster
+        $this->_allowedAutoComplete = array_flip(['name', 'honorific-prefix', 'given-name', 'additional-name',
+            'family-name', 'honorific-suffix', 'nickname', 'username', 'new-password', 'current-password',
+            'organization-title', 'organization', 'street-address', 'address-line1', 'address-line2', 'address-line3',
+            'address-level4', 'address-level3', 'address-level2', 'address-level1', 'country', 'country-name',
+            'postal-code', 'cc-name', 'cc-given-name', 'cc-additional-name', 'cc-family-name', 'cc-number', 'cc-exp',
+            'cc-exp-month', 'cc-exp-year', 'cc-csc', 'cc-type', 'transaction-currency', 'transaction-amount', 'language',
+            'bday', 'bday-day', 'bday-month', 'bday-year', 'sex', 'url', 'photo', 'tel', 'tel-country-code', 'tel-national',
+            'tel-area-code', 'tel-local', 'tel-local-prefix', 'tel-local-suffix', 'tel-extension', 'email', 'impp']);
     }
 
     /**
@@ -231,6 +263,10 @@ class FormBuilder {
 
         if($this->_FinlineForm) {
             $props['class'] = 'form-inline';
+        }
+
+        if (!is_null($this->_Fautocomplete)) {
+            $props['autocomplete'] = $this->_Fautocomplete;
         }
 
         $attrs = $this->_buildAttrs($props, ['class-form-control']);
@@ -572,7 +608,13 @@ class FormBuilder {
 
         $props['type'] = $this->_type;
         $props['name'] = $this->_name;
-        $props['autocomplete'] = $props['name'];
+
+        if (!is_null($this->_autocomplete)) {
+            $props['autocomplete'] = $this->_autocomplete;
+        } else if (isset($this->_allowedAutoComplete[$props['name']])) {
+            $props['autocomplete'] = $props['name'];
+        }
+
         $props['id'] = $this->_getId();
         $props['class'] = isset($props['class']) ? $props['class'] : '';
 
@@ -866,6 +908,7 @@ class FormBuilder {
         $this->_block = false;
         $this->_value = null;
         $this->_multiple = false;
+        $this->_autocomplete = null;
     }
 
     /**
@@ -880,6 +923,7 @@ class FormBuilder {
         $this->_FinlineForm = false;
         $this->_Fdata = null;
         $this->_FidPrefix = '';
+        $this->_Fautocomplete = null;
     }
 
 }
