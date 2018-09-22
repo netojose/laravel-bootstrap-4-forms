@@ -308,7 +308,7 @@ class FormBuilder {
      */
     public function fieldsetOpen(): string
     {
-        $attrs = $this->_buildAttrs();
+        $attrs = $this->_buildAttrs(['class' => 'form-group']);
         $ret = '<fieldset' . ($attrs ? (' ' . $attrs) : '') . '>';
 
         if ($this->_meta['legend']) {
