@@ -12,7 +12,7 @@ class FormService {
     /**
      * The Form builder instance
      *
-     * @var \NetoJose\Bootstrap4Forms\FormBuilder
+     * @var FormBuilder
      */
     private $_builder;
 
@@ -28,7 +28,7 @@ class FormService {
      *
      * @var array
      */
-    private $_allowedRenders = ['open', 'close', 'fieldsetOpen', 'fieldsetClose', 'file', 'text', 'range', 'password', 'email', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
+    private $_allowedRenders = ['open', 'close', 'fieldsetOpen', 'fieldsetClose', 'file', 'text', 'range', 'password', 'email', 'tel', 'url', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
 
     /**
      * Create a new FormSevice instance
@@ -60,7 +60,7 @@ class FormService {
     /**
      * Open the form
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function open(): FormService
     {
@@ -70,7 +70,7 @@ class FormService {
     /**
      * Close the form
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function close(): FormService
     {
@@ -81,7 +81,7 @@ class FormService {
      * Set a prefix id for all inputs
      *
      * @param string $prefix
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function idPrefix(string $prefix = ''): FormService
     {
@@ -92,7 +92,7 @@ class FormService {
      * Set multipart attribute for a form
      *
      * @param bool $multipart
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function multipart(bool $multipart = true): FormService
     {
@@ -103,7 +103,7 @@ class FormService {
      * Set a method attribute for the form
      *
      * @param string $method
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function method(string $method): FormService
     {
@@ -113,7 +113,7 @@ class FormService {
     /**
      * Set get method for the form attribute
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function get(): FormService
     {
@@ -123,7 +123,7 @@ class FormService {
     /**
      * Set post method for the form attribute
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function post(): FormService
     {
@@ -133,7 +133,7 @@ class FormService {
     /**
      * Set put method for the form attribute
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function put(): FormService
     {
@@ -143,7 +143,7 @@ class FormService {
     /**
      * Set patch method for the form attribute
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function patch(): FormService
     {
@@ -153,7 +153,7 @@ class FormService {
     /**
      * Set delete method for the form attribute
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function delete(): FormService
     {
@@ -163,7 +163,8 @@ class FormService {
     /**
      * Fill the form values
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param array|object $data
+     * @return FormService
      */
     public function fill($data): FormService
     {
@@ -183,7 +184,7 @@ class FormService {
      * Set locale file for inputs translations
      *
      * @param string $path
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function locale(string $path): FormService
     {
@@ -193,7 +194,7 @@ class FormService {
     /**
      * Set inline form to inline inputs
      * @param bool $inline
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function inlineForm(bool $inline = true): FormService
     {
@@ -201,9 +202,29 @@ class FormService {
     }
 
     /**
+     * Set autocomplete value ('on', 'off', or one of the permitted values)
+     *
+     * If set on the form, only 'on' or 'off' are valid and are inherited by input fields.
+     * The inherited value can be overridden on individual input fields
+     *
+     * See: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+     *
+     * @param string $value
+     * @return FormService
+     */
+    public function autocomplete(string $value = 'on'): FormService
+    {
+        if ($this->_render == "open") {
+            return $this->_set('Fautocomplete', $value);
+        }
+
+        return $this->_set('autocomplete', $value);
+    }
+
+    /**
      * Set inline style for checkbox and radio inputs
      * @param bool $inline
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function inline(bool $inline = true): FormService
     {
@@ -214,7 +235,7 @@ class FormService {
      * Set url for links and form action
      *
      * @param string $url
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function url(string $url): FormService
     {
@@ -226,7 +247,7 @@ class FormService {
      *
      * @param string $route
      * @param array $params
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function route(string $route, array $params = []): FormService
     {
@@ -237,7 +258,7 @@ class FormService {
      * Open a fieldset
      *
      * @param string $legend
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function fieldsetOpen(string $legend = null): FormService
     {
@@ -247,7 +268,7 @@ class FormService {
     /**
      * Close a fieldset
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function fieldsetClose(): FormService
     {
@@ -258,7 +279,7 @@ class FormService {
      * Set a help text
      *
      * @param string $text
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function help(string $text): FormService
     {
@@ -270,7 +291,7 @@ class FormService {
      *
      * @param string $name
      * @param string $label
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function file(string $name = null, string $label = null): FormService
     {
@@ -283,7 +304,7 @@ class FormService {
      * @param string $name
      * @param string $label
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function text(string $name = null, $label = null, string $default = null): FormService
     {
@@ -296,7 +317,7 @@ class FormService {
      * @param string $name
      * @param string $label
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function range(string $name = null, $label = null, string $default = null): FormService
     {
@@ -308,7 +329,7 @@ class FormService {
      *
      * @param string $name
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function hidden(string $name = null, string $default = null): FormService
     {
@@ -322,7 +343,7 @@ class FormService {
      * @param string $label
      * @param array $options
      * @param string|array $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function select(string $name = null, string $label = null, $options = [], $default = null): FormService
     {
@@ -333,7 +354,7 @@ class FormService {
      * Set options for a select field
      *
      * @param array $options
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function options(array $options = []): FormService
     {
@@ -348,7 +369,7 @@ class FormService {
      * @param string $label
      * @param string $value
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function checkbox(string $name = null, string $label = null, string $value = null, string $default = null): FormService
     {
@@ -362,7 +383,7 @@ class FormService {
      * @param string $label
      * @param string $value
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function radio(string $name = null, string $label = null, string $value = null, string $default = null): FormService
     {
@@ -373,9 +394,9 @@ class FormService {
      * Create a textarea input
      *
      * @param string $name
-     * @param type $label
+     * @param string $label
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function textarea(string $name = null, $label = null, string $default = null): FormService
     {
@@ -385,8 +406,8 @@ class FormService {
     /**
      * Set a label
      *
-     * @param type $label
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $label
+     * @return FormService
      */
     public function label($label): FormService
     {
@@ -397,7 +418,9 @@ class FormService {
      * Create a button
      *
      * @param string $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $color
+     * @param null $size
+     * @return FormService
      */
     public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
@@ -408,7 +431,9 @@ class FormService {
      * Create a button type submit
      *
      * @param string $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $color
+     * @param null $size
+     * @return FormService
      */
     public function submit(string $value, $color = 'primary', $size = null): FormService
     {
@@ -419,7 +444,9 @@ class FormService {
      * Create a button type reset
      *
      * @param string $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $color
+     * @param null $size
+     * @return FormService
      */
     public function reset(string $value, $color = 'primary', $size = null): FormService
     {
@@ -430,8 +457,8 @@ class FormService {
      * Create a anchor
      *
      * @param string $value
-     * @param type $url
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $url
+     * @return FormService
      */
     public function anchor(string $value, $url = null): FormService
     {
@@ -446,7 +473,7 @@ class FormService {
      * Flag a checkbox or a radio input as checked
      *
      * @param bool $checked
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function checked(bool $checked = true): FormService
     {
@@ -463,8 +490,8 @@ class FormService {
     /**
      * Set a input value
      *
-     * @param type $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $value
+     * @return FormService
      */
     public function value($value = null): FormService
     {
@@ -478,8 +505,8 @@ class FormService {
     /**
      * Set a input type
      *
-     * @param type $type
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $type
+     * @return FormService
      */
     public function type($type): FormService
     {
@@ -490,7 +517,7 @@ class FormService {
      * Set a render
      *
      * @param string $render
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function render(string $render): FormService
     {
@@ -502,8 +529,8 @@ class FormService {
     /**
      * Set a field id
      *
-     * @param type $id
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $id
+     * @return FormService
      */
     public function id($id): FormService
     {
@@ -513,8 +540,8 @@ class FormService {
     /**
      * Set a field name
      *
-     * @param type $name
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $name
+     * @return FormService
      */
     public function name($name): FormService
     {
@@ -525,7 +552,7 @@ class FormService {
      * Set the size
      *
      * @param string $size
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function size(string $size = null): FormService
     {
@@ -535,7 +562,7 @@ class FormService {
     /**
      * Set the size as lg
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function lg(): FormService
     {
@@ -545,7 +572,7 @@ class FormService {
     /**
      * Set the size as sm
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function sm(): FormService
     {
@@ -556,7 +583,7 @@ class FormService {
      * Set the color
      *
      * @param string $color
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function color(string $color = null): FormService
     {
@@ -566,7 +593,7 @@ class FormService {
     /**
      * Set primary color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function primary(): FormService
     {
@@ -576,7 +603,7 @@ class FormService {
     /**
      * Set secondary color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function secondary(): FormService
     {
@@ -586,7 +613,7 @@ class FormService {
     /**
      * Set success color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function success(): FormService
     {
@@ -596,7 +623,7 @@ class FormService {
     /**
      * Set danger color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function danger(): FormService
     {
@@ -606,7 +633,7 @@ class FormService {
     /**
      * Set warning color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function warning(): FormService
     {
@@ -616,7 +643,7 @@ class FormService {
     /**
      * Set info color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function info(): FormService
     {
@@ -626,7 +653,7 @@ class FormService {
     /**
      * Set light color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function light(): FormService
     {
@@ -636,7 +663,7 @@ class FormService {
     /**
      * Set dark color
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function dark(): FormService
     {
@@ -646,7 +673,7 @@ class FormService {
     /**
      * Set link style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function link(): FormService
     {
@@ -656,7 +683,8 @@ class FormService {
     /**
      * Set outline style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $outline
+     * @return FormService
      */
     public function outline(bool $outline = true): FormService
     {
@@ -666,7 +694,8 @@ class FormService {
     /**
      * Set block style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function block(bool $status= true): FormService
     {
@@ -676,7 +705,8 @@ class FormService {
     /**
      * Set readonly style
      *
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function readonly($status = true): FormService
     {
@@ -686,8 +716,8 @@ class FormService {
     /**
      * Set the input disabled status
      *
-     * @param type $status
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function disabled($status = true): FormService
     {
@@ -697,8 +727,8 @@ class FormService {
     /**
      * Set the input required status
      *
-     * @param type $status
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param bool $status
+     * @return FormService
      */
     public function required($status = true) : FormService
     {
@@ -708,8 +738,8 @@ class FormService {
     /**
      * Set the input placeholder
      *
-     * @param type $placeholder
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @param string $placeholder
+     * @return FormService
      */
     public function placeholder($placeholder): FormService
     {
@@ -720,7 +750,7 @@ class FormService {
      * Set custom attributes for a input
      *
      * @param array $attrs
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function attrs(array $attrs = []): FormService
     {
@@ -731,7 +761,7 @@ class FormService {
      * Set a multiple select attribute
      *
      * @param bool $multiple
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     public function multiple(bool $multiple = true): FormService
     {
@@ -743,7 +773,7 @@ class FormService {
      *
      * @param string $attr
      * @param mixed $value
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     private function _set($attr, $value): FormService
     {
@@ -760,7 +790,7 @@ class FormService {
      * @param string $label
      * @param mixed $value
      * @param string $default
-     * @return \NetoJose\Bootstrap4Forms\FormService
+     * @return FormService
      */
     private function _checkboxRadio($type, $name, $label, $value, $default): FormService
     {

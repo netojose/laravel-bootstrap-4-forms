@@ -435,6 +435,34 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 {!!Form::text('name', 'Name')->required(false)!!}
 ```
 
+### AutoFill
+
+| Param   | Type   | Default | Description      |
+| ------- | ------ | ------- | ---------------- |
+| $value  | string | 'on'    | autocomplte value|
+
+see: https://html.spec.whatwg.org/multipage/forms.html#autofill
+
+If no autocomplete value is specified on the form, html spec requires
+a default value of 'on'. So, you must explicitly turn it off.
+
+Autocomplete values will be automatically generated for fields with
+single word names matching valid values (e.g. name, email, tel, organization). The
+complete list is in the spec mentioned above.
+
+```php
+// Examples
+
+// Switch off autocomplete for the form
+{!!Form::open()->autocomplete('off')!!}
+
+// Explicitly set a autocomplete value
+{!!Form::text('mobile', 'Mobile Number')->autocomplete('tel')!!}
+
+// Disable autocomplete for fields with valid names
+{!!Form::text('name', 'Name')->autocomplete('off')!!}
+```
+
 ### Id
 
 | Param | Type   | Default | Description |
