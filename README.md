@@ -144,6 +144,11 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 // Example
 {!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])!!}
 ```
+#### Select Default Value
+```php
+{!!Form::select('city', 'Choose your city', [''=>'--choose your city---',1 => 'Gotham City', 2 => 'Springfield'])!!}
+```
+
 
 ##### Checkbox
 
