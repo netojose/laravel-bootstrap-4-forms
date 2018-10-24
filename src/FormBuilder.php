@@ -718,7 +718,7 @@ class FormBuilder {
             unset($props['class']);
         }
 
-        $allProps = array_merge($this->_attrs, $props);
+        $allProps = array_merge($props, $this->_attrs);
         foreach ($allProps as $key => $value) {
             if ($value === null) {
                 continue;
