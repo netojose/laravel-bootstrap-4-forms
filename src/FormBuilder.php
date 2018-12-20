@@ -374,6 +374,25 @@ class FormBuilder {
         return $this->_renderInput('range');
     }
 
+    /**
+     * Return a date input tag
+     *
+     * @return string
+     */
+    public function date(): string
+    {
+        return $this->_renderInput('date');
+    }
+
+    /**
+     * Return a time input tag
+     *
+     * @return string
+     */
+    public function time(): string
+    {
+        return $this->_renderInput('time');
+    }
 
     /**
      * Return a email input tag
