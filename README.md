@@ -412,6 +412,17 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 {!!Form::text('name', 'Name')->attrs(['data-foo' => 'bar', 'rel'=> 'baz'])!!}
 ```
 
+### Custom attributes in wrapper div (\<div class="form-group">...\</div>)
+
+| Param   | Type  | Default | Description             |
+| ------- | ----- | ------- | ----------------------- |
+| \$attrs | array | []      | Custom input attributes |
+
+```php
+// Example
+{!!Form::text('name', 'Name')->wrapperAttrs(['data-foo' => 'bar', 'id'=> 'name-wrapper'])!!}
+```
+
 ### Readonly
 
 | Param    | Type    | Default | Description      |
