@@ -20,11 +20,14 @@ This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
 ```html
 <div class="form-group">
     <label for="username">Username</label>
-    <input type="text" class="form-control @if($errors->has('username')) is-invalid @endif " id="username" value="{{old('username', $username)}}">
+    <input
+        type="text"
+        class="form-control @if($errors->has('username')) is-invalid @endif "
+        id="username"
+        value="{{old('username', $username)}}"
+    />
     @if($errors->has('username'))
-    <div class="invalid-feedback">
-        {{$errors->first('username')}}
-    </div>
+    <div class="invalid-feedback">{{$errors->first('username')}}</div>
     @endif
 </div>
 ```
@@ -92,9 +95,9 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 #### Fieldset
 
-| Param   | Type   | Default | Description     |
-| ------- | ------ | ------- | --------------- |
-| $legend | string | null    | Fieldset Legend |
+| Param    | Type   | Default | Description     |
+| -------- | ------ | ------- | --------------- |
+| \$legend | string | null    | Fieldset Legend |
 
 ```php
 // Example
@@ -107,11 +110,11 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 #### Text inputs
 
-| Param    | Type   | Default | Description   |
-| -------- | ------ | ------- | ------------- |
-| $name    | string | null    | Input name    |
-| $label   | string | null    | Input label   |
-| $default | string | null    | Default value |
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
 
 ```php
 // Example
@@ -120,11 +123,11 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ##### Textarea
 
-| Param    | Type   | Default | Description   |
-| -------- | ------ | ------- | ------------- |
-| $name    | string | null    | Input name    |
-| $label   | string | null    | Input label   |
-| $default | string | null    | Default value |
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
 
 ```php
 // Example
@@ -133,31 +136,32 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ##### Select
 
-| Param    | Type   | Default | Description    |
-| -------- | ------ | ------- | -------------- |
-| $name    | string | null    | Input name     |
-| $label   | string | null    | Input label    |
-| $options | array  | []      | Select options |
-| $default | string | null    | Default value  |
+| Param     | Type   | Default | Description    |
+| --------- | ------ | ------- | -------------- |
+| \$name    | string | null    | Input name     |
+| \$label   | string | null    | Input label    |
+| \$options | array  | []      | Select options |
+| \$default | string | null    | Default value  |
 
 ```php
 // Example
 {!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])!!}
 ```
+
 #### Select Default Value
+
 ```php
 {!!Form::select('city', 'Choose your city', [''=>'--choose your city---',1 => 'Gotham City', 2 => 'Springfield'])!!}
 ```
 
-
 ##### Checkbox
 
-| Param    | Type    | Default | Description   |
-| -------- | ------- | ------- | ------------- |
-| $name    | string  | null    | Input name    |
-| $label   | string  | null    | Input label   |
-| $value   | string  | null    | Input value   |
-| $default | boolean | null    | Default value |
+| Param     | Type    | Default | Description   |
+| --------- | ------- | ------- | ------------- |
+| \$name    | string  | null    | Input name    |
+| \$label   | string  | null    | Input label   |
+| \$value   | string  | null    | Input value   |
+| \$default | boolean | null    | Default value |
 
 ```php
 // Example
@@ -166,25 +170,63 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ##### Radio
 
-| Param    | Type    | Default | Description   |
-| -------- | ------- | ------- | ------------- |
-| $name    | string  | null    | Input name    |
-| $label   | string  | null    | Input label   |
-| $value   | string  | null    | Input value   |
-| $default | boolean | null    | Default value |
+| Param     | Type    | Default | Description   |
+| --------- | ------- | ------- | ------------- |
+| \$name    | string  | null    | Input name    |
+| \$label   | string  | null    | Input label   |
+| \$value   | string  | null    | Input value   |
+| \$default | boolean | null    | Default value |
 
 ```php
 // Example
 {!!Form::radio('orange', 'Orange')!!}
 ```
 
+##### File
+
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$name  | string | null    | Input name  |
+| \$label | string | null    | Input label |
+
+```php
+// Example
+{!!Form::file('doc', 'Document')!!}
+```
+
+#### Date inputs
+
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::date('birthday', 'Birthday')!!}
+```
+
+#### Time inputs
+
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::time('hour', 'Meeting hour')!!}
+```
+
 #### Range inputs
 
-| Param    | Type   | Default | Description   |
-| -------- | ------ | ------- | ------------- |
-| $name    | string | null    | Input name    |
-| $label   | string | null    | Input label   |
-| $default | string | null    | Default value |
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
 
 ```php
 // Example
@@ -193,10 +235,10 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ##### Hidden
 
-| Param    | Type    | Default | Description   |
-| -------- | ------- | ------- | ------------- |
-| $name    | string  | null    | Input name    |
-| $default | boolean | null    | Default value |
+| Param     | Type    | Default | Description   |
+| --------- | ------- | ------- | ------------- |
+| \$name    | string  | null    | Input name    |
+| \$default | boolean | null    | Default value |
 
 ```php
 // Example
@@ -205,10 +247,10 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ##### Anchor
 
-| Param  | Type   | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| $value | string | null    | Anchor text |
-| $url   | string | null    | Anchor url  |
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$value | string | null    | Anchor text |
+| \$url   | string | null    | Anchor url  |
 
 ```php
 // Example
@@ -217,11 +259,11 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ##### Buttons
 
-| Param  | Type   | Default | Description  |
-| ------ | ------ | ------- | ------------ |
-| $value | string | null    | Button value |
-| $color | string | null    | Button color |
-| $size  | string | null    | button size  |
+| Param   | Type   | Default | Description  |
+| ------- | ------ | ------- | ------------ |
+| \$value | string | null    | Button value |
+| \$color | string | null    | Button color |
+| \$size  | string | null    | button size  |
 
 ###### Submit
 
@@ -250,9 +292,9 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ### Filling a form
 
-| Param | Type   | Default | Description |
-| ----- | ------ | ------- | ----------- |
-| $data | object | array   | null        | DAta fo fill form inputs |
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| \$data | object | array   | null        | DAta fo fill form inputs |
 
 ```php
 // Examples
@@ -272,7 +314,7 @@ Use in anchors and forms openings
 
 | Param | Type   | Default | Description |
 | ----- | ------ | ------- | ----------- |
-| $url  | string | null    | Url         |
+| \$url | string | null    | Url         |
 
 ```php
 // Example
@@ -283,9 +325,9 @@ Use in anchors and forms openings
 
 Use in anchors and forms openings
 
-| Param  | Type   | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| $route | string | null    | Route name  |
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$route | string | null    | Route name  |
 
 ```php
 // Example
@@ -296,9 +338,9 @@ Use in anchors and forms openings
 
 Set the checkbox/radio checked status
 
-| Param    | Type    | Default | Description    |
-| -------- | ------- | ------- | -------------- |
-| $checked | boolean | true    | Checked status |
+| Param     | Type    | Default | Description    |
+| --------- | ------- | ------- | -------------- |
+| \$checked | boolean | true    | Checked status |
 
 ```php
 // Examples
@@ -323,9 +365,9 @@ Set the checkbox/radio checked status
 
 ### Placeholder
 
-| Param        | Type   | Default | Description      |
-| ------------ | ------ | ------- | ---------------- |
-| $placeholder | string | null    | Placeholder text |
+| Param         | Type   | Default | Description      |
+| ------------- | ------ | ------- | ---------------- |
+| \$placeholder | string | null    | Placeholder text |
 
 ```php
 // Example
@@ -350,9 +392,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### Help Text
 
-| Param | Type   | Default | Description |
-| ----- | ------ | ------- | ----------- |
-| $text | string | null    | Help text   |
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| \$text | string | null    | Help text   |
 
 ```php
 // Example
@@ -361,9 +403,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### Custom attributes
 
-| Param  | Type  | Default | Description             |
-| ------ | ----- | ------- | ----------------------- |
-| $attrs | array | []      | Custom input attributes |
+| Param   | Type  | Default | Description             |
+| ------- | ----- | ------- | ----------------------- |
+| \$attrs | array | []      | Custom input attributes |
 
 ```php
 // Example
@@ -372,9 +414,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### Readonly
 
-| Param   | Type    | Default | Description      |
-| ------- | ------- | ------- | ---------------- |
-| $status | boolean | true    | Read only status |
+| Param    | Type    | Default | Description      |
+| -------- | ------- | ------- | ---------------- |
+| \$status | boolean | true    | Read only status |
 
 ```php
 // Examples
@@ -388,9 +430,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### Disabled
 
-| Param   | Type    | Default | Description     |
-| ------- | ------- | ------- | --------------- |
-| $status | boolean | true    | Disabled status |
+| Param    | Type    | Default | Description     |
+| -------- | ------- | ------- | --------------- |
+| \$status | boolean | true    | Disabled status |
 
 ```php
 // Examples
@@ -407,9 +449,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### Block
 
-| Param   | Type    | Default | Description     |
-| ------- | ------- | ------- | --------------- |
-| $status | boolean | true    | Disabled status |
+| Param    | Type    | Default | Description     |
+| -------- | ------- | ------- | --------------- |
+| \$status | boolean | true    | Disabled status |
 
 ```php
 // Examples
@@ -423,9 +465,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### Required
 
-| Param   | Type    | Default | Description     |
-| ------- | ------- | ------- | --------------- |
-| $status | boolean | true    | Required status |
+| Param    | Type    | Default | Description     |
+| -------- | ------- | ------- | --------------- |
+| \$status | boolean | true    | Required status |
 
 ```php
 // Examples
@@ -442,9 +484,9 @@ Using locale, the package will look for a resources/lang/{CURRENT_LANG}/forms/us
 
 ### AutoFill
 
-| Param   | Type   | Default | Description      |
-| ------- | ------ | ------- | ---------------- |
-| $value  | string | 'on'    | autocomplte value|
+| Param   | Type   | Default | Description       |
+| ------- | ------ | ------- | ----------------- |
+| \$value | string | 'on'    | autocomplte value |
 
 see: https://html.spec.whatwg.org/multipage/forms.html#autofill
 
@@ -472,7 +514,7 @@ complete list is in the spec mentioned above.
 
 | Param | Type   | Default | Description |
 | ----- | ------ | ------- | ----------- |
-| $id   | string | null    | Id field    |
+| \$id  | string | null    | Id field    |
 
 ```php
 // Example
@@ -481,9 +523,9 @@ complete list is in the spec mentioned above.
 
 ### Id prefix
 
-| Param   | Type   | Default | Description |
-| ------- | ------ | ------- | ----------- |
-| $prefix | string | null    | Id prefix   |
+| Param    | Type   | Default | Description |
+| -------- | ------ | ------- | ----------- |
+| \$prefix | string | null    | Id prefix   |
 
 ```php
 // Example
@@ -492,9 +534,9 @@ complete list is in the spec mentioned above.
 
 ### Multipart
 
-| Param      | Type    | Default | Description    |
-| ---------- | ------- | ------- | -------------- |
-| $multipart | boolean | true    | Multipart flag |
+| Param       | Type    | Default | Description    |
+| ----------- | ------- | ------- | -------------- |
+| \$multipart | boolean | true    | Multipart flag |
 
 ```php
 // Examples
@@ -506,9 +548,9 @@ complete list is in the spec mentioned above.
 
 ### Method
 
-| Param   | Type   | Default | Description |
-| ------- | ------ | ------- | ----------- |
-| $method | string | null    | HTTP method |
+| Param    | Type   | Default | Description |
+| -------- | ------ | ------- | ----------- |
+| \$method | string | null    | HTTP method |
 
 ```php
 // Examples
@@ -532,9 +574,9 @@ complete list is in the spec mentioned above.
 
 ### Color
 
-| Param  | Type   | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| $color | string | null    | Color name  |
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$color | string | null    | Color name  |
 
 ```php
 // Examples
@@ -560,9 +602,9 @@ complete list is in the spec mentioned above.
 
 ### Size
 
-| Param | Type   | Default | Description |
-| ----- | ------ | ------- | ----------- |
-| $size | string | null    | Size name   |
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| \$size | string | null    | Size name   |
 
 ```php
 // Examples
@@ -581,9 +623,9 @@ complete list is in the spec mentioned above.
 
 ### Type
 
-| Param | Type   | Default | Description |
-| ----- | ------ | ------- | ----------- |
-| $type | string | null    | Type field  |
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| \$type | string | null    | Type field  |
 
 ```php
 // Examples
@@ -600,9 +642,9 @@ complete list is in the spec mentioned above.
 
 ### Name
 
-| Param | Type   | Default | Description |
-| ----- | ------ | ------- | ----------- |
-| $name | string | null    | Input name  |
+| Param  | Type   | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| \$name | string | null    | Input name  |
 
 ```php
 // Examples
@@ -611,9 +653,9 @@ complete list is in the spec mentioned above.
 
 ### Label
 
-| Param  | Type   | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| $label | string | null    | Input label |
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$label | string | null    | Input label |
 
 ```php
 // Examples
@@ -622,9 +664,9 @@ complete list is in the spec mentioned above.
 
 ### Default Value
 
-| Param  | Type  | Default | Description |
-| ------ | ----- | ------- | ----------- |
-| $value | mixed | null    | Input value |
+| Param   | Type  | Default | Description |
+| ------- | ----- | ------- | ----------- |
+| \$value | mixed | null    | Input value |
 
 ```php
 // Example
@@ -633,9 +675,9 @@ complete list is in the spec mentioned above.
 
 ### Render
 
-| Param   | Type   | Default | Description |
-| ------- | ------ | ------- | ----------- |
-| $render | string | null    | Render name |
+| Param    | Type   | Default | Description |
+| -------- | ------ | ------- | ----------- |
+| \$render | string | null    | Render name |
 
 ```php
 // Examples

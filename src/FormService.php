@@ -312,6 +312,32 @@ class FormService {
     }
 
     /**
+     * Create a date input
+     *
+     * @param string $name
+     * @param string $label
+     * @param string $default
+     * @return FormService
+     */
+    public function date(string $name = null, $label = null, string $default = null): FormService
+    {
+        return $this->type('date')->name($name)->label($label)->value($default);
+    }
+
+    /**
+     * Create a time input
+     *
+     * @param string $name
+     * @param string $label
+     * @param string $default
+     * @return FormService
+     */
+    public function time(string $name = null, $label = null, string $default = null): FormService
+    {
+        return $this->type('time')->name($name)->label($label)->value($default);
+    }
+
+    /**
      * Create a range input
      *
      * @param string $name
@@ -747,7 +773,7 @@ class FormService {
     }
 
     /**
-     * Set custom attributes for a input
+     * Set custom attributes for an input
      *
      * @param array $attrs
      * @return FormService
@@ -755,6 +781,17 @@ class FormService {
     public function attrs(array $attrs = []): FormService
     {
         return $this->_set('attrs', $attrs);
+    }
+
+    /**
+     * Set custom attributes for a wrapper input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperAttrs', $attrs);
     }
 
     /**

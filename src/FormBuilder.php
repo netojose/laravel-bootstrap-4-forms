@@ -78,6 +78,13 @@ class FormBuilder {
      * @var array
      */
     private $_attrs;
+    
+    /**
+     * Input wrapper attributes
+     *
+     * @var array
+     */
+    private $_wrapperAttrs;
 
     /**
      * Form control type
@@ -341,7 +348,7 @@ class FormBuilder {
     {
         $attrs = $this->_buildAttrs();
 
-        return $this->_renderWarpperCommomField('<input ' . $attrs . '>');
+        return $this->_renderWrapperCommomField('<input ' . $attrs . '>');
     }
 
     /**
@@ -459,7 +466,7 @@ class FormBuilder {
         $attrs = $this->_buildAttrs(['rows' => 3]);
         $value = $this->_getValue();
 
-        return $this->_renderWarpperCommomField('<textarea ' . $attrs . '>' . $value . '</textarea>');
+        return $this->_renderWrapperCommomField('<textarea ' . $attrs . '>' . $value . '</textarea>');
     }
 
     /**
@@ -496,7 +503,7 @@ class FormBuilder {
             }
         }
 
-        return $this->_renderWarpperCommomField('<select ' . $attrs . '>' . $options . '</select>');
+        return $this->_renderWrapperCommomField('<select ' . $attrs . '>' . $options . '</select>');
     }
 
     /**
@@ -570,7 +577,7 @@ class FormBuilder {
         $value = $this->_getValue();
         $attrs = $this->_buildAttrs(['value' => $value, 'type' => $type]);
 
-        return $this->_renderWarpperCommomField('<input ' . $attrs . '>');
+        return $this->_renderWrapperCommomField('<input ' . $attrs . '>');
     }
 
     /**
@@ -643,8 +650,6 @@ class FormBuilder {
     private function _buildAttrs(array $props = [], array $ignore = []): string
     {
 
-        $ret = '';
-
         $props['type'] = $this->_type;
         $props['name'] = $this->_name;
 
@@ -670,7 +675,7 @@ class FormBuilder {
         }
 
         if($this->_required === true) {
-            $props['required'] = "required";
+            $props['required'] = true;
         }
 
         switch($this->_type) {
@@ -706,19 +711,19 @@ class FormBuilder {
         $props['class'] = trim($props['class']);
 
         if(!$props['class']) {
-            $props['class'] = null;
+            $props['class'] = false;
         }
 
         if ($this->_type == 'select' && $this->_multiple) {
-            $ret .= 'multiple ';
+            $props['multiple'] = true;
         }
 
         if ($this->_readonly) {
-            $ret .= 'readonly ';
+            $props['readonly'] = true;
         }
 
         if ($this->_disabled) {
-            $ret .= 'disabled ';
+            $props['disabled'] = true;
         }
 
         if (in_array($this->_type, ['radio', 'checkbox'])) {
@@ -728,24 +733,16 @@ class FormBuilder {
                     $this->_type === 'checkbox' || $this->_type === 'radio' && $value === $this->_meta['value']
                     )
             ) {
-                $ret .= 'checked ';
+                $props['checked'] = true;
             }
         }
 
         if ($this->_type == 'hidden') {
-            unset($props['autocomplete']);
-            unset($props['class']);
+            $props['autocomplete'] = false;
+            $props['class'] = false;
         }
 
-        $allProps = array_merge($props, $this->_attrs);
-        foreach ($allProps as $key => $value) {
-            if ($value === null) {
-                continue;
-            }
-            $ret .= $key . '="' . htmlspecialchars($value) . '" ';
-        }
-
-        return trim($ret);
+        return $this->_arrayToHtmlAttrs($props);
     }
 
     /**
@@ -875,21 +872,37 @@ class FormBuilder {
         return '<div class="form-check' . $inline . '"><input ' . $attrs . '><label class="form-check-label" for="'.$id.'">' . $label . '</label></div>';
     }
 
+    private function _arrayToHtmlAttrs($attributes){
+        return join(' ', array_map(function($key) use ($attributes) {
+            $value = $attributes[$key];
+            if(is_bool($value)){
+                return $value ? $key : '';
+            } else {
+                return $key.'="'.htmlspecialchars($value).'"';
+            }
+            }, array_keys($attributes))
+        );
+    }
+
     /**
      * Return a input with a wrapper HTML markup
      *
      * @param string $field
      * @return string
      */
-    private function _renderWarpperCommomField(string $field): string
+    private function _renderWrapperCommomField(string $field): string
     {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
         $error = $this->_getValidationFieldMessage();
 
+        $classList = isset($this->_wrapperAttrs['class']) ? $this->_wrapperAttrs['class'] : '';
+        $this->_wrapperAttrs['class'] = "form-group " . $classList;
+        $wrapperAttrs = $this->_arrayToHtmlAttrs($this->_wrapperAttrs);
+
         $this->_resetFlags();
 
-        $formGroupOpen = '<div class="form-group ">';
+        $formGroupOpen = '<div '.$wrapperAttrs.'>';
         $formGroupClose = '</div>';
 
         if($this->_FinlineForm) {
@@ -930,6 +943,7 @@ class FormBuilder {
         $this->_render = null;
         $this->_meta = [];
         $this->_attrs = [];
+        $this->_wrapperAttrs = [];
         $this->_type = null;
         $this->_url = null;
         $this->_placeholder = null;
