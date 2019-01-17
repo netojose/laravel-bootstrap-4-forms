@@ -283,7 +283,7 @@ class FormBuilder {
         if ($this->_Fmethod !== 'get') {
             $ret .= csrf_field();
 
-            if ($this->_Fmethod !== 'post') {
+            if ($this->_Fmethod !== 'post' && $this->_Fmethod !== 'get') {
                 $ret .= method_field($this->_Fmethod);
             }
         }
@@ -649,20 +649,32 @@ class FormBuilder {
      */
     private function _buildAttrs(array $props = [], array $ignore = []): string
     {
+        $props = array_merge(array_filter($this->_attrs, function($k){
+            return $k != 'class';
+        }, ARRAY_FILTER_USE_KEY), $props);
 
-        $props['type'] = $this->_type;
-        $props['name'] = $this->_name;
+        if($this->_type){
+            $props['type'] = $this->_type;
+        }
+
+        if($this->_name){
+            $props['name'] = $this->_name;
+        }
 
         if (!is_null($this->_autocomplete)) {
             $props['autocomplete'] = $this->_autocomplete;
-        } else if (isset($this->_allowedAutoComplete[$props['name']])) {
-            $props['autocomplete'] = $props['name'];
+        } else if ($this->_name && isset($this->_allowedAutoComplete[$this->_name])) {
+            $props['autocomplete'] = $this->_name;
         }
 
-        $props['id'] = $this->_getId();
+        $id = $this->_getId();
+        if($id){
+            $props['id'] = $this->_getId();
+        }
+
         $props['class'] = isset($props['class']) ? $props['class'] : '';
 
-        if ($this->_type == 'select' && $this->_multiple) {
+        if ($this->_type == 'select' && $this->_multiple && $this->_name) {
             $props['name'] = $props['name'] . '[]';
         }
 
