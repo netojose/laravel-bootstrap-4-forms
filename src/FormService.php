@@ -673,7 +673,7 @@ class FormService {
      */
     public function link(): FormService
     {
-        return $this;
+        return $this->color('link');
     }
 
     /**
