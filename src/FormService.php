@@ -361,7 +361,7 @@ class FormService {
      */
     public function select(string $name = null, string $label = null, $options = [], $default = null): FormService
     {
-        return $this;
+        return $this->render('select')->name($name)->label($label)->options($options)->value($default);
     }
 
     /**
@@ -372,7 +372,18 @@ class FormService {
      */
     public function options(array $options = []): FormService
     {
-        return $this;
+        return $this->_set('options', $options);
+    }
+
+    /**
+     * Set a multiple select attribute
+     *
+     * @param bool $multiple
+     * @return FormService
+     */
+    public function multiple(bool $status = true): FormService
+    {
+        return $this->_set('multiple', $status);
     }
 
     /**
@@ -762,17 +773,6 @@ class FormService {
     public function wrapperAttrs(array $attrs = []): FormService
     {
         return $this->_set('wrapperAttrs', $attrs);
-    }
-
-    /**
-     * Set a multiple select attribute
-     *
-     * @param bool $multiple
-     * @return FormService
-     */
-    public function multiple(bool $multiple = true): FormService
-    {
-        return $this;
     }
 
     /**

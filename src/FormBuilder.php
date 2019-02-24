@@ -6,7 +6,8 @@ class FormBuilder {
 
     private $_attrs = [];
 
-    public function set($key, $value) {
+    public function set($key, $value)
+    {
         $formatter = '_format'.ucfirst($key);
         if(method_exists($this, $formatter)){
             $value = $this->$formatter($value);
@@ -14,14 +15,16 @@ class FormBuilder {
         $this->_attrs[$key] = $value;
     }
 
-    private function _formatFormData($value){
+    private function _formatFormData($value)
+    {
         if (is_object($value) && method_exists($value, 'toArray')) {
             return $value->toArray();
         }
         return $value;
     }
 
-    public function render(): string {
+    public function render(): string
+    {
         $render = $this->_attrs['render'];
         $methodName = '_render' . ucfirst($render);
         $output = $this->$methodName();
@@ -29,7 +32,8 @@ class FormBuilder {
         return $output;
     }
 
-    private function _renderFormOpen() : string {
+    private function _renderFormOpen() : string
+    {
         extract($this->_get('method', 'url', 'formMultipart', 'autocomplete'));
 
         if(!$method) {
@@ -57,12 +61,14 @@ class FormBuilder {
         return $output;
     }
 
-    private function _renderFormClose() : string {
+    private function _renderFormClose() : string
+    {
         $this->_resetAttributes(true);
         return '</form>';
     }
 
-    private function _renderFieldsetOpen() : string {
+    private function _renderFieldsetOpen() : string
+    {
         $output = '<fieldset>';
         extract($this->_get('legend'));
         
@@ -73,7 +79,8 @@ class FormBuilder {
         return $output;
     }
 
-    private function _renderFieldsetClose() : string {
+    private function _renderFieldsetClose() : string
+    {
         return '</fieldset>';
     }
 
@@ -87,16 +94,33 @@ class FormBuilder {
         return '<button '.$attrs.'>'.$value.'</button>';
     }
 
-    private function _renderInput() : string {
+    private function _renderInput() : string
+    {
         $attributes = $this->getInputAttributes();
         $attrs = $this->_buildHtmlAttrs($attributes);
-        $input = '<input '.$attrs.'>';
-        return $this->_wrapperInput($input);
+        return $this->_wrapperInput('<input '.$attrs.'>');
+    }
+
+    private function _renderSelect() : string
+    {
+        extract($this->_get('options'));
+
+        $fieldValue = $this->_getValue();
+        $arrValues = is_array($fieldValue) ? $fieldValue : [$fieldValue];
+        $optionsList = '';
+        foreach($options as $value => $label){
+            $attrs = $this->_buildHtmlAttrs(['value' => $value, 'selected' => in_array($value, $arrValues)], false);
+            $optionsList .= '<option ' . $attrs . '>' . $label . '</option>';
+        }
+
+        $attributes = $this->getInputAttributes();
+        $attrs = $this->_buildHtmlAttrs($attributes);
+        return $this->_wrapperInput('<select '.$attrs.'>' . $optionsList . '</select>');
     }
 
     private function getInputAttributes() : array 
     {
-        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max'));
+        extract($this->_get('render', 'type', 'multiple', 'name', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max'));
         
         $class = 'form-control';
         switch($type){
@@ -113,12 +137,18 @@ class FormBuilder {
         $attributes = [
             'type' => $type, 
             'name' => $name, 
-            'value' => $this->_getValue(), 
             'id' => $id
         ];
 
+        // If the field is a hidden field, we don't need add more attributes
         if($type === 'hidden') {
             return $attributes;
+        }
+
+        if($render !== 'select') {
+            $attributes['value'] = $this->_getValue();
+        } else {
+            $attributes['multiple'] = $multiple;
         }
 
         return array_merge($attributes, [
@@ -201,8 +231,9 @@ class FormBuilder {
         
         if($appendAttrs){
             extract($this->_get('attrs'));
-            $attributes['class'] = join(' ', array_filter([$attributes['class'] ?? null, $attrs['class'] ?? null]));
-            $attributes = array_merge($attrs ?? [], $attributes);
+            $fieldAttrs = $attrs ?? [];
+            $attributes['class'] = join(' ', array_filter([$attributes['class'] ?? null, $fieldAttrs['class'] ?? null]));
+            $attributes = array_merge($fieldAttrs, $attributes);
         }
         
         return join(' ', array_filter(
