@@ -120,7 +120,7 @@ class FormBuilder {
 
     private function getInputAttributes() : array 
     {
-        extract($this->_get('render', 'type', 'multiple', 'name', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max'));
+        extract($this->_get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max'));
         
         $class = 'form-control';
         switch($type){
@@ -130,6 +130,10 @@ class FormBuilder {
             case 'range':
                 $class .= '-range';
                 break;
+        }
+
+        if($size){
+            $class .= ' form-control-' . $size;
         }
 
         $id = $this->_getId();
