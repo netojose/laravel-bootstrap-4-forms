@@ -679,12 +679,12 @@ class FormService {
     /**
      * Set outline style
      *
-     * @param bool $outline
+     * @param bool $status
      * @return FormService
      */
-    public function outline(bool $outline = true): FormService
+    public function outline(bool $status = true): FormService
     {
-        return $this->_set('outline', $outline);
+        return $this->_set('outline', $status);
     }
 
     /**
@@ -695,7 +695,7 @@ class FormService {
      */
     public function block(bool $status= true): FormService
     {
-        return $this;
+        return $this->_set('block', $status);
     }
 
     /**
