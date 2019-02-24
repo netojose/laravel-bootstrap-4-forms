@@ -728,7 +728,7 @@ class FormService {
      */
     public function required($status = true) : FormService
     {
-        return $this;
+        return $this->_set('required', $status);
     }
 
     /**

@@ -95,7 +95,7 @@ class FormBuilder {
 
     private function getInputAttributes() : array 
     {
-        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'readonly', 'autocomplete', 'min', 'max'));
+        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max'));
         
         $class = 'form-control';
         switch($type){
@@ -128,7 +128,8 @@ class FormBuilder {
             'placeholder' => $this->_getText($placeholder),
             'aria-describedby' => $help ? 'help-'.$id : null,
             'disabled' => $disabled,
-            'readonly' => $readonly
+            'readonly' => $readonly,
+            'required' => $required
         ]);
     }
 
