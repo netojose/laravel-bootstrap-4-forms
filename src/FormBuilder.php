@@ -95,7 +95,7 @@ class FormBuilder {
 
     private function getInputAttributes() : array 
     {
-        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'autocomplete', 'min', 'max'));
+        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'readonly', 'autocomplete', 'min', 'max'));
         
         $class = 'form-control';
         switch($type){
@@ -116,19 +116,20 @@ class FormBuilder {
             'id' => $id
         ];
 
-        if($type !== 'hidden') {
-            $attributes = array_merge($attributes, [
-                'class' => $class, 
-                'min' => $min,
-                'max' => $max,
-                'autocomplete' => $autocomplete,
-                'placeholder' => $this->_getText($placeholder),
-                'aria-describedby' => $help ? 'help-'.$id : null,
-                'disabled' => $disabled
-            ]);
+        if($type === 'hidden') {
+            return $attributes;
         }
 
-        return $attributes;
+        return array_merge($attributes, [
+            'class' => $class, 
+            'min' => $min,
+            'max' => $max,
+            'autocomplete' => $autocomplete,
+            'placeholder' => $this->_getText($placeholder),
+            'aria-describedby' => $help ? 'help-'.$id : null,
+            'disabled' => $disabled,
+            'readonly' => $readonly
+        ]);
     }
 
     private function renderLabel() : string

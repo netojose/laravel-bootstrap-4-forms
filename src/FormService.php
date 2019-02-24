@@ -706,7 +706,7 @@ class FormService {
      */
     public function readonly($status = true): FormService
     {
-        return $this;
+        return $this->_set('readonly', $status);
     }
 
     /**
