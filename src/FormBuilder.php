@@ -87,9 +87,17 @@ class FormBuilder {
     }
 
     private function _renderInput() : string {
-        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'autocomplete', 'min', 'max'));
-        $class = 'form-control';
+        $attributes = $this->getInputAttributes();
+        $attrs = $this->_buildHtmlAttrs($attributes);
+        $input = '<input '.$attrs.'>';
+        return $this->_wrapperInput($input);
+    }
 
+    private function getInputAttributes() : array 
+    {
+        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'autocomplete', 'min', 'max'));
+        
+        $class = 'form-control';
         switch($type){
             case 'file':
                 $class .= '-file';
@@ -99,31 +107,39 @@ class FormBuilder {
                 break;
         }
 
-
         $id = $this->_getId();
-        $attrs = $this->_buildHtmlAttrs([
+
+        $attributes = [
             'type' => $type, 
             'name' => $name, 
             'value' => $this->_getValue(), 
-            'class' => $class, 
-            'id' => $id,
-            'min' => $min,
-            'max' => $max,
-            'autocomplete' => $autocomplete,
-            'placeholder' => $this->_getText($placeholder),
-            'aria-describedby' => $help ? 'help-'.$id : null,
-            'disabled' => $disabled
-        ]);
-        return $this->_wrapperInput('<input '.$attrs.'>');
+            'id' => $id
+        ];
+
+        if($type !== 'hidden') {
+            $attributes = array_merge($attributes, [
+                'class' => $class, 
+                'min' => $min,
+                'max' => $max,
+                'autocomplete' => $autocomplete,
+                'placeholder' => $this->_getText($placeholder),
+                'aria-describedby' => $help ? 'help-'.$id : null,
+                'disabled' => $disabled
+            ]);
+        }
+
+        return $attributes;
     }
 
-    private function renderLabel() : string {
+    private function renderLabel() : string
+    {
         extract($this->_get('label'));
         $id = $this->_getId();
         return '<label for="'.$id.'">'.$this->_getText($label).'</label>';
     }
 
-    private function _getText($key){
+    private function _getText($key)
+    {
         extract($this->_get('formLocale'));
         if($formLocale){
             return __($formLocale . '.' . $key);
@@ -131,7 +147,8 @@ class FormBuilder {
         return $key;
     }
 
-    private function _resetAttributes($resetAll = false) {
+    private function _resetAttributes($resetAll = false)
+    {
         // Remove all attributes
         if($resetAll) {
             $this->_attrs = [];
@@ -145,7 +162,12 @@ class FormBuilder {
     }
 
     private function _wrapperInput(string $input) : string {
-        extract($this->_get('help', 'wrapperAttrs'));
+        extract($this->_get('type', 'help', 'wrapperAttrs'));
+
+        if($type === 'hidden') {
+            return $input;
+        }
+
         $id = $this->_getId();
         $label = $this->renderLabel();
         $helpText = $help ? '<small id="help-'.$id.'" class="form-text text-muted">'.$this->_getText($help).'</small>' : '';

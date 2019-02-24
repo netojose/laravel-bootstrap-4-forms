@@ -347,7 +347,7 @@ class FormService {
      */
     public function hidden(string $name = null, string $default = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('hidden')->name($name)->value($default);
     }
 
     /**
