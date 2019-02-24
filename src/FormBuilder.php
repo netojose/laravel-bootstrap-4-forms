@@ -87,7 +87,7 @@ class FormBuilder {
     }
 
     private function _renderInput() : string {
-        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'autocomplete'));
+        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'autocomplete', 'min', 'max'));
         $class = 'form-control';
 
         switch($type){
@@ -107,6 +107,8 @@ class FormBuilder {
             'value' => $this->_getValue(), 
             'class' => $class, 
             'id' => $id,
+            'min' => $min,
+            'max' => $max,
             'autocomplete' => $autocomplete,
             'placeholder' => $this->_getText($placeholder),
             'aria-describedby' => $help ? 'help-'.$id : null,

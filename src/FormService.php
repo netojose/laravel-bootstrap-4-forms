@@ -319,6 +319,26 @@ class FormService {
     }
 
     /**
+     * Set a minimum value for a field
+     * @param string $value
+     * @return FormService
+     */
+    public function min($value)
+    {
+        return $this->_set('min', $value);
+    }
+
+    /**
+     * Set a maximum value for a field
+     * @param string $value
+     * @return FormService
+     */
+    public function max($value)
+    {
+        return $this->_set('max', $value);
+    }
+
+    /**
      * Create a hidden input
      *
      * @param string $name
