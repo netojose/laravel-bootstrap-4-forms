@@ -30,7 +30,7 @@ class FormBuilder {
     }
 
     private function _renderFormOpen() : string {
-        extract($this->_get('method', 'formUrl', 'formMultipart'));
+        extract($this->_get('method', 'url', 'formMultipart', 'autocomplete'));
 
         if(!$method) {
             $method = 'post';
@@ -38,7 +38,13 @@ class FormBuilder {
 
         $enctype = $formMultipart ? 'multipart/form-data' : null;
 
-        $attrs = $this->_buildHtmlAttrs(['method' => $method, 'action' => $formUrl, 'enctype' => $enctype]);
+        $attrs = $this->_buildHtmlAttrs([
+            'method' => $method, 
+            'action' => $url, 
+            'enctype' => $enctype, 
+            'autocomplete' => $autocomplete
+        ]);
+
         $output = '<form '.$attrs.'>';
 
         if ($method !== 'get') {
@@ -56,6 +62,21 @@ class FormBuilder {
         return '</form>';
     }
 
+    private function _renderFieldsetOpen() : string {
+        $output = '<fieldset>';
+        extract($this->_get('legend'));
+        
+        if($legend){
+            $output .= '<legend>' . $this->_getText($legend) . '</legend>';
+        }
+
+        return $output;
+    }
+
+    private function _renderFieldsetClose() : string {
+        return '</fieldset>';
+    }
+
     private function _renderButton() : string {
         extract($this->_get('size', 'color', 'type', 'value', 'disabled'));
         $sizeCls = !$size ? '' : 'btn-'.$size;
@@ -66,8 +87,19 @@ class FormBuilder {
     }
 
     private function _renderInput() : string {
-        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled'));
+        extract($this->_get('type', 'name', 'placeholder', 'help', 'disabled', 'autocomplete'));
         $class = 'form-control';
+
+        switch($type){
+            case 'file':
+                $class .= '-file';
+                break;
+            case 'range':
+                $class .= '-range';
+                break;
+        }
+
+
         $id = $this->_getId();
         $attrs = $this->_buildHtmlAttrs([
             'type' => $type, 
@@ -75,7 +107,8 @@ class FormBuilder {
             'value' => $this->_getValue(), 
             'class' => $class, 
             'id' => $id,
-            'placeholder' => $placeholder,
+            'autocomplete' => $autocomplete,
+            'placeholder' => $this->_getText($placeholder),
             'aria-describedby' => $help ? 'help-'.$id : null,
             'disabled' => $disabled
         ]);
@@ -91,7 +124,7 @@ class FormBuilder {
     private function _getText($key){
         extract($this->_get('formLocale'));
         if($formLocale){
-            // ...
+            return __($formLocale . '.' . $key);
         }
         return $key;
     }
@@ -104,21 +137,22 @@ class FormBuilder {
         }
         
         // Keep attributes which key starting with 'form'
-        $keys = array_keys($this->_attrs);
-        foreach($keys as $key){
-            if(substr($key, 0, 4) == 'form'){
-                continue;
-            }
-            unset($this->_attrs[$key]);
-        }
+        $this->_attrs = array_filter($this->_attrs, function($key) {
+            return substr($key, 0, 4) === 'form';
+        }, ARRAY_FILTER_USE_KEY);
     }
 
     private function _wrapperInput(string $input) : string {
-        extract($this->_get('help'));
+        extract($this->_get('help', 'wrapperAttrs'));
         $id = $this->_getId();
         $label = $this->renderLabel();
         $helpText = $help ? '<small id="help-'.$id.'" class="form-text text-muted">'.$this->_getText($help).'</small>' : '';
-        return '<div class="form-group">'.$label.$input.$helpText.'</div>';
+        
+        $attrs = $wrapperAttrs ?? [];
+        $attrs['class'] = join(' ', array_filter([$attrs['class'] ?? null, 'form-group']));
+        $attributes = $this->_buildHtmlAttrs($attrs, false);
+
+        return '<div '.$attributes.'>'.$label.$input.$helpText.'</div>';
     }
 
     private function _getId() {
@@ -131,7 +165,14 @@ class FormBuilder {
         return old($name, $value) ?? ($formData[$name] ?? null);
     }
 
-    private function _buildHtmlAttrs($attributes) : string {
+    private function _buildHtmlAttrs(array $attributes, $appendAttrs = true) : string {
+        
+        if($appendAttrs){
+            extract($this->_get('attrs'));
+            $attributes['class'] = join(' ', array_filter([$attributes['class'] ?? null, $attrs['class'] ?? null]));
+            $attributes = array_merge($attrs ?? [], $attributes);
+        }
+        
         return join(' ', array_filter(
             array_map(function($key) use ($attributes) {
                 $value = $attributes[$key];

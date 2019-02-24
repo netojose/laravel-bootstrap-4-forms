@@ -160,7 +160,7 @@ class FormService {
      */
     public function autocomplete($value = true): FormService
     {
-        return $this;
+        return $this->_set('autocomplete', $value);
     }
 
     /**
@@ -181,7 +181,7 @@ class FormService {
      */
     public function url(string $url): FormService
     {
-        return $this->_set('formUrl', url($url));
+        return $this->_set('url', url($url));
     }
 
     /**
@@ -193,7 +193,7 @@ class FormService {
      */
     public function route(string $route, array $params = []): FormService
     {
-        return $this->_set('formUrl', route($route, $params));
+        return $this->_set('url', route($route, $params));
     }
 
     /**
@@ -204,7 +204,7 @@ class FormService {
      */
     public function fieldsetOpen(string $legend = null): FormService
     {
-        return $this;
+        return $this->render('fieldsetOpen')->_set('legend', $legend);
     }
 
     /**
@@ -214,7 +214,7 @@ class FormService {
      */
     public function fieldsetClose(): FormService
     {
-        return $this;
+        return $this->render('fieldsetClose');
     }
 
     /**
@@ -237,7 +237,7 @@ class FormService {
      */
     public function file(string $name = null, string $label = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('file')->name($name)->label($label);
     }
 
     /**
@@ -263,7 +263,7 @@ class FormService {
      */
     public function date(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('date')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -276,7 +276,7 @@ class FormService {
      */
     public function time(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('time')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -289,7 +289,7 @@ class FormService {
      */
     public function tel(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('tel')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -302,7 +302,7 @@ class FormService {
      */
     public function urlInput(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('url')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -315,7 +315,7 @@ class FormService {
      */
     public function range(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this;
+        return $this->render('input')->type('range')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -542,7 +542,7 @@ class FormService {
      */
     public function lg(): FormService
     {
-        return $this->_set('size', 'lg');
+        return $this->size('lg');
     }
 
     /**
@@ -552,7 +552,7 @@ class FormService {
      */
     public function sm(): FormService
     {
-        return $this->_set('size', 'sm');
+        return $this->size('sm');
     }
 
     /**
@@ -573,7 +573,7 @@ class FormService {
      */
     public function primary(): FormService
     {
-        return $this;
+        return $this->color('primary');
     }
 
     /**
@@ -583,7 +583,7 @@ class FormService {
      */
     public function secondary(): FormService
     {
-        return $this;
+        return $this->color('secondary');
     }
 
     /**
@@ -593,7 +593,7 @@ class FormService {
      */
     public function success(): FormService
     {
-        return $this;
+        return $this->color('success');
     }
 
     /**
@@ -603,7 +603,7 @@ class FormService {
      */
     public function danger(): FormService
     {
-        return $this;
+        return $this->color('danger');
     }
 
     /**
@@ -613,7 +613,7 @@ class FormService {
      */
     public function warning(): FormService
     {
-        return $this;
+        return $this->color('warning');
     }
 
     /**
@@ -623,7 +623,7 @@ class FormService {
      */
     public function info(): FormService
     {
-        return $this;
+        return $this->color('info');
     }
 
     /**
@@ -633,7 +633,7 @@ class FormService {
      */
     public function light(): FormService
     {
-        return $this;
+        return $this->color('light');
     }
 
     /**
@@ -643,7 +643,7 @@ class FormService {
      */
     public function dark(): FormService
     {
-        return $this;
+        return $this->color('dark');
     }
 
     /**
@@ -730,7 +730,7 @@ class FormService {
      */
     public function attrs(array $attrs = []): FormService
     {
-        return $this;
+        return $this->_set('attrs', $attrs);
     }
 
     /**
@@ -741,7 +741,7 @@ class FormService {
      */
     public function wrapperAttrs(array $attrs = []): FormService
     {
-        return $this;
+        return $this->_set('wrapperAttrs', $attrs);
     }
 
     /**
