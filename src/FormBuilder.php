@@ -78,9 +78,9 @@ class FormBuilder {
     }
 
     private function _renderButton() : string {
-        extract($this->_get('size', 'color', 'type', 'value', 'disabled'));
+        extract($this->_get('size', 'color', 'outline', 'type', 'value', 'disabled'));
         $sizeCls = !$size ? '' : 'btn-'.$size;
-        $colorCls = !$color ? '' : 'btn-'.$color;
+        $colorCls = !$color ? '' : 'btn-'.($outline ? 'outline-' : '').$color;
         $class = join(' ', array_filter(['btn', $colorCls, $sizeCls]));
         $attrs = $this->_buildHtmlAttrs(['type' => $type, 'class' => $class, 'disabled' => $disabled]);
         return '<button '.$attrs.'>'.$value.'</button>';

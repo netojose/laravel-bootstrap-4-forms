@@ -684,7 +684,7 @@ class FormService {
      */
     public function outline(bool $outline = true): FormService
     {
-        return $this;
+        return $this->_set('outline', $outline);
     }
 
     /**
