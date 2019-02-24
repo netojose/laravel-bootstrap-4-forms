@@ -180,7 +180,12 @@ class FormBuilder {
     }
 
     private function _getId() {
-        extract($this->_get('name', 'formIdPrefix'));
+        extract($this->_get('id', 'name', 'formIdPrefix'));
+
+        if($id){
+            return $id;
+        }
+
         return ($formIdPrefix ?? 'inp-') . $name;
     }
 

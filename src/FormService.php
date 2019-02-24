@@ -530,7 +530,7 @@ class FormService {
      */
     public function id($id): FormService
     {
-        return $this;
+        return $this->_set('id', $id);
     }
 
     /**
