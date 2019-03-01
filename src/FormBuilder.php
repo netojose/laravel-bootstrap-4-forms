@@ -361,8 +361,12 @@ class FormBuilder {
     public function file(): string
     {
         $attrs = $this->_buildAttrs();
+        $id = $this->_getId();
+        $placeholder = $this->_placeholder ?: 'Choose file';
 
-        return $this->_renderWrapperCommonField('<input ' . $attrs . '>');
+        $input = '<div class="custom-file"><input ' . $attrs . '><label class="custom-file-label" for="' . $id . '">' . $placeholder . '</label></div>';
+
+        return $this->_renderWrapperCommonField($input);
     }
 
     /**
@@ -706,7 +710,7 @@ class FormBuilder {
 
         switch($this->_type) {
             case 'file':
-                $formControlClass = 'form-control-file';
+                $formControlClass = 'custom-file-input';
                 break;
             case 'range':
             $formControlClass = 'form-control-range';
@@ -814,7 +818,7 @@ class FormBuilder {
 
         if (!$id && $this->_name) {
             $id = $this->_name;
-            if ($this->_type == 'radio') {
+            if ($this->_type === 'radio') {
                 $id .= '-' . str_slug($this->_meta['value']);
             }
         }
@@ -936,14 +940,15 @@ class FormBuilder {
      */
     private function _renderCheckboxOrRadio(): string
     {
-        $attrs  = $this->_buildAttrs(["class" => "form-check-input", "type" => $this->_type, "value" => $this->_meta['value']]);
+        $attrs = $this->_buildAttrs(["class" => "custom-control-input", "type" => $this->_type, "value" => $this->_meta['value']]);
         $inline = $this->_checkInline ? ' form-check-inline' : '';
         $label  = $this->_e($this->_label);
         $id = $this->_getId();
+        $type = $this->_type;
 
         $this->_resetFlags();
 
-        return '<div class="form-check' . $inline . '"><input ' . $attrs . '><label class="form-check-label" for="'.$id.'">' . $label . '</label></div>';
+        return '<div class="custom-control custom-' . $type . ' ' . $inline . '"><input ' . $attrs . '><label class="custom-control-label" for="' . $id . '">' . $label . '</label></div>';
     }
 
     private function _arrayToHtmlAttrs($attributes){
