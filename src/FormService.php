@@ -564,6 +564,17 @@ class FormService {
     }
 
     /**
+     * Set a field class
+     *
+     * @param string $class
+     * @return FormService
+     */
+    public function class($class): FormService
+    {
+        return $this->_set('class', $class);
+    }
+
+    /**
      * Set a field name
      *
      * @param string $name

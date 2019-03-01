@@ -150,6 +150,13 @@ class FormBuilder {
     private $_id;
 
     /**
+     * Input class
+     *
+     * @var string
+     */
+    private $_class;
+
+    /**
      * Input name
      *
      * @var string
@@ -329,7 +336,8 @@ class FormBuilder {
      */
     public function fieldsetOpen(): string
     {
-        $attrs = $this->_buildAttrs(['class' => 'form-group']);
+        $this->_class .= ' form-group';
+        $attrs = $this->_buildAttrs();
         $ret = '<fieldset' . ($attrs ? (' ' . $attrs) : '') . '>';
 
         if ($this->_meta['legend']) {
@@ -614,17 +622,18 @@ class FormBuilder {
 
         if ($this->_type == 'anchor') {
             $href = $this->_url ?: 'javascript:void(0)';
+            $this->_class .= ' ' . $cls . $disabled;
             $attrs = $this->_buildAttrs(
-                    [
-                        'class' => $cls . $disabled,
-                        'href' => $href,
-                        'role' => 'button',
-                        'aria-disabled' => $disabled ? 'true' : null
-                    ]
+                [
+                    'href' => $href,
+                    'role' => 'button',
+                    'aria-disabled' => $disabled ? 'true' : null
+                ], ['class-form-control']
             );
             $ret = '<a ' . $attrs . '>' . $value . '</a>';
         } else {
-            $attrs = $this->_buildAttrs(['class' => $cls, 'type' => $this->_type]);
+            $this->_class .= ' ' . $cls;
+            $attrs = $this->_buildAttrs(['type' => $this->_type], ['class-form-control']);
             $ret = '<button ' . $attrs . ' ' . $disabled . '>' . $value . '</button>';
         }
 
@@ -690,7 +699,7 @@ class FormBuilder {
             $props['id'] = $this->_getId();
         }
 
-        $props['class'] = isset($props['class']) ? $props['class'] : '';
+        $props['class'] = $this->_class ?: '';
 
         if ($this->_type == 'select' && $this->_multiple && $this->_name) {
             $props['name'] = $props['name'] . '[]';
@@ -710,18 +719,18 @@ class FormBuilder {
 
         switch($this->_type) {
             case 'file':
-                $formControlClass = 'custom-file-input';
+                $formControlClass = ' custom-file-input';
                 break;
             case 'range':
-            $formControlClass = 'form-control-range';
+                $formControlClass = ' form-control-range';
                 break;
             default:
-                $formControlClass = 'form-control';
+                $formControlClass = ' form-control';
                 break;
         }
 
-        if (!$props['class'] && !in_array('class-form-control', $ignore)) {
-            $props['class'] = $formControlClass;
+        if (!in_array('class-form-control', $ignore)) {
+            $props['class'] .= $formControlClass;
         }
 
         if ($this->_size) {
@@ -940,7 +949,8 @@ class FormBuilder {
      */
     private function _renderCheckboxOrRadio(): string
     {
-        $attrs = $this->_buildAttrs(["class" => "custom-control-input", "type" => $this->_type, "value" => $this->_meta['value']]);
+        $this->_class .= ' custom-control-input';
+        $attrs = $this->_buildAttrs(["type" => $this->_type, "value" => $this->_meta['value']], ['class-form-control']);
         $inline = $this->_checkInline ? ' form-check-inline' : '';
         $label  = $this->_e($this->_label);
         $id = $this->_getId();
@@ -1044,6 +1054,7 @@ class FormBuilder {
         $this->_label = null;
         $this->_options = [];
         $this->_help = null;
+        $this->_class = null;
         $this->_prefix = null;
         $this->_suffix = null;
         $this->_color = "primary";
