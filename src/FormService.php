@@ -806,6 +806,28 @@ class FormService {
     }
 
     /**
+     * Set input group prefix
+     *
+     * @param string $prefix
+     * @return FormService
+     */
+    public function prefix(string $prefix): FormService
+    {
+        return $this->_set('prefix', $prefix);
+    }
+
+    /**
+     * Set input group suffix
+     *
+     * @param string $suffix
+     * @return FormService
+     */
+    public function suffix(string $suffix): FormService
+    {
+        return $this->_set('suffix', $suffix);
+    }
+
+    /**
      * Set a form builder attribute
      *
      * @param string $attr

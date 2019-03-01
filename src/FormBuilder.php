@@ -78,7 +78,7 @@ class FormBuilder {
      * @var array
      */
     private $_attrs;
-    
+
     /**
      * Input wrapper attributes
      *
@@ -211,6 +211,20 @@ class FormBuilder {
      * @var boolean
      */
     private $_multiple;
+
+    /**
+     * Input prefix
+     *
+     * @var string
+     */
+    private $_prefix;
+
+    /**
+     * Input suffix
+     *
+     * @var string
+     */
+    private $_suffix;
 
     public function __construct()
     {
@@ -837,6 +851,54 @@ class FormBuilder {
     }
 
     /**
+     * Return a prefix id HTML element
+     *
+     * @return string
+     */
+    private function _getIdPrefix()
+    {
+        $id = $this->_getId();
+
+        return $id ? 'prefix-' . $id : '';
+    }
+
+    /**
+     * Return a prefix
+     *
+     * @return string
+     */
+    private function _getPrefix(): string
+    {
+        $id = $this->_getIdPrefix();
+
+        return $this->_prefix ? '  <div class="input-group-prepend"><span class="input-group-text" id="' . $id . '">' . $this->_e($this->_prefix) . '</span></div>' : '';
+    }
+
+    /**
+     * Return a suffix id HTML element
+     *
+     * @return string
+     */
+    private function _getIdSuffix()
+    {
+        $id = $this->_getId();
+
+        return $id ? 'suffix-' . $id : '';
+    }
+
+    /**
+     * Return a suffix
+     *
+     * @return string
+     */
+    private function _getSuffix(): string
+    {
+        $id = $this->_getIdSuffix();
+
+        return $this->_suffix ? '  <div class="input-group-append"><span class="input-group-text" id="' . $id . '">' . $this->_e($this->_suffix) . '</span></div>' : '';
+    }
+
+    /**
      * Return a text with translations, if available
      *
      * @param string $key
@@ -906,6 +968,8 @@ class FormBuilder {
     {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
+        $prefix = $this->_getPrefix();
+        $suffix = $this->_getSuffix();
         $error = $this->_getValidationFieldMessage();
 
         $classList = isset($this->_wrapperAttrs['class']) ? $this->_wrapperAttrs['class'] : '';
@@ -921,7 +985,14 @@ class FormBuilder {
             $formGroupOpen = $formGroupClose = '';
         }
 
-        return $formGroupOpen . $label . $field . $help . $error . $formGroupClose;
+        $inputGroupOpen = $inputGroupClose = '';
+
+        if ($prefix || $suffix) {
+            $inputGroupOpen = '<div class="input-group">';
+            $inputGroupClose = '</div>';
+        }
+
+        return $formGroupOpen . $label . $inputGroupOpen . $prefix . $field . $suffix . $inputGroupClose . $help . $error . $formGroupClose;
     }
 
     /**
@@ -968,6 +1039,8 @@ class FormBuilder {
         $this->_label = null;
         $this->_options = [];
         $this->_help = null;
+        $this->_prefix = null;
+        $this->_suffix = null;
         $this->_color = "primary";
         $this->_outline = false;
         $this->_block = false;
