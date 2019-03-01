@@ -348,7 +348,7 @@ class FormBuilder {
     {
         $attrs = $this->_buildAttrs();
 
-        return $this->_renderWrapperCommomField('<input ' . $attrs . '>');
+        return $this->_renderWrapperCommonField('<input ' . $attrs . '>');
     }
 
     /**
@@ -466,7 +466,7 @@ class FormBuilder {
         $attrs = $this->_buildAttrs(['rows' => 3]);
         $value = $this->_getValue();
 
-        return $this->_renderWrapperCommomField('<textarea ' . $attrs . '>' . $value . '</textarea>');
+        return $this->_renderWrapperCommonField('<textarea ' . $attrs . '>' . $value . '</textarea>');
     }
 
     /**
@@ -503,7 +503,7 @@ class FormBuilder {
             }
         }
 
-        return $this->_renderWrapperCommomField('<select ' . $attrs . '>' . $options . '</select>');
+        return $this->_renderWrapperCommonField('<select ' . $attrs . '>' . $options . '</select>');
     }
 
     /**
@@ -577,7 +577,7 @@ class FormBuilder {
         $value = $this->_getValue();
         $attrs = $this->_buildAttrs(['value' => $value, 'type' => $type]);
 
-        return $this->_renderWrapperCommomField('<input ' . $attrs . '>');
+        return $this->_renderWrapperCommonField('<input ' . $attrs . '>');
     }
 
     /**
@@ -902,7 +902,7 @@ class FormBuilder {
      * @param string $field
      * @return string
      */
-    private function _renderWrapperCommomField(string $field): string
+    private function _renderWrapperCommonField(string $field): string
     {
         $label = $this->_getLabel();
         $help = $this->_getHelpText();
