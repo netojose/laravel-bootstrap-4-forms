@@ -951,7 +951,7 @@ class FormBuilder {
      */
     private function _resetFlags()
     {
-
+        $this->_required = null;
         $this->_render = null;
         $this->_meta = [];
         $this->_attrs = [];
