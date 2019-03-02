@@ -676,9 +676,10 @@ class FormBuilder {
      */
     private function _buildAttrs(array $props = [], array $ignore = []): string
     {
-        $props = array_merge(array_filter($this->_attrs, function($k){
-            return $k != 'class';
-        }, ARRAY_FILTER_USE_KEY), $props);
+        $props = array_merge($props,
+                             array_filter($this->_attrs, function($k){
+                                          return $k != 'class';
+                                         }, ARRAY_FILTER_USE_KEY));
 
         if($this->_type){
             $props['type'] = $this->_type;
