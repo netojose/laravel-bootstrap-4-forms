@@ -20,11 +20,11 @@ class FormBuilder {
     private $_Flocale;
 
     /**
-     * Form inline form flag
+     * Form style
      *
      * @var string
      */
-    private $_FinlineForm;
+    private $_FformStyle;
 
     /**
      * Form method
@@ -85,6 +85,13 @@ class FormBuilder {
      * @var array
      */
     private $_wrapperAttrs;
+
+	/**
+	 * Input wrapper flag
+	 *
+	 * @var array
+	 */
+	private $_wrapper;
 
     /**
      * Form control type
@@ -289,7 +296,7 @@ class FormBuilder {
             $props['enctype'] = 'multipart/form-data';
         }
 
-        if($this->_FinlineForm) {
+        if ($this->_FformStyle === 'inline') {
             $props['class'] = 'form-inline';
         }
 
@@ -637,9 +644,7 @@ class FormBuilder {
             $ret = '<button ' . $attrs . ' ' . $disabled . '>' . $value . '</button>';
         }
 
-        $this->_resetFlags();
-
-        return $ret;
+        return $this->_renderWrapperCommonField($ret, true);
     }
 
     /**
@@ -656,8 +661,10 @@ class FormBuilder {
         if ($label) {
 
             $classStr = '';
-            if($this->_FinlineForm) {
+            if ($this->_FformStyle === 'inline') {
                 $classStr = ' class="sr-only"';
+            } elseif($this->_FformStyle === 'horizontal') {
+            	$classStr = ' class="col-sm-2 col-form-label"';
             }
 
             $id = $this->_getId();
@@ -707,6 +714,8 @@ class FormBuilder {
 
         if ($this->_placeholder) {
             $props['placeholder'] = $this->_placeholder;
+        } elseif($this->_FformStyle === 'inline') {
+	        $props['placeholder'] = $this->_label;
         }
 
         if ($this->_help) {
@@ -737,7 +746,7 @@ class FormBuilder {
             $props['class'] .= ' '.$formControlClass.'-' . $this->_size;
         }
 
-        if($this->_FinlineForm) {
+        if ($this->_FformStyle === 'inline') {
             $props['class'] .= ' mb-2 mr-sm-2';
         }
 
@@ -956,9 +965,7 @@ class FormBuilder {
         $id = $this->_getId();
         $type = $this->_type;
 
-        $this->_resetFlags();
-
-        return '<div class="custom-control custom-' . $type . ' ' . $inline . '"><input ' . $attrs . '><label class="custom-control-label" for="' . $id . '">' . $label . '</label></div>';
+        return $this->_renderWrapperCommonField('<div class="custom-control custom-' . $type . ' ' . $inline . '"><input ' . $attrs . '><label class="custom-control-label" for="' . $id . '">' . $label . '</label></div>', true);
     }
 
     private function _arrayToHtmlAttrs($attributes){
@@ -973,38 +980,48 @@ class FormBuilder {
         );
     }
 
-    /**
-     * Return a input with a wrapper HTML markup
-     *
-     * @param string $field
-     * @return string
-     */
-    private function _renderWrapperCommonField(string $field): string
+	/**
+	 * Return a input with a wrapper HTML markup
+	 *
+	 * @param string $field
+	 * @param bool $hide_label
+	 * @return string
+	 */
+    private function _renderWrapperCommonField(string $field, $hide_label = false): string
     {
-        $label = $this->_getLabel();
+        $label = $hide_label ? '' : $this->_getLabel();
         $help = $this->_getHelpText();
         $prefix = $this->_getPrefix();
         $suffix = $this->_getSuffix();
         $error = $this->_getValidationFieldMessage();
 
-        $classList = isset($this->_wrapperAttrs['class']) ? $this->_wrapperAttrs['class'] : '';
-        $this->_wrapperAttrs['class'] = "form-group " . $classList;
-        $wrapperAttrs = $this->_arrayToHtmlAttrs($this->_wrapperAttrs);
+	    $formGroupOpen = $formGroupClose = '';
+        if ($this->_wrapper && $this->_FformStyle !== 'inline') {
+	        $classList = isset($this->_wrapperAttrs['class']) ? $this->_wrapperAttrs['class'] : '';
+	        $this->_wrapperAttrs['class'] = "form-group " . $classList;
 
-        $this->_resetFlags();
+	        if ($this->_FformStyle === 'horizontal') {
+		        $this->_wrapperAttrs['class'] .= ' row';
+	        }
 
-        $formGroupOpen = '<div '.$wrapperAttrs.'>';
-        $formGroupClose = '</div>';
+	        $wrapperAttrs = $this->_arrayToHtmlAttrs($this->_wrapperAttrs);
 
-        if($this->_FinlineForm) {
-            $formGroupOpen = $formGroupClose = '';
+	        $formGroupOpen = '<div ' . $wrapperAttrs . '>';
+	        $formGroupClose = '</div>';
         }
 
-        $inputGroupOpen = $inputGroupClose = '';
+	    $this->_resetFlags();
+
+	    $inputGroupOpen = $inputGroupClose = '';
+
+	    if ($this->_wrapper && $this->_FformStyle === 'horizontal') {
+		    $inputGroupOpen .= '<div class="col-sm-10">';
+		    $inputGroupClose .= '</div>';
+	    }
 
         if ($prefix || $suffix) {
-            $inputGroupOpen = '<div class="input-group">';
-            $inputGroupClose = '</div>';
+            $inputGroupOpen .= '<div class="input-group">';
+            $inputGroupClose .= '</div>';
         }
 
         return $formGroupOpen . $label . $inputGroupOpen . $prefix . $field . $suffix . $inputGroupClose . $help . $error . $formGroupClose;
@@ -1038,6 +1055,7 @@ class FormBuilder {
     private function _resetFlags()
     {
         $this->_required = null;
+        $this->_wrapper = true;
         $this->_render = null;
         $this->_meta = [];
         $this->_attrs = [];
@@ -1074,7 +1092,7 @@ class FormBuilder {
         $this->_Flocale = null;
         $this->_Fmethod = 'post';
         $this->_Fmultipart = false;
-        $this->_FinlineForm = false;
+        $this->_FformStyle = 'standard';
         $this->_Fdata = null;
         $this->_FidPrefix = '';
         $this->_Fautocomplete = null;
