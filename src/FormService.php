@@ -198,7 +198,34 @@ class FormService {
      */
     public function inlineForm(bool $inline = true): FormService
     {
-        return $this->_set('FinlineForm', $inline);
+    	if($inline) {
+		    return $this->_set('FformStyle', 'inline');
+	    }else{
+    		return $this;
+	    }
+    }
+
+	/**
+	 * @param bool $wrapper
+	 * @return FormService
+	 */
+	public function noWrapper(bool $wrapper = false)
+    {
+	    return $this->_set('wrapper', $wrapper);
+    }
+
+	/**
+	 * Set horizontal form
+	 * @param bool $horizontal
+	 * @return FormService
+	 */
+	public function horizontalForm(bool $horizontal = true): FormService
+    {
+	    if($horizontal) {
+		    return $this->_set('FformStyle', 'horizontal');
+	    }else{
+		    return $this;
+	    }
     }
 
     /**
