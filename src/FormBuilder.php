@@ -1000,7 +1000,7 @@ class FormBuilder {
 	        $classList = isset($this->_wrapperAttrs['class']) ? $this->_wrapperAttrs['class'] : '';
 	        $this->_wrapperAttrs['class'] = "form-group " . $classList;
 
-	        if ($this->_FformStyle === 'horizontal') {
+	        if ($this->_FformStyle === 'horizontal'  && !$hide_label) {
 		        $this->_wrapperAttrs['class'] .= ' row';
 	        }
 
@@ -1012,7 +1012,7 @@ class FormBuilder {
 
 	    $inputGroupOpen = $inputGroupClose = '';
 
-	    if ($this->_wrapper && $this->_FformStyle === 'horizontal') {
+	    if ($this->_wrapper && $this->_FformStyle === 'horizontal' && !$hide_label) {
 		    $inputGroupOpen .= '<div class="col-sm-10">';
 		    $inputGroupClose .= '</div>';
 	    }
