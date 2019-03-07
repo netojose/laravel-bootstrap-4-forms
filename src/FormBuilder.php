@@ -1010,8 +1010,6 @@ class FormBuilder {
 	        $formGroupClose = '</div>';
         }
 
-	    $this->_resetFlags();
-
 	    $inputGroupOpen = $inputGroupClose = '';
 
 	    if ($this->_wrapper && $this->_FformStyle === 'horizontal') {
@@ -1024,7 +1022,9 @@ class FormBuilder {
             $inputGroupClose .= '</div>';
         }
 
-        return $formGroupOpen . $label . $inputGroupOpen . $prefix . $field . $suffix . $inputGroupClose . $help . $error . $formGroupClose;
+	    $this->_resetFlags();
+
+	    return $formGroupOpen . $label . $inputGroupOpen . $prefix . $field . $suffix . $inputGroupClose . $help . $error . $formGroupClose;
     }
 
     /**
