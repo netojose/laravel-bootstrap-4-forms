@@ -26,6 +26,13 @@ class FormBuilder {
      */
     private $_FformStyle;
 
+	/**
+	 * Form error bag name
+	 *
+	 * @var string
+	 */
+	private $_FerrorBag;
+
     /**
      * Form method
      *
@@ -803,6 +810,10 @@ class FormBuilder {
         $name = $this->_name;
 
         if ($this->_hasOldInput()) {
+        	if(str_contains($name, '[')){
+        		$old_name = str_replace('[', '.', str_replace(']', '', $name));
+        		return old($old_name);
+	        }
             return old($name);
         }
 
@@ -940,7 +951,7 @@ class FormBuilder {
             return '';
         }
 
-        if (session('errors') === null) {
+        if (!$this->_getErrors()) {
             return '';
         }
 
@@ -1027,6 +1038,25 @@ class FormBuilder {
 	    return $formGroupOpen . $label . $inputGroupOpen . $prefix . $field . $suffix . $inputGroupClose . $help . $error . $formGroupClose;
     }
 
+    private function _getErrors()
+    {
+	    $errors = session('errors');
+
+	    if (!$errors) {
+		    return null;
+	    }
+
+	    if ($this->_FerrorBag) {
+		    $errors = $errors->{$this->_FerrorBag};
+	    }
+
+	    if ($errors->isEmpty()) {
+	    	return null;
+	    }
+
+	    return $errors;
+    }
+
     /**
      * Return a validation error message
      *
@@ -1034,19 +1064,16 @@ class FormBuilder {
      * @param string $sufix
      * @return string|null
      */
-    private function _getValidationFieldMessage(string $prefix = '<div class="invalid-feedback">', string $sufix = '</div>')
+    private function _getValidationFieldMessage(string $prefix = '<div class="invalid-feedback d-block">', string $sufix = '</div>')
     {
-        $errors = session('errors');
-        if (!$errors) {
-            return null;
-        }
-        $error = $errors->first($this->_name);
+        $errors = $this->_getErrors();
 
-        if (!$error) {
-            return null;
+        $name = $this->_name;
+        if(str_contains($name, '[')){
+	        $name = str_replace('[', '.', str_replace(']', '', $name));
         }
 
-        return $prefix . $error . $sufix;
+        return $this->_name && $errors && $errors->has($name) ? $prefix . $errors->first($name) . $sufix : null;
     }
 
     /**
@@ -1091,6 +1118,7 @@ class FormBuilder {
 
         $this->_Flocale = null;
         $this->_Fmethod = 'post';
+        $this->_FerrorBag = null;
         $this->_Fmultipart = false;
         $this->_FformStyle = 'standard';
         $this->_Fdata = null;
