@@ -971,7 +971,7 @@ class FormBuilder {
     {
         $this->_class .= ' custom-control-input';
         $attrs = $this->_buildAttrs(["type" => $this->_type, "value" => $this->_meta['value']], ['class-form-control']);
-        $inline = $this->_checkInline ? ' form-check-inline' : '';
+        $inline = $this->_checkInline ? ' custom-control-inline' : '';
         $label  = $this->_e($this->_label);
         $id = $this->_getId();
         $type = $this->_type;
