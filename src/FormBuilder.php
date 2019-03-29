@@ -847,7 +847,7 @@ class FormBuilder {
 
         if (!$id && $this->_name) {
             $id = $this->_name;
-            if ($this->_type === 'radio') {
+            if ($this->_type === 'radio' || $this->_type === 'checkbox') {
                 $id .= '-' . str_slug($this->_meta['value']);
             }
         }
