@@ -804,7 +804,7 @@ class FormBuilder {
         $name = $this->_name;
 
         if ($this->_hasOldInput()) {
-            return old($name);
+            return old($this->_transformToDotSyntax($name));
         }
 
         if ($this->_value !== null) {
@@ -1041,7 +1041,7 @@ class FormBuilder {
         if (!$errors) {
             return null;
         }
-        $error = $errors->first($this->_name);
+        $error = $errors->first($this->_transformToDotSyntax($this->_name));
 
         if (!$error) {
             return null;
@@ -1097,6 +1097,14 @@ class FormBuilder {
         $this->_Fdata = null;
         $this->_FidPrefix = '';
         $this->_Fautocomplete = null;
+    }
+
+    /**
+     * Convert to validator dot syntax
+     */
+    private function _transformToDotSyntax($string)
+    {
+        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $string);
     }
 
 }
