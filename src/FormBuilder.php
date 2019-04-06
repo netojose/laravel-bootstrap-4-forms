@@ -804,7 +804,7 @@ class FormBuilder {
         $name = $this->_name;
 
         if ($this->_hasOldInput()) {
-            return old($name);
+            return old($this->_transformToDotSyntax($name));
         }
 
         if ($this->_value !== null) {
