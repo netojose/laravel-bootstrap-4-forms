@@ -540,6 +540,46 @@ class FormBuilder {
     }
 
     /**
+     * Return a select2 tag
+     *
+     * @return string
+     */
+    public function select2(): string
+    {
+        $this->_class = 'select2';
+        $this->_attrs['style'] = 'width: 100%;';
+
+        $attrs = $this->_buildAttrs();
+        $value = $this->_getValue();
+        $options = '<option></option>';
+
+        if ($this->_multiple) {
+            if (!is_array($value)) {
+                $value = [$value];
+            }
+
+            foreach ($this->_options as $key => $label) {
+
+                if (array_key_exists($key, $value)) {
+                    $match = true;
+                } else {
+                    $match = false;
+                }
+
+                $checked = ($match) ? ' selected' : '';
+                $options .= '<option value="' . $key . '"' . $checked . '>' . $label . '</option>';
+            }
+        } else {
+            foreach ($this->_options as $optvalue => $label) {
+                $checked = $optvalue == $value ? ' selected' : '';
+                $options .= '<option value="' . $optvalue . '"' . $checked . '>' . $label . '</option>';
+            }
+        }
+
+        return $this->_renderWrapperCommonField('<select ' . $attrs . '>' . $options . '</select>');
+    }
+
+    /**
      * Return a checkbox tag
      *
      * @return string
@@ -660,7 +700,7 @@ class FormBuilder {
 
         if ($label) {
 
-            $classStr = '';
+            $classStr = ' class="form-label"';
             if ($this->_FformStyle === 'inline') {
                 $classStr = ' class="sr-only"';
             } elseif($this->_FformStyle === 'horizontal') {
