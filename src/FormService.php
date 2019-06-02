@@ -900,4 +900,16 @@ class FormService {
         return $this->_set('meta', ['value' => $inputValue])->type($type)->name($name)->label($label)->value($default);
     }
 
+    /**
+     * Disable the insertion of
+     * Bootstrap's is-valid CSS class
+     *
+     * @param bool $status
+     * @return FormService
+     */
+    public function disableIsValid($status = true): FormService
+    {
+        return $this->_set('disableIsValid', $status);
+    }
+
 }

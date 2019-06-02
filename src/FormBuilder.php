@@ -240,6 +240,14 @@ class FormBuilder {
      */
     private $_suffix;
 
+    /**
+     * Disable is valid flag
+     *
+     * @var boolean
+     */
+
+    private $_disableIsValid;
+
     public function __construct()
     {
         $this->_resetFlags();
@@ -947,6 +955,10 @@ class FormBuilder {
 
         if ($this->_getValidationFieldMessage()) {
             return ' is-invalid';
+        }
+
+        if ($this->_disableIsValid) {
+            return '';
         }
 
         return ' is-valid';
