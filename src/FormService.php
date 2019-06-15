@@ -7,7 +7,8 @@ namespace NetoJose\Bootstrap4Forms;
  *
  * @author neto
  */
-class FormService {
+class FormService
+{
 
     /**
      * Create a new FormSevice instance
@@ -164,13 +165,13 @@ class FormService {
     }
 
     /**
-     * Set inline style for checkbox and radio inputs
+     * Set inline form style
      * @param bool $inline
      * @return FormService
      */
     public function inline(bool $inline = true): FormService
     {
-        return $this;
+        return $this->_set('formInline', $inline);
     }
 
     /**
@@ -390,28 +391,38 @@ class FormService {
      * Create a checkbox input
      *
      * @param string $name
-     * @param string $label
      * @param string $value
-     * @param string $default
+     * @param string $label
+     * @param bool   $checked
      * @return FormService
      */
-    public function checkbox(string $name = null, string $label = null, string $value = null, string $default = null): FormService
+    public function checkbox(string $name = null, string $value = 'on', string $label = null, bool $checked = null): FormService
     {
-        return $this;
+        return $this->_radioOrCheckbox('checkbox', $name, $value, $label, $checked);
     }
 
     /**
      * Create a radio input
      *
      * @param string $name
-     * @param string $label
      * @param string $value
-     * @param string $default
+     * @param string $label
+     * @param bool   $checked
      * @return FormService
      */
-    public function radio(string $name = null, string $label = null, string $value = null, string $default = null): FormService
+    public function radio(string $name = null, string $value = null, string $label = null, bool $checked = null): FormService
     {
-        return $this;
+        return $this->_radioOrCheckbox('radio', $name, $value, $label, $checked);
+    }
+
+    /**
+     * Set inline input style
+     * @param bool $inline
+     * @return FormService
+     */
+    public function inlineInput(bool $inline = true): FormService
+    {
+        return $this->_set('inline', $inline);
     }
 
     /**
@@ -424,7 +435,7 @@ class FormService {
      */
     public function textarea(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this;
+        return $this->_set('render', 'textarea')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -484,9 +495,9 @@ class FormService {
      * @param string $url
      * @return FormService
      */
-    public function anchor(string $value, $url = null): FormService
+    public function anchor(string $value, $url = null, $color = 'primary', $size = null): FormService
     {
-        return $this;
+        return $this->_set('render', 'anchor')->value($value)->url($url)->color($color)->size($size);
     }
 
     /**
@@ -497,7 +508,7 @@ class FormService {
      */
     public function checked(bool $checked = true): FormService
     {
-        return $this;
+        return $this->_set('checked', $checked);
     }
 
     /**
@@ -704,7 +715,7 @@ class FormService {
      * @param bool $status
      * @return FormService
      */
-    public function block(bool $status= true): FormService
+    public function block(bool $status = true): FormService
     {
         return $this->_set('block', $status);
     }
@@ -737,7 +748,7 @@ class FormService {
      * @param bool $status
      * @return FormService
      */
-    public function required($status = true) : FormService
+    public function required($status = true): FormService
     {
         return $this->_set('required', $status);
     }
@@ -773,6 +784,24 @@ class FormService {
     public function wrapperAttrs(array $attrs = []): FormService
     {
         return $this->_set('wrapperAttrs', $attrs);
+    }
+
+    /**
+     * Create radio or checkbox input
+     *
+     * @param string $render
+     * @param string $name
+     * @param string $value
+     * @param string $label
+     * @param mixed  $checked
+     * @return FormService
+     */
+    private function _radioOrCheckbox($render, $name, $value, $label, $checked): FormService
+    {
+        if (is_bool($checked)) {
+            $this->checked($checked);
+        }
+        return $this->_set('render', $render)->name($name)->label($label)->value($value);
     }
 
     /**
