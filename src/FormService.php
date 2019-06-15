@@ -180,9 +180,9 @@ class FormService
      * @param string $url
      * @return FormService
      */
-    public function url(string $url): FormService
+    public function url(string $url = null): FormService
     {
-        return $this->_set('url', url($url));
+        return $this->_set('url', url($url ?? ''));
     }
 
     /**
