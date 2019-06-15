@@ -2,6 +2,8 @@
 
 namespace NetoJose\Bootstrap4Forms;
 
+use Illuminate\Support\ViewErrorBag;
+
 class FormBuilder
 {
 
@@ -193,6 +195,10 @@ class FormBuilder
 
         $id = $this->_getId();
 
+        if ($this->errors()->has($name)) {
+            $class .= ' is-invalid';
+        }
+
         $attributes = [
             'type' => $type,
             'name' => $name,
@@ -266,7 +272,7 @@ class FormBuilder
 
     private function _wrapperInput(string $input): string
     {
-        extract($this->_get('type', 'help', 'wrapperAttrs', 'formInline'));
+        extract($this->_get('type', 'help', 'wrapperAttrs', 'formInline', 'name'));
 
         if ($type === 'hidden') {
             return $input;
@@ -275,6 +281,7 @@ class FormBuilder
         $id             = $this->_getId();
         $label          = $this->renderLabel();
         $helpText       = $help ? '<small id="help-' . $id . '" class="form-text text-muted">' . $this->_getText($help) . '</small>' : '';
+        $error          = $this->getInputErrorMarkup($name);
         $attrs          = $wrapperAttrs ?? [];
         $attrs['class'] = $this->createAttrsList(
             $attrs['class'] ?? null,
@@ -282,19 +289,29 @@ class FormBuilder
         );
         $attributes = $this->_buildHtmlAttrs($attrs, false);
 
-        return '<div ' . $attributes . '>' . $label . $input . $helpText . '</div>';
+        return '<div ' . $attributes . '>' . $label . $input . $helpText . $error . '</div>';
     }
 
     private function _wrapperRadioCheckbox(string $input): string
     {
-        extract($this->_get('inline'));
+        extract($this->_get('inline', 'name'));
 
         $class = $this->createAttrsList('form-check', [$inline, 'form-check-inline']);
         $label = $this->renderLabel();
+        $error = $this->getInputErrorMarkup($name);
         return '
         <div class="' . $class . '">
             ' . $input . '
             ' . $label . '
+            ' . $error . '
+        </div>';
+    }
+
+    private function getInputErrorMarkup(string $name): string
+    {
+        return '
+        <div class="invalid-feedback">
+            ' . $this->errors()->first($name) . '
         </div>';
     }
 
@@ -330,7 +347,7 @@ class FormBuilder
                 $value = $attributes[$key];
                 if (is_bool($value)) {
                     return $value ? $key : '';
-                } elseif ($value) {
+                } elseif ($value !== null) {
                     return $key . '="' . htmlspecialchars($value) . '"';
                 }
                 return '';
@@ -348,6 +365,11 @@ class FormBuilder
             $attrs[] = $item;
         }
         return join(' ', array_filter($attrs));
+    }
+
+    private function errors(): ViewErrorBag
+    {
+        return session('errors', app(ViewErrorBag::class));
     }
 
     private function _get(...$keys): array
