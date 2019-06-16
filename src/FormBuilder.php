@@ -190,7 +190,7 @@ class FormBuilder
 
     private function getInputAttributes(): array
     {
-        extract($this->_get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked'));
+        extract($this->_get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData'));
 
         $isRadioOrCheckbox = $this->isRadioOrCheckbox();
         $type = $isRadioOrCheckbox ? $render : $type;
@@ -236,9 +236,10 @@ class FormBuilder
         }
 
         if ($this->isRadioOrCheckbox()) {
-            $isChecked = $checked;
             if ($this->hasOldInput()) {
                 $isChecked = old($name) === $value;
+            } else {
+                $isChecked = isset($formData[$name]) ? $formData[$name] === $value : $checked;
             }
             $attributes['checked'] = $isChecked;
         }
