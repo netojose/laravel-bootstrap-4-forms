@@ -11,14 +11,14 @@ class FormBuilder
 
     public function set($key, $value)
     {
-        $formatter = '_format' . ucfirst($key);
+        $formatter = 'format' . ucfirst($key);
         if (method_exists($this, $formatter)) {
             $value = $this->$formatter($value);
         }
-        $this->_attrs[$key] = $value;
+        $this->attrs[$key] = $value;
     }
 
-    private function _formatFormData($value)
+    private function formatFormData($value)
     {
         if (is_object($value) && method_exists($value, 'toArray')) {
             return $value->toArray();
@@ -28,16 +28,16 @@ class FormBuilder
 
     public function render(): string
     {
-        $render = $this->_attrs['render'];
-        $methodName = '_render' . ucfirst($render);
+        $render = $this->attrs['render'];
+        $methodName = 'render' . ucfirst($render);
         $output = $this->$methodName();
-        $this->_resetAttributes();
+        $this->resetAttributes();
         return $output;
     }
 
-    private function _renderFormOpen(): string
+    private function renderFormOpen(): string
     {
-        extract($this->_get('method', 'url', 'formMultipart', 'formInline', 'autocomplete'));
+        extract($this->get('method', 'url', 'formMultipart', 'formInline', 'autocomplete'));
 
         if (!$method) {
             $method = 'post';
@@ -45,7 +45,7 @@ class FormBuilder
 
         $enctype = $formMultipart ? 'multipart/form-data' : null;
 
-        $attrs = $this->_buildHtmlAttrs([
+        $attrs = $this->buildHtmlAttrs([
             'method' => $method,
             'action' => $url,
             'enctype' => $enctype,
@@ -65,38 +65,38 @@ class FormBuilder
         return $output;
     }
 
-    private function _renderFormClose(): string
+    private function renderFormClose(): string
     {
-        $this->_resetAttributes(true);
+        $this->resetAttributes(true);
         return '</form>';
     }
 
-    private function _renderFieldsetOpen(): string
+    private function renderFieldsetOpen(): string
     {
         $output = '<fieldset>';
-        extract($this->_get('legend'));
+        extract($this->get('legend'));
 
         if ($legend) {
-            $output .= '<legend>' . $this->_getText($legend) . '</legend>';
+            $output .= '<legend>' . $this->getText($legend) . '</legend>';
         }
 
         return $output;
     }
 
-    private function _renderFieldsetClose(): string
+    private function renderFieldsetClose(): string
     {
         return '</fieldset>';
     }
 
-    private function _renderErrors(): string
+    private function renderErrors(): string
     {
         $errors = $this->errors()->all();
         if (count($errors) < 1) {
             return '';
         }
 
-        extract($this->_get('errorsHeader', 'id'));
-        $attrs = $this->_buildHtmlAttrs(['class' => 'alert alert-danger', 'role' => 'alert', 'id' => $id]);
+        extract($this->get('errorsHeader', 'id'));
+        $attrs = $this->buildHtmlAttrs(['class' => 'alert alert-danger', 'role' => 'alert', 'id' => $id]);
         $output = '<div ' . $attrs . '><ul class="list-unstyled">';
         if ($errorsHeader) {
             $output .= '<h4 class="alert-heading">' . $errorsHeader . '</h4>';
@@ -107,72 +107,72 @@ class FormBuilder
         return $output . '</ul></div>';
     }
 
-    private function _renderInput(): string
+    private function renderInput(): string
     {
         $attributes = $this->getInputAttributes();
-        $attrs = $this->_buildHtmlAttrs($attributes);
-        return $this->_wrapperInput('<input ' . $attrs . '>');
+        $attrs = $this->buildHtmlAttrs($attributes);
+        return $this->wrapperInput('<input ' . $attrs . '>');
     }
 
-    private function _renderSelect(): string
+    private function renderSelect(): string
     {
-        extract($this->_get('options'));
+        extract($this->get('options'));
 
-        $fieldValue = $this->_getValue();
+        $fieldValue = $this->getValue();
         $arrValues = is_array($fieldValue) ? $fieldValue : [$fieldValue];
         $optionsList = '';
         foreach ($options as $value => $label) {
-            $attrs = $this->_buildHtmlAttrs(['value' => $value, 'selected' => in_array($value, $arrValues)], false);
+            $attrs = $this->buildHtmlAttrs(['value' => $value, 'selected' => in_array($value, $arrValues)], false);
             $optionsList .= '<option ' . $attrs . '>' . $label . '</option>';
         }
 
         $attributes = $this->getInputAttributes();
-        $attrs = $this->_buildHtmlAttrs($attributes);
-        return $this->_wrapperInput('<select ' . $attrs . '>' . $optionsList . '</select>');
+        $attrs = $this->buildHtmlAttrs($attributes);
+        return $this->wrapperInput('<select ' . $attrs . '>' . $optionsList . '</select>');
     }
 
-    private function _renderTextarea(): string
+    private function renderTextarea(): string
     {
         $attributes = $this->getInputAttributes();
         $value = $attributes['value'];
         unset($attributes['value']);
-        $attrs = $this->_buildHtmlAttrs($attributes);
-        return $this->_wrapperInput('<textarea ' . $attrs . '>' . htmlspecialchars($value) . '</textarea>');
+        $attrs = $this->buildHtmlAttrs($attributes);
+        return $this->wrapperInput('<textarea ' . $attrs . '>' . htmlspecialchars($value) . '</textarea>');
     }
 
-    private function _renderCheckbox(): string
+    private function renderCheckbox(): string
     {
         $attributes = $this->getInputAttributes();
-        $attrs = $this->_buildHtmlAttrs($attributes);
-        return $this->_wrapperRadioCheckbox('<input ' . $attrs . '>');
+        $attrs = $this->buildHtmlAttrs($attributes);
+        return $this->wrapperRadioCheckbox('<input ' . $attrs . '>');
     }
 
-    private function _renderRadio(): string
+    private function renderRadio(): string
     {
         $attributes = $this->getInputAttributes();
-        $attrs = $this->_buildHtmlAttrs($attributes);
-        return $this->_wrapperRadioCheckbox('<input ' . $attrs . '>');
+        $attrs = $this->buildHtmlAttrs($attributes);
+        return $this->wrapperRadioCheckbox('<input ' . $attrs . '>');
     }
 
-    private function _renderAnchor(): string
+    private function renderAnchor(): string
     {
-        extract($this->_get('url', 'value'));
+        extract($this->get('url', 'value'));
         $class = $this->getBtnAnchorClasses();
-        $attrs = $this->_buildHtmlAttrs(['href' => $url, 'class' => $class]);
+        $attrs = $this->buildHtmlAttrs(['href' => $url, 'class' => $class]);
         return '<a ' . $attrs . '>' . $value . '</a>';
     }
 
-    private function _renderButton(): string
+    private function renderButton(): string
     {
-        extract($this->_get('type', 'value', 'disabled'));
+        extract($this->get('type', 'value', 'disabled'));
         $class = $this->getBtnAnchorClasses();
-        $attrs = $this->_buildHtmlAttrs(['type' => $type, 'class' => $class, 'disabled' => $disabled]);
+        $attrs = $this->buildHtmlAttrs(['type' => $type, 'class' => $class, 'disabled' => $disabled]);
         return '<button ' . $attrs . '>' . $value . '</button>';
     }
 
     private function getBtnAnchorClasses()
     {
-        extract($this->_get('size', 'color', 'outline', 'block', 'type', 'value', 'formInline'));
+        extract($this->get('size', 'color', 'outline', 'block', 'type', 'value', 'formInline'));
         return $this->createAttrsList(
             'btn',
             [$size, 'btn-' . $size],
@@ -184,13 +184,13 @@ class FormBuilder
 
     private function isRadioOrCheckbox(): bool
     {
-        extract($this->_get('render'));
+        extract($this->get('render'));
         return in_array($render, ['checkbox', 'radio']);
     }
 
     private function getInputAttributes(): array
     {
-        extract($this->_get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData'));
+        extract($this->get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData'));
 
         $isRadioOrCheckbox = $this->isRadioOrCheckbox();
         $type = $isRadioOrCheckbox ? $render : $type;
@@ -212,7 +212,7 @@ class FormBuilder
             }
         }
 
-        $id = $this->_getId();
+        $id = $this->getId();
 
         if ($this->errors()->count() > 0) {
             $class .= $this->errors()->has($name) ? ' is-invalid' : ' is-valid';
@@ -225,7 +225,7 @@ class FormBuilder
         ];
 
         if ($render !== 'select') {
-            $attributes['value'] = $this->_getValue();
+            $attributes['value'] = $this->getValue();
         } else {
             $attributes['multiple'] = $multiple;
         }
@@ -249,7 +249,7 @@ class FormBuilder
             'min' => $min,
             'max' => $max,
             'autocomplete' => $autocomplete,
-            'placeholder' => $this->_getText($placeholder),
+            'placeholder' => $this->getText($placeholder),
             'aria-describedby' => $help ? 'help-' . $id : null,
             'disabled' => $disabled,
             'readonly' => $readonly,
@@ -259,69 +259,69 @@ class FormBuilder
 
     private function renderLabel(): string
     {
-        extract($this->_get('label', 'formInline', 'render'));
+        extract($this->get('label', 'formInline', 'render'));
 
         $class = in_array($render, ['checkbox', 'radio']) ? 'form-check-label' : '';
         if ($formInline) {
             $class = join(' ', [$class, 'mx-sm-2']);
         }
 
-        $id = $this->_getId();
-        $attrs = $this->_buildHtmlAttrs([
+        $id = $this->getId();
+        $attrs = $this->buildHtmlAttrs([
             'for' => $id,
             'class' => $class
         ]);
-        return '<label ' . $attrs . '>' . $this->_getText($label) . '</label>';
+        return '<label ' . $attrs . '>' . $this->getText($label) . '</label>';
     }
 
-    private function _getText($key)
+    private function getText($key)
     {
-        extract($this->_get('formLocale'));
+        extract($this->get('formLocale'));
         if ($formLocale) {
             return __($formLocale . '.' . $key);
         }
         return $key;
     }
 
-    private function _resetAttributes($resetAll = false)
+    private function resetAttributes($resetAll = false)
     {
         // Remove all attributes
         if ($resetAll) {
-            $this->_attrs = [];
+            $this->attrs = [];
             return;
         }
 
         // Keep attributes which key starting with 'form'
-        $this->_attrs = array_filter($this->_attrs, function ($key) {
+        $this->attrs = array_filter($this->attrs, function ($key) {
             return substr($key, 0, 4) === 'form';
         }, ARRAY_FILTER_USE_KEY);
     }
 
-    private function _wrapperInput(string $input): string
+    private function wrapperInput(string $input): string
     {
-        extract($this->_get('type', 'help', 'wrapperAttrs', 'formInline', 'name'));
+        extract($this->get('type', 'help', 'wrapperAttrs', 'formInline', 'name'));
 
         if ($type === 'hidden') {
             return $input;
         }
 
-        $id             = $this->_getId();
+        $id             = $this->getId();
         $label          = $this->renderLabel();
-        $helpText       = $help ? '<small id="help-' . $id . '" class="form-text text-muted">' . $this->_getText($help) . '</small>' : '';
+        $helpText       = $help ? '<small id="help-' . $id . '" class="form-text text-muted">' . $this->getText($help) . '</small>' : '';
         $error          = $this->getInputErrorMarkup($name);
         $attrs          = $wrapperAttrs ?? [];
         $attrs['class'] = $this->createAttrsList(
             $attrs['class'] ?? null,
             $formInline ? 'input-group' : 'form-group'
         );
-        $attributes = $this->_buildHtmlAttrs($attrs, false);
+        $attributes = $this->buildHtmlAttrs($attrs, false);
 
         return '<div ' . $attributes . '>' . $label . $input . $helpText . $error . '</div>';
     }
 
-    private function _wrapperRadioCheckbox(string $input): string
+    private function wrapperRadioCheckbox(string $input): string
     {
-        extract($this->_get('inline', 'name'));
+        extract($this->get('inline', 'name'));
 
         $class = $this->createAttrsList('form-check', [$inline, 'form-check-inline']);
         $label = $this->renderLabel();
@@ -338,9 +338,9 @@ class FormBuilder
         return '<div class="invalid-feedback">' . $this->errors()->first($name) . '</div>';
     }
 
-    private function _getId()
+    private function getId()
     {
-        extract($this->_get('id', 'name', 'formIdPrefix', 'render', 'value'));
+        extract($this->get('id', 'name', 'formIdPrefix', 'render', 'value'));
 
         if ($id) {
             return $id;
@@ -354,20 +354,20 @@ class FormBuilder
         return count((array)old()) != 0;
     }
 
-    private function _getValue()
+    private function getValue()
     {
-        extract($this->_get('name', 'value', 'formData'));
+        extract($this->get('name', 'value', 'formData'));
         if ($this->isRadioOrCheckbox()) {
             return $value;
         }
         return old($name, $value) ?? ($formData[$name] ?? null);
     }
 
-    private function _buildHtmlAttrs(array $attributes, $appendAttrs = true): string
+    private function buildHtmlAttrs(array $attributes, $appendAttrs = true): string
     {
 
         if ($appendAttrs) {
-            extract($this->_get('attrs'));
+            extract($this->get('attrs'));
             $fieldAttrs = $attrs ?? [];
             $class = $this->createAttrsList($attributes['class'] ?? null, $fieldAttrs['class'] ?? null);
             if ($class) {
@@ -406,11 +406,11 @@ class FormBuilder
         return session('errors', app(ViewErrorBag::class));
     }
 
-    private function _get(...$keys): array
+    private function get(...$keys): array
     {
         $return = [];
         foreach ($keys as $key) {
-            $return[$key] = $this->_attrs[$key] ?? null;
+            $return[$key] = $this->attrs[$key] ?? null;
         }
         return $return;
     }
