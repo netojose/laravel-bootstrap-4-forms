@@ -353,7 +353,10 @@ class FormBuilder
         if ($appendAttrs) {
             extract($this->_get('attrs'));
             $fieldAttrs = $attrs ?? [];
-            $attributes['class'] = $this->createAttrsList($attributes['class'] ?? null, $fieldAttrs['class'] ?? null);
+            $class = $this->createAttrsList($attributes['class'] ?? null, $fieldAttrs['class'] ?? null);
+            if ($class) {
+                $attributes['class'] = $class;
+            }
             $attributes = array_merge($fieldAttrs, $attributes);
         }
 
