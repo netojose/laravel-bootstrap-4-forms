@@ -318,20 +318,16 @@ class FormBuilder
         $class = $this->createAttrsList('form-check', [$inline, 'form-check-inline']);
         $label = $this->renderLabel();
         $error = $this->getInputErrorMarkup($name);
-        return '
-        <div class="' . $class . '">
-            ' . $input . '
-            ' . $label . '
-            ' . $error . '
-        </div>';
+        return '<div class="' . $class . '">' . $input . $label . $error . '</div>';
     }
 
     private function getInputErrorMarkup(string $name): string
     {
-        return '
-        <div class="invalid-feedback">
-            ' . $this->errors()->first($name) . '
-        </div>';
+        $error = $this->errors()->first($name);
+        if (!$error) {
+            return '';
+        }
+        return '<div class="invalid-feedback">' . $this->errors()->first($name) . '</div>';
     }
 
     private function _getId()
