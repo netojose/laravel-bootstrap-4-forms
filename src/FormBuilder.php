@@ -214,8 +214,8 @@ class FormBuilder
 
         $id = $this->_getId();
 
-        if ($this->errors()->has($name)) {
-            $class .= ' is-invalid';
+        if ($this->errors()->count() > 0) {
+            $class .= $this->errors()->has($name) ? ' is-invalid' : ' is-valid';
         }
 
         $attributes = [
