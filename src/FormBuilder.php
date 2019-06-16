@@ -190,7 +190,7 @@ class FormBuilder
 
     private function getInputAttributes(): array
     {
-        extract($this->_get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'checked'));
+        extract($this->_get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked'));
 
         $isRadioOrCheckbox = $this->isRadioOrCheckbox();
         $type = $isRadioOrCheckbox ? $render : $type;
@@ -235,6 +235,14 @@ class FormBuilder
             return $attributes;
         }
 
+        if ($this->isRadioOrCheckbox()) {
+            $isChecked = $checked;
+            if ($this->hasOldInput()) {
+                $isChecked = old($name) === $value;
+            }
+            $attributes['checked'] = $isChecked;
+        }
+
         return array_merge($attributes, [
             'class' => $class,
             'min' => $min,
@@ -242,7 +250,6 @@ class FormBuilder
             'autocomplete' => $autocomplete,
             'placeholder' => $this->_getText($placeholder),
             'aria-describedby' => $help ? 'help-' . $id : null,
-            'checked' => $checked,
             'disabled' => $disabled,
             'readonly' => $readonly,
             'required' => $required
@@ -341,9 +348,17 @@ class FormBuilder
         return ($formIdPrefix ?? 'inp-') . $name . ($render === 'radio' ? '-' . $value : '');
     }
 
+    private function hasOldInput()
+    {
+        return count((array)old()) != 0;
+    }
+
     private function _getValue()
     {
         extract($this->_get('name', 'value', 'formData'));
+        if ($this->isRadioOrCheckbox()) {
+            return $value;
+        }
         return old($name, $value) ?? ($formData[$name] ?? null);
     }
 
