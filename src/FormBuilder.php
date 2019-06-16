@@ -224,15 +224,15 @@ class FormBuilder
             'id' => $id
         ];
 
-        // If the field is a hidden field, we don't need add more attributes
-        if ($type === 'hidden') {
-            return $attributes;
-        }
-
         if ($render !== 'select') {
             $attributes['value'] = $this->_getValue();
         } else {
             $attributes['multiple'] = $multiple;
+        }
+
+        // If the field is a hidden field, we don't need add more attributes
+        if ($type === 'hidden') {
+            return $attributes;
         }
 
         return array_merge($attributes, [
