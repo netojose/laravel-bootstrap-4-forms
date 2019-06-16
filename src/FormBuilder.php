@@ -95,9 +95,9 @@ class FormBuilder
             return '';
         }
 
-        extract($this->_get('errorsHeader'));
-
-        $output = '<div class="alert alert-danger" role="alert"><ul class="list-unstyled">';
+        extract($this->_get('errorsHeader', 'id'));
+        $attrs = $this->_buildHtmlAttrs(['class' => 'alert alert-danger', 'role' => 'alert', 'id' => $id]);
+        $output = '<div ' . $attrs . '><ul class="list-unstyled">';
         if ($errorsHeader) {
             $output .= '<h4 class="alert-heading">' . $errorsHeader . '</h4>';
         }
