@@ -88,6 +88,25 @@ class FormBuilder
         return '</fieldset>';
     }
 
+    private function _renderErrors(): string
+    {
+        $errors = $this->errors()->all();
+        if (count($errors) < 1) {
+            return '';
+        }
+
+        extract($this->_get('errorsHeader'));
+
+        $output = '<div class="alert alert-danger" role="alert"><ul class="list-unstyled">';
+        if ($errorsHeader) {
+            $output .= '<h4 class="alert-heading">' . $errorsHeader . '</h4>';
+        }
+        foreach ($errors as $error) {
+            $output .= '<li>' . $error . '</li>';
+        }
+        return $output . '</ul></div>';
+    }
+
     private function _renderInput(): string
     {
         $attributes = $this->getInputAttributes();

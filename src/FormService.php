@@ -49,6 +49,17 @@ class FormService
     }
 
     /**
+     * Show all validation errors
+     *
+     * @param string $title
+     * @return FormService
+     */
+    public function errors(string $title = null): FormService
+    {
+        return $this->_set('render', 'errors')->_set('errorsHeader', $title);
+    }
+
+    /**
      * Set a prefix id for all inputs
      *
      * @param string $prefix
