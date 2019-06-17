@@ -3,6 +3,7 @@
 namespace NetoJose\Bootstrap4Forms;
 
 use Illuminate\Support\ViewErrorBag;
+use Illuminate\Support\MessageBag;
 
 class FormBuilder
 {
@@ -190,7 +191,7 @@ class FormBuilder
 
     private function getInputAttributes(): array
     {
-        extract($this->get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData'));
+        extract($this->get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData', 'disableValidation'));
 
         $isRadioOrCheckbox = $this->isRadioOrCheckbox();
         $type = $isRadioOrCheckbox ? $render : $type;
@@ -214,7 +215,7 @@ class FormBuilder
 
         $id = $this->getId();
 
-        if ($this->errors()->count() > 0) {
+        if (!$disableValidation && $this->errors()->count() > 0) {
             $class .= $this->errors()->has($name) ? ' is-invalid' : ' is-valid';
         }
 
@@ -331,6 +332,12 @@ class FormBuilder
 
     private function getInputErrorMarkup(string $name): string
     {
+        extract($this->get('disableValidation'));
+
+        if ($disableValidation) {
+            return '';
+        }
+
         $error = $this->errors()->first($name);
         if (!$error) {
             return '';
@@ -401,9 +408,14 @@ class FormBuilder
         return join(' ', array_filter($attrs));
     }
 
-    private function errors(): ViewErrorBag
+    private function errors(): MessageBag
     {
-        return session('errors', app(ViewErrorBag::class));
+        $errors = session('errors', app(ViewErrorBag::class));
+        extract($this->get('formErrorBag'));
+        if ($formErrorBag) {
+            $errors = $errors->{$formErrorBag};
+        }
+        return $errors;
     }
 
     private function get(...$keys): array

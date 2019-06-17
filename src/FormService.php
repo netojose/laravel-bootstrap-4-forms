@@ -29,6 +29,17 @@ class FormService
     }
 
     /**
+     * Set error bag name
+     * 
+     * @param string $value
+     * @return FormService
+     */
+    public function errorBag(string $value = null): FormService
+    {
+        return $this->_set('formErrorBag', $value);
+    }
+
+    /**
      * Open the form
      *
      * @return FormService
@@ -784,6 +795,17 @@ class FormService
     public function attrs(array $attrs = []): FormService
     {
         return $this->_set('attrs', $attrs);
+    }
+
+    /**
+     * Disable input states (valid and invalid classes) and error message
+     *
+     * @param string $disable
+     * @return FormService
+     */
+    public function disableValidation(bool $disable = true): FormService
+    {
+        return $this->_set('disableValidation', $disable);
     }
 
     /**
