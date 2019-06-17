@@ -191,7 +191,7 @@ class FormService
      * @param bool $inline
      * @return FormService
      */
-    public function inline(bool $inline = true): FormService
+    public function formInline(bool $inline = true): FormService
     {
         return $this->_set('formInline', $inline);
     }
@@ -442,7 +442,7 @@ class FormService
      * @param bool $inline
      * @return FormService
      */
-    public function inlineInput(bool $inline = true): FormService
+    public function inline(bool $inline = true): FormService
     {
         return $this->_set('inline', $inline);
     }
