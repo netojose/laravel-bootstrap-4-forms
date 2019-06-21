@@ -396,7 +396,7 @@ public function register(Request $request)
 
 // ------------------------------------------------------
 
-// If you are validatin your form using a Form Request, you can add a protected method "$errorBag" to set a ErrorBag name
+// If your validation is on a Form Request, you can add a protected method "$errorBag" to set a ErrorBag name
 
 class RegisterRequest extends FormRequest
 {
@@ -473,6 +473,9 @@ Set the checkbox/radio checked status
 {!!Form::radio('orange', 'Orange')->inline()!!}
 
 {!!Form::checkbox('orange', 'Orange')->inline()!!}
+
+// You can use FALSE to turn off inline status
+{!!Form::checkbox('orange', 'Orange')->inline(false)!!}
 ```
 
 ### Placeholder
