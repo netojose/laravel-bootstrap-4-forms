@@ -750,6 +750,32 @@ complete list is in the spec mentioned above.
 {!!Form::text('email', 'Your email')->type('email')!!}
 ```
 
+### Min
+
+| Param   | Type   | Default | Description   |
+| ------- | ------ | ------- | ------------- |
+| \$value | number | null    | Minimum value |
+
+Set min attribute for input
+
+```php
+// Example
+{!!Form::text('age', 'Your age')->type('number')->min(18)!!}
+```
+
+### Max
+
+| Param   | Type   | Default | Description   |
+| ------- | ------ | ------- | ------------- |
+| \$value | number | null    | Minimum value |
+
+Set max attribute for input
+
+```php
+// Example
+{!!Form::text('age', 'Your age')->type('number')->max(18)!!}
+```
+
 ### Name
 
 | Param  | Type   | Default | Description |
