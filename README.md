@@ -90,7 +90,10 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ```php
 // Making all inputs inline
-{!!Form::inlineForm()!!}
+{!!Form::open()->formInline()!!}
+
+// You can use FALSE to turn off disable form inline
+{!!Form::open()->formInline(false)!!}
 ```
 
 #### Fieldset
@@ -218,6 +221,19 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 // Example
 {!!Form::time('hour', 'Meeting hour')!!}
+```
+
+#### Time inputs
+
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::urlInput('website', 'You website')!!}
 ```
 
 #### Range inputs
@@ -399,6 +415,22 @@ Show all errors inside a panel
 ```php
 // Example
 {!!Form::errors("The form has errors")!!}
+```
+
+### Disable validation messages
+
+Disable success/error status and validation error message
+
+| Param      | Type    | Default | Description     |
+| ---------- | ------- | ------- | --------------- |
+| \$disabled | boolean | false   | Disabled status |
+
+```php
+// Example
+{!!Form::text('username', 'User name')->disableValidation()!!}
+
+// You can use FALSE to turn off disable validation (to enable it)
+{!!Form::text('username', 'User name')->disableValidation(false)!!}
 ```
 
 ### Checked
