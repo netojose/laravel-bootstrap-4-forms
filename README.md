@@ -388,6 +388,19 @@ class RegisterRequest extends FormRequest
 }
 ```
 
+### Errors
+
+Show all errors inside a panel
+
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$title | string | null    | Panel title |
+
+```php
+// Example
+{!!Form::errors("The form has errors")!!}
+```
+
 ### Checked
 
 Set the checkbox/radio checked status
