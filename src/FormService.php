@@ -7,28 +7,8 @@ namespace NetoJose\Bootstrap4Forms;
  *
  * @author neto
  */
-class FormService {
-
-    /**
-     * The Form builder instance
-     *
-     * @var FormBuilder
-     */
-    private $_builder;
-
-    /**
-     * Render to be used
-     *
-     * @var string
-     */
-    private $_render;
-
-    /**
-     * Allowed renders
-     *
-     * @var array
-     */
-    private $_allowedRenders = ['open', 'close', 'fieldsetOpen', 'fieldsetClose', 'file', 'text', 'range', 'password', 'date', 'time', 'email', 'tel', 'url', 'number', 'hidden', 'select', 'checkbox', 'radio', 'textarea', 'button', 'submit', 'anchor', 'reset'];
+class FormService
+{
 
     /**
      * Create a new FormSevice instance
@@ -45,16 +25,18 @@ class FormService {
      */
     public function __toString()
     {
-        $output = '';
+        return $this->_builder->render();
+    }
 
-        if (in_array($this->_render, $this->_allowedRenders)) {
-
-            $output = $this->_builder->{$this->_render}();
-        }
-
-        $this->_render = null;
-
-        return $output;
+    /**
+     * Set error bag name
+     * 
+     * @param string $value
+     * @return FormService
+     */
+    public function errorBag(string $value = null): FormService
+    {
+        return $this->_set('formErrorBag', $value);
     }
 
     /**
@@ -64,7 +46,7 @@ class FormService {
      */
     public function open(): FormService
     {
-        return $this->render('open');
+        return $this->_set('render', 'formOpen');
     }
 
     /**
@@ -74,7 +56,18 @@ class FormService {
      */
     public function close(): FormService
     {
-        return $this->render('close');
+        return $this->_set('render', 'formClose');
+    }
+
+    /**
+     * Show all validation errors
+     *
+     * @param string $title
+     * @return FormService
+     */
+    public function errors(string $title = null): FormService
+    {
+        return $this->_set('render', 'errors')->_set('errorsHeader', $title);
     }
 
     /**
@@ -85,7 +78,7 @@ class FormService {
      */
     public function idPrefix(string $prefix = ''): FormService
     {
-        return $this->_set('FidPrefix', $prefix);
+        return $this->_set('formIdPrefix', $prefix);
     }
 
     /**
@@ -96,7 +89,7 @@ class FormService {
      */
     public function multipart(bool $multipart = true): FormService
     {
-        return $this->_set('Fmultipart', $multipart);
+        return $this->_set('formMultipart', $multipart);
     }
 
     /**
@@ -107,7 +100,7 @@ class FormService {
      */
     public function method(string $method): FormService
     {
-        return $this->_set('Fmethod', $method);
+        return $this->_set('method', $method);
     }
 
     /**
@@ -168,16 +161,7 @@ class FormService {
      */
     public function fill($data): FormService
     {
-
-        if (method_exists($data, 'toArray')) {
-            $data = $data->toArray();
-        }
-
-        if (!is_array($data)) {
-            $data = [];
-        }
-
-        return $this->_set('Fdata', $data);
+        return $this->_set('formData', $data);
     }
 
     /**
@@ -188,74 +172,28 @@ class FormService {
      */
     public function locale(string $path): FormService
     {
-        return $this->_set('Flocale', $path);
+        return $this->_set('formLocale', $path);
     }
 
     /**
-     * Set inline form to inline inputs
-     * @param bool $inline
-     * @return FormService
-     */
-    public function inlineForm(bool $inline = true): FormService
-    {
-    	if($inline) {
-		    return $this->_set('FformStyle', 'inline');
-	    }else{
-    		return $this;
-	    }
-    }
-
-	/**
-	 * @param bool $wrapper
-	 * @return FormService
-	 */
-	public function noWrapper(bool $wrapper = false)
-    {
-	    return $this->_set('wrapper', $wrapper);
-    }
-
-	/**
-	 * Set horizontal form
-	 * @param bool $horizontal
-	 * @return FormService
-	 */
-	public function horizontalForm(bool $horizontal = true): FormService
-    {
-	    if($horizontal) {
-		    return $this->_set('FformStyle', 'horizontal');
-	    }else{
-		    return $this;
-	    }
-    }
-
-    /**
-     * Set autocomplete value ('on', 'off', or one of the permitted values)
-     *
-     * If set on the form, only 'on' or 'off' are valid and are inherited by input fields.
-     * The inherited value can be overridden on individual input fields
-     *
-     * See: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+     * Set autocomplete attribute on form, or on individual input fields
      *
      * @param string $value
      * @return FormService
      */
-    public function autocomplete(string $value = 'on'): FormService
+    public function autocomplete($value = true): FormService
     {
-        if ($this->_render == "open") {
-            return $this->_set('Fautocomplete', $value);
-        }
-
         return $this->_set('autocomplete', $value);
     }
 
     /**
-     * Set inline style for checkbox and radio inputs
+     * Set inline form style
      * @param bool $inline
      * @return FormService
      */
-    public function inline(bool $inline = true): FormService
+    public function formInline(bool $inline = true): FormService
     {
-        return $this->_set('checkInline', $inline);
+        return $this->_set('formInline', $inline);
     }
 
     /**
@@ -264,9 +202,9 @@ class FormService {
      * @param string $url
      * @return FormService
      */
-    public function url(string $url): FormService
+    public function url(string $url = null): FormService
     {
-        return $this->_set('url', url($url));
+        return $this->_set('url', url($url ?? ''));
     }
 
     /**
@@ -289,7 +227,7 @@ class FormService {
      */
     public function fieldsetOpen(string $legend = null): FormService
     {
-        return $this->_set('meta', ['legend' => $legend])->render('fieldsetOpen');
+        return $this->render('fieldsetOpen')->_set('legend', $legend);
     }
 
     /**
@@ -322,7 +260,7 @@ class FormService {
      */
     public function file(string $name = null, string $label = null): FormService
     {
-        return $this->name($name)->label($label)->type('file');
+        return $this->render('input')->type('file')->name($name)->label($label);
     }
 
     /**
@@ -335,7 +273,7 @@ class FormService {
      */
     public function text(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->type('text')->name($name)->label($label)->value($default);
+        return $this->render('input')->type('text')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -348,7 +286,7 @@ class FormService {
      */
     public function date(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->type('date')->name($name)->label($label)->value($default);
+        return $this->render('input')->type('date')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -361,7 +299,33 @@ class FormService {
      */
     public function time(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->type('time')->name($name)->label($label)->value($default);
+        return $this->render('input')->type('time')->name($name)->label($label)->value($default);
+    }
+
+    /**
+     * Create a telephone input
+     *
+     * @param string $name
+     * @param string $label
+     * @param string $default
+     * @return FormService
+     */
+    public function tel(string $name = null, $label = null, string $default = null): FormService
+    {
+        return $this->render('input')->type('tel')->name($name)->label($label)->value($default);
+    }
+
+    /**
+     * Create a url input
+     *
+     * @param string $name
+     * @param string $label
+     * @param string $default
+     * @return FormService
+     */
+    public function urlInput(string $name = null, $label = null, string $default = null): FormService
+    {
+        return $this->render('input')->type('url')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -374,7 +338,27 @@ class FormService {
      */
     public function range(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->type('range')->name($name)->label($label)->value($default);
+        return $this->render('input')->type('range')->name($name)->label($label)->value($default);
+    }
+
+    /**
+     * Set a minimum value for a field
+     * @param string $value
+     * @return FormService
+     */
+    public function min($value)
+    {
+        return $this->_set('min', $value);
+    }
+
+    /**
+     * Set a maximum value for a field
+     * @param string $value
+     * @return FormService
+     */
+    public function max($value)
+    {
+        return $this->_set('max', $value);
     }
 
     /**
@@ -386,7 +370,7 @@ class FormService {
      */
     public function hidden(string $name = null, string $default = null): FormService
     {
-        return $this->name($name)->value($default)->type('hidden');
+        return $this->render('input')->type('hidden')->name($name)->value($default);
     }
 
     /**
@@ -400,7 +384,7 @@ class FormService {
      */
     public function select(string $name = null, string $label = null, $options = [], $default = null): FormService
     {
-        return $this->name($name)->label($label)->options($options)->value($default)->type('select');
+        return $this->render('select')->name($name)->label($label)->options($options)->value($default);
     }
 
     /**
@@ -411,36 +395,56 @@ class FormService {
      */
     public function options(array $options = []): FormService
     {
-        $items = is_iterable($options) ? $options : [0 => 'Must be iterable'];
-        return $this->_set('options', $items);
+        return $this->_set('options', $options);
+    }
+
+    /**
+     * Set a multiple select attribute
+     *
+     * @param bool $multiple
+     * @return FormService
+     */
+    public function multiple(bool $status = true): FormService
+    {
+        return $this->_set('multiple', $status);
     }
 
     /**
      * Create a checkbox input
      *
      * @param string $name
-     * @param string $label
      * @param string $value
-     * @param string $default
+     * @param string $label
+     * @param bool   $checked
      * @return FormService
      */
-    public function checkbox(string $name = null, string $label = null, string $value = null, string $default = null): FormService
+    public function checkbox(string $name = null, string $label = null, string $value = 'on', bool $checked = null): FormService
     {
-        return $this->_checkboxRadio('checkbox', $name, $label, $value, $default);
+        return $this->_radioOrCheckbox('checkbox', $name, $label, $value, $checked);
     }
 
     /**
      * Create a radio input
      *
      * @param string $name
-     * @param string $label
      * @param string $value
-     * @param string $default
+     * @param string $label
+     * @param bool   $checked
      * @return FormService
      */
-    public function radio(string $name = null, string $label = null, string $value = null, string $default = null): FormService
+    public function radio(string $name = null, string $label = null, string $value = null, bool $checked = null): FormService
     {
-        return $this->_checkboxRadio('radio', $name, $label, $value, $default);
+        return $this->_radioOrCheckbox('radio', $name, $label, $value, $checked);
+    }
+
+    /**
+     * Set inline input style
+     * @param bool $inline
+     * @return FormService
+     */
+    public function inline(bool $inline = true): FormService
+    {
+        return $this->_set('inline', $inline);
     }
 
     /**
@@ -453,7 +457,7 @@ class FormService {
      */
     public function textarea(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->type('textarea')->name($name)->value($default)->label($label);
+        return $this->_set('render', 'textarea')->name($name)->label($label)->value($default);
     }
 
     /**
@@ -477,7 +481,7 @@ class FormService {
      */
     public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
-        return $this->type('button')->color($color)->size($size)->value($value);
+        return $this->_set('render', 'button')->value($value)->color($color)->size($size);
     }
 
     /**
@@ -490,7 +494,7 @@ class FormService {
      */
     public function submit(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->button($value)->type('submit')->color($color)->size($size);
+        return $this->type('submit')->button($value, $color, $size);
     }
 
     /**
@@ -503,7 +507,7 @@ class FormService {
      */
     public function reset(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->button($value)->type('reset')->color($color)->size($size);
+        return $this->type('reset')->button($value, $color, $size);
     }
 
     /**
@@ -513,13 +517,9 @@ class FormService {
      * @param string $url
      * @return FormService
      */
-    public function anchor(string $value, $url = null): FormService
+    public function anchor(string $value, $url = null, $color = 'primary', $size = null): FormService
     {
-        if ($url) {
-            $this->url($url);
-        }
-
-        return $this->button($value)->type('anchor');
+        return $this->_set('render', 'anchor')->value($value)->url($url)->color($color)->size($size);
     }
 
     /**
@@ -530,14 +530,7 @@ class FormService {
      */
     public function checked(bool $checked = true): FormService
     {
-        $type = $this->_builder->get('type');
-        $meta = $this->_builder->get('meta');
-
-        if ($type === 'radio' && $checked) {
-            $checked = $meta['value'];
-        }
-
-        return $this->value($checked);
+        return $this->_set('checked', $checked);
     }
 
     /**
@@ -548,11 +541,7 @@ class FormService {
      */
     public function value($value = null): FormService
     {
-        if ($value !== null) {
-            return $this->_set('value', $value);
-        }
-
-        return $this;
+        return $this->_set('value', $value);
     }
 
     /**
@@ -563,7 +552,7 @@ class FormService {
      */
     public function type($type): FormService
     {
-        return $this->_set('type', $type)->render($type);
+        return $this->_set('type', $type);
     }
 
     /**
@@ -574,9 +563,7 @@ class FormService {
      */
     public function render(string $render): FormService
     {
-        $this->_render = $render;
-
-        return $this;
+        return $this->_set('render', $render);
     }
 
     /**
@@ -588,17 +575,6 @@ class FormService {
     public function id($id): FormService
     {
         return $this->_set('id', $id);
-    }
-
-    /**
-     * Set a field class
-     *
-     * @param string $class
-     * @return FormService
-     */
-    public function class($class): FormService
-    {
-        return $this->_set('class', $class);
     }
 
     /**
@@ -747,12 +723,12 @@ class FormService {
     /**
      * Set outline style
      *
-     * @param bool $outline
+     * @param bool $status
      * @return FormService
      */
-    public function outline(bool $outline = true): FormService
+    public function outline(bool $status = true): FormService
     {
-        return $this->_set('outline', $outline);
+        return $this->_set('outline', $status);
     }
 
     /**
@@ -761,7 +737,7 @@ class FormService {
      * @param bool $status
      * @return FormService
      */
-    public function block(bool $status= true): FormService
+    public function block(bool $status = true): FormService
     {
         return $this->_set('block', $status);
     }
@@ -794,7 +770,7 @@ class FormService {
      * @param bool $status
      * @return FormService
      */
-    public function required($status = true) : FormService
+    public function required($status = true): FormService
     {
         return $this->_set('required', $status);
     }
@@ -822,6 +798,17 @@ class FormService {
     }
 
     /**
+     * Disable input states (valid and invalid classes) and error message
+     *
+     * @param string $disable
+     * @return FormService
+     */
+    public function disableValidation(bool $disable = true): FormService
+    {
+        return $this->_set('disableValidation', $disable);
+    }
+
+    /**
      * Set custom attributes for a wrapper input
      *
      * @param array $attrs
@@ -833,83 +820,32 @@ class FormService {
     }
 
     /**
-     * Set a multiple select attribute
+     * Create radio or checkbox input
      *
-     * @param bool $multiple
+     * @param string $render
+     * @param string $name
+     * @param string $value
+     * @param string $label
+     * @param mixed  $checked
      * @return FormService
      */
-    public function multiple(bool $multiple = true): FormService
+    private function _radioOrCheckbox($render, $name, $label, $value, $checked): FormService
     {
-        return $this->_set('multiple', $multiple);
+        if (is_bool($checked)) {
+            $this->checked($checked);
+        }
+        return $this->_set('render', $render)->name($name)->label($label)->value($value);
     }
 
     /**
-     * Set input group prefix
+     * Set the size
      *
-     * @param string $prefix
+     * @param string $size
      * @return FormService
      */
-    public function prefix(string $prefix): FormService
+    private function _set(string $key, $value): FormService
     {
-        return $this->_set('prefix', $prefix);
-    }
-
-    /**
-     * Set input group suffix
-     *
-     * @param string $suffix
-     * @return FormService
-     */
-    public function suffix(string $suffix): FormService
-    {
-        return $this->_set('suffix', $suffix);
-    }
-
-    /**
-     * Set a form builder attribute
-     *
-     * @param string $attr
-     * @param mixed $value
-     * @return FormService
-     */
-    private function _set($attr, $value): FormService
-    {
-        $this->_builder->set($attr, $value);
-
+        $this->_builder->set($key, $value);
         return $this;
     }
-
-    /**
-     * Render a checkbox or a radio input
-     *
-     * @param string $type
-     * @param string $name
-     * @param string $label
-     * @param mixed $value
-     * @param string $default
-     * @return FormService
-     */
-    private function _checkboxRadio($type, $name, $label, $value, $default): FormService
-    {
-        $inputValue = $value === null ? $name : $value;
-
-        if ($default) {
-            $default = $inputValue;
-        }
-
-        return $this->_set('meta', ['value' => $inputValue])->type($type)->name($name)->label($label)->value($default);
-    }
-
-    /**
-     * Disable the insertion of
-     * Bootstrap's is-valid CSS class
-     *
-     * @param bool $status
-     * @return FormService
-     */
-    public function disableIsValid($status = true): FormService
-    {
-        return $this->_set('disableIsValid', $status);
-    }
-
 }
