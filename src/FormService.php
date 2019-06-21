@@ -418,9 +418,9 @@ class FormService
      * @param bool   $checked
      * @return FormService
      */
-    public function checkbox(string $name = null, string $value = 'on', string $label = null, bool $checked = null): FormService
+    public function checkbox(string $name = null, string $label = null, string $value = 'on', bool $checked = null): FormService
     {
-        return $this->_radioOrCheckbox('checkbox', $name, $value, $label, $checked);
+        return $this->_radioOrCheckbox('checkbox', $name, $label, $value, $checked);
     }
 
     /**
@@ -432,9 +432,9 @@ class FormService
      * @param bool   $checked
      * @return FormService
      */
-    public function radio(string $name = null, string $value = null, string $label = null, bool $checked = null): FormService
+    public function radio(string $name = null, string $label = null, string $value = null, bool $checked = null): FormService
     {
-        return $this->_radioOrCheckbox('radio', $name, $value, $label, $checked);
+        return $this->_radioOrCheckbox('radio', $name, $label, $value, $checked);
     }
 
     /**
@@ -829,7 +829,7 @@ class FormService
      * @param mixed  $checked
      * @return FormService
      */
-    private function _radioOrCheckbox($render, $name, $value, $label, $checked): FormService
+    private function _radioOrCheckbox($render, $name, $label, $value, $checked): FormService
     {
         if (is_bool($checked)) {
             $this->checked($checked);

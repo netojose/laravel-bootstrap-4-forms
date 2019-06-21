@@ -164,7 +164,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 | \$name    | string  | null    | Input name    |
 | \$label   | string  | null    | Input label   |
 | \$value   | string  | null    | Input value   |
-| \$default | boolean | null    | Default value |
+| \$checked | boolean | null    | Default value |
 
 ```php
 // Example
@@ -178,7 +178,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 | \$name    | string  | null    | Input name    |
 | \$label   | string  | null    | Input label   |
 | \$value   | string  | null    | Input value   |
-| \$default | boolean | null    | Default value |
+| \$checked | boolean | null    | Default value |
 
 ```php
 // Example
