@@ -90,7 +90,10 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ```php
 // Making all inputs inline
-{!!Form::inlineForm()!!}
+{!!Form::open()->formInline()!!}
+
+// You can use FALSE to turn off disable form inline
+{!!Form::open()->formInline(false)!!}
 ```
 
 #### Fieldset
@@ -161,7 +164,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 | \$name    | string  | null    | Input name    |
 | \$label   | string  | null    | Input label   |
 | \$value   | string  | null    | Input value   |
-| \$default | boolean | null    | Default value |
+| \$checked | boolean | null    | Default value |
 
 ```php
 // Example
@@ -175,7 +178,7 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 | \$name    | string  | null    | Input name    |
 | \$label   | string  | null    | Input label   |
 | \$value   | string  | null    | Input value   |
-| \$default | boolean | null    | Default value |
+| \$checked | boolean | null    | Default value |
 
 ```php
 // Example
@@ -207,6 +210,19 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 {!!Form::date('birthday', 'Birthday')!!}
 ```
 
+#### Tel inputs
+
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::tel('number', 'Phone number')!!}
+```
+
 #### Time inputs
 
 | Param     | Type   | Default | Description   |
@@ -218,6 +234,19 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 ```php
 // Example
 {!!Form::time('hour', 'Meeting hour')!!}
+```
+
+#### Time inputs
+
+| Param     | Type   | Default | Description   |
+| --------- | ------ | ------- | ------------- |
+| \$name    | string | null    | Input name    |
+| \$label   | string | null    | Input label   |
+| \$default | string | null    | Default value |
+
+```php
+// Example
+{!!Form::urlInput('website', 'You website')!!}
 ```
 
 #### Range inputs
@@ -292,9 +321,9 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ### Filling a form
 
-| Param  | Type   | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| \$data | object | array   | null        | DAta fo fill form inputs |
+| Param  | Type         | Default | Description              |
+| ------ | ------------ | ------- | ------------------------ |
+| \$data | object/array | array   | Data fo fill form inputs |
 
 ```php
 // Examples
@@ -334,6 +363,89 @@ Use in anchors and forms openings
 {!!Form::anchor("Link via route")->route('home')!!}
 ```
 
+### Error Bag
+
+Use if you have more then one form per page. You set an identifier for each form, and the errors will be attached for that specific form
+
+| Param   | Type   | Default | Description    |
+| ------- | ------ | ------- | -------------- |
+| \$value | string | null    | Error bag name |
+
+```php
+// Example: attach this form to a error bag called "registerErrorBag"
+{!!Form::open()->route('register.post')->errorBag("registerErrorBag")!!}
+
+// ------------------------------------------------------
+
+// Now, in your controller (register.post route), you can redirect the user to a form page again, with erros inside a error bag called "registerErrorBag"
+public function register(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        // ... rules here
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()
+            ->route('register.form')
+            ->withInput()
+            ->withErrors($validator, 'registerErrorBag');
+    }
+
+    // Proced to register here
+}
+
+// ------------------------------------------------------
+
+// If your validation is on a Form Request, you can add a protected method "$errorBag" to set a ErrorBag name
+
+class RegisterRequest extends FormRequest
+{
+
+    protected $errorBag = 'registerErrorBag';
+
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            // ... rules here
+        ];
+    }
+}
+```
+
+### Errors
+
+Show all errors inside a panel
+
+| Param   | Type   | Default | Description |
+| ------- | ------ | ------- | ----------- |
+| \$title | string | null    | Panel title |
+
+```php
+// Example
+{!!Form::errors("The form has errors")!!}
+```
+
+### Disable validation messages
+
+Disable success/error status and validation error message
+
+| Param      | Type    | Default | Description     |
+| ---------- | ------- | ------- | --------------- |
+| \$disabled | boolean | false   | Disabled status |
+
+```php
+// Example
+{!!Form::text('username', 'User name')->disableValidation()!!}
+
+// You can use FALSE to turn off disable validation (to enable it)
+{!!Form::text('username', 'User name')->disableValidation(false)!!}
+```
+
 ### Checked
 
 Set the checkbox/radio checked status
@@ -361,6 +473,9 @@ Set the checkbox/radio checked status
 {!!Form::radio('orange', 'Orange')->inline()!!}
 
 {!!Form::checkbox('orange', 'Orange')->inline()!!}
+
+// You can use FALSE to turn off inline status
+{!!Form::checkbox('orange', 'Orange')->inline(false)!!}
 ```
 
 ### Placeholder
@@ -649,6 +764,32 @@ complete list is in the spec mentioned above.
 
 // Email field
 {!!Form::text('email', 'Your email')->type('email')!!}
+```
+
+### Min
+
+| Param   | Type   | Default | Description   |
+| ------- | ------ | ------- | ------------- |
+| \$value | number | null    | Minimum value |
+
+Set min attribute for input
+
+```php
+// Example
+{!!Form::text('age', 'Your age')->type('number')->min(18)!!}
+```
+
+### Max
+
+| Param   | Type   | Default | Description   |
+| ------- | ------ | ------- | ------------- |
+| \$value | number | null    | Minimum value |
+
+Set max attribute for input
+
+```php
+// Example
+{!!Form::text('age', 'Your age')->type('number')->max(18)!!}
 ```
 
 ### Name
