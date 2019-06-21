@@ -838,6 +838,19 @@ Set max attribute for input
 {!!Form::render('text')->name('age')->label('Your age')!!}
 ```
 
+### Disable is-valid CSS Class
+
+| Param            | Type    | Default | Description                |
+| ---------------- | ------- | ------- | -------------------------- |
+| \$disableIsValid | boolean | true    | Disable is-valid CSS class |
+
+```php
+// Examples
+
+// Disable Bootstrap's is-valid CSS class
+{!!Form::text('name', 'Name')->disableIsValid()!!}
+```
+
 ### Chaining properties
 
 You can use chaining feature to use a lot of settings for each component
