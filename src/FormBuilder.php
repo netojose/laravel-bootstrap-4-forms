@@ -100,7 +100,7 @@ class FormBuilder
         $attrs = $this->buildHtmlAttrs(['class' => 'alert alert-danger', 'role' => 'alert', 'id' => $id]);
         $output = '<div ' . $attrs . '><ul class="list-unstyled">';
         if ($errorsHeader) {
-            $output .= '<h4 class="alert-heading">' . $errorsHeader . '</h4>';
+            $output .= '<h4 class="alert-heading">' . $this->getText($errorsHeader) . '</h4>';
         }
         foreach ($errors as $error) {
             $output .= '<li>' . $error . '</li>';
