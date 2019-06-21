@@ -292,9 +292,9 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 
 ### Filling a form
 
-| Param  | Type   | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| \$data | object | array   | null        | DAta fo fill form inputs |
+| Param  | Type         | Default | Description              |
+| ------ | ------------ | ------- | ------------------------ |
+| \$data | object/array | array   | Data fo fill form inputs |
 
 ```php
 // Examples
@@ -332,6 +332,60 @@ Use in anchors and forms openings
 ```php
 // Example
 {!!Form::anchor("Link via route")->route('home')!!}
+```
+
+### Error Bag
+
+Use if you have more then one form per page. You set an identifier for each form, and the errors will be attached for that specific form
+
+| Param   | Type   | Default | Description    |
+| ------- | ------ | ------- | -------------- |
+| \$value | string | null    | Error bag name |
+
+```php
+// Example: attach this form to a error bag called "registerErrorBag"
+{!!Form::open()->route('register.post')->errorBag("registerErrorBag")!!}
+
+// ------------------------------------------------------
+
+// Now, in your controller (register.post route), you can redirect the user to a form page again, with erros inside a error bag called "registerErrorBag"
+public function register(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        // ... rules here
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()
+            ->route('register.form')
+            ->withInput()
+            ->withErrors($validator, 'registerErrorBag');
+    }
+
+    // Proced to register here
+}
+
+// ------------------------------------------------------
+
+// If you are validatin your form using a Form Request, you can add a protected method "$errorBag" to set a ErrorBag name
+
+class RegisterRequest extends FormRequest
+{
+
+    protected $errorBag = 'registerErrorBag';
+
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            // ... rules here
+        ];
+    }
+}
 ```
 
 ### Checked
