@@ -394,13 +394,13 @@ class FormService
      * Set options for a select field
      *
      * @param iterable $options
-     * @param string $idKey
      * @param string $valueKey
+     * @param string $idKey
      * @return FormService
      */
-    public function options(iterable $options = [], string $idKey = null, string $valueKey = null): FormService
+    public function options(iterable $options = [], string $valueKey = null, string $idKey = null): FormService
     {
-        return $this->_set('optionIdKey', $idKey)->_set('optionValueKey', $valueKey)->_set('options', $options);
+        return $this->_set('optionValueKey', $valueKey)->_set('optionIdKey', $idKey)->_set('options', $options);
     }
 
     /**
