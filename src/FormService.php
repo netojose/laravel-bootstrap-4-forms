@@ -197,16 +197,6 @@ class FormService
         return $this->_set('formInline', $inline);
     }
 
-	/**
-	 * Set error bag name
-	 * @param string $value
-	 * @return FormService
-	 */
-	public function errorBag(string $value = null): FormService
-	{
-		return $this->_set('FerrorBag', $value);
-	}
-
     /**
      * Set url for links and form action
      *
