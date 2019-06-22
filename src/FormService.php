@@ -188,6 +188,7 @@ class FormService
 
     /**
      * Set inline form style
+     * 
      * @param bool $inline
      * @return FormService
      */
@@ -343,6 +344,7 @@ class FormService
 
     /**
      * Set a minimum value for a field
+     * 
      * @param string $value
      * @return FormService
      */
@@ -353,6 +355,7 @@ class FormService
 
     /**
      * Set a maximum value for a field
+     * 
      * @param string $value
      * @return FormService
      */
