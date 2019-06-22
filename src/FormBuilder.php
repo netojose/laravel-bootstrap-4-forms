@@ -27,6 +27,24 @@ class FormBuilder
         return $value;
     }
 
+    private function formatOptions($value)
+    {
+        extract($this->get('optionIdKey', 'optionValueKey'));
+
+        $idKey = $optionIdKey ?? 'id';
+        $valueKey = $optionValueKey ?? 'name';
+
+        $options = [];
+        foreach ($value as $key => $item) {
+            if (is_object($item)) {
+                $options[$item->{$idKey}] = $item->{$valueKey};
+                continue;
+            }
+            $options[$key] = $item;
+        }
+        return $options;
+    }
+
     public function render(): string
     {
         $render = $this->attrs['render'];
