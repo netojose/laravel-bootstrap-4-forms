@@ -178,8 +178,6 @@ $cities = \App\City::all();
 {!!Form::select('city', 'Choose your city')->options($cities, 'city_name', 'id_object_field')!!}
 
 // When you are using collections, you can use prepend method (https://laravel.com/docs/5.8/collections#method-prepend) to add an first empty value, like "Choose your city"
-
-// With model collection
 $cities = \App\City::all();
 {!!Form::select('city', 'Choose your city')->options($cities->prepend('Choose your city', ''))!!}
 ```
