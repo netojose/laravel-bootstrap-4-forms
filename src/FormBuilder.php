@@ -3,7 +3,6 @@
 namespace NetoJose\Bootstrap4Forms;
 
 use Illuminate\Support\ViewErrorBag;
-use Illuminate\Support\MessageBag;
 
 class FormBuilder
 {
@@ -376,7 +375,7 @@ class FormBuilder
 
     private function hasOldInput()
     {
-        return count((array)old()) != 0;
+        return count((array) old()) != 0;
     }
 
     private function getValue()
@@ -426,7 +425,7 @@ class FormBuilder
         return join(' ', array_filter($attrs));
     }
 
-    private function errors(): MessageBag
+    private function errors()
     {
         $errors = session('errors', app(ViewErrorBag::class));
         extract($this->get('formErrorBag'));
