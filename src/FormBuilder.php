@@ -384,7 +384,12 @@ class FormBuilder
         if ($this->isRadioOrCheckbox()) {
             return $value;
         }
-        return old($name, $value) ?? ($formData[$name] ?? null);
+
+        if ($this->hasOldInput()) {
+            return old($name, $value);
+        }
+
+        return $formData[$name] ?? null;
     }
 
     private function buildHtmlAttrs(array $attributes, $appendAttrs = true): string
