@@ -293,7 +293,7 @@ class FormBuilder
         $attrs = $this->buildHtmlAttrs([
             'for' => $id,
             'class' => $class
-        ]);
+        ], false);
         return '<label ' . $attrs . '>' . $this->getText($label) . '</label>';
     }
 
