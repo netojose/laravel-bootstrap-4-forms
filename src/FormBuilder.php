@@ -18,6 +18,11 @@ class FormBuilder
         $this->attrs[$key] = $value;
     }
 
+    private function formatMethod($value)
+    {
+        return strtolower($value);
+    }
+
     private function formatFormData($value)
     {
         if (is_object($value) && method_exists($value, 'toArray')) {
@@ -64,7 +69,7 @@ class FormBuilder
         $enctype = $formMultipart ? 'multipart/form-data' : null;
 
         $attrs = $this->buildHtmlAttrs([
-            'method' => $method,
+            'method' => in_array($method, ['get', 'post']) ? $method : 'post',
             'action' => $url,
             'enctype' => $enctype,
             'autocomplete' => $autocomplete,
