@@ -173,7 +173,7 @@ $cities = collect([1 => 'Gotham City', 2 => 'Springfield'])
 $cities = \App\City::all();
 {!!Form::select('city', 'Choose your city')->options($cities)!!}
 
-// Your model should have id and name attributes. If these keys are different, you can pass second and/third parameters (you can use the second parameter to access some model acessor, also)
+// Your model should have id and name attributes. If these keys are different, you can pass second and/or third parameters (you can use the second parameter to access some model acessor, also)
 $cities = \App\City::all();
 {!!Form::select('city', 'Choose your city')->options($cities, 'city_name', 'id_object_field')!!}
 
