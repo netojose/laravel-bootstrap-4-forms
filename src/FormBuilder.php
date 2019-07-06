@@ -339,12 +339,18 @@ class FormBuilder
 
     private function wrapperRadioCheckbox(string $input): string
     {
-        extract($this->get('inline', 'name'));
+        extract($this->get('inline', 'name', 'wrapperAttrs'));
 
-        $class = $this->createAttrsList('form-check', [$inline, 'form-check-inline']);
+        $attrs = $wrapperAttrs ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            'form-check',
+            [$inline, 'form-check-inline'],
+            $attrs['class'] ?? null
+        );
+        $attributes = $this->buildHtmlAttrs($attrs, false);
         $label = $this->renderLabel();
         $error = $this->getInputErrorMarkup($name);
-        return '<div class="' . $class . '">' . $input . $label . $error . '</div>';
+        return '<div ' . $attributes . '>' . $input . $label . $error . '</div>';
     }
 
     private function getInputErrorMarkup(string $name): string
