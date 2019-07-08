@@ -486,7 +486,7 @@ class FormService
      */
     public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
-        return $this->_set('render', 'button')->value($value)->color($color)->size($size);
+        return $this->type('button')->set('render', 'button')->value($value)->color($color)->size($size);
     }
 
     /**
@@ -499,7 +499,7 @@ class FormService
      */
     public function submit(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->type('submit')->button($value, $color, $size);
+        return $this->button($value, $color, $size)->type('submit');
     }
 
     /**
@@ -512,7 +512,7 @@ class FormService
      */
     public function reset(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->type('reset')->button($value, $color, $size);
+        return $this->button($value, $color, $size)->type('reset');
     }
 
     /**
