@@ -151,10 +151,35 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 {!!Form::select('city', 'Choose your city', [1 => 'Gotham City', 2 => 'Springfield'])!!}
 ```
 
-#### Select Default Value
+##### Options
+
+| Param      | Type     | Default | Description   |
+| ---------- | -------- | ------- | ------------- |
+| \$options  | iterable | []      | Options list  |
+| \$valueKey | string   | null    | key for value |
+| \$idKey    | string   | null    | key for id    |
 
 ```php
-{!!Form::select('city', 'Choose your city', [''=>'--choose your city---',1 => 'Gotham City', 2 => 'Springfield'])!!}
+// Example
+
+// With array
+{!!Form::select('city', 'Choose your city')->options([1 => 'Gotham City', 2 => 'Springfield'])!!}
+
+// With collection
+$cities = collect([1 => 'Gotham City', 2 => 'Springfield'])
+{!!Form::select('city', 'Choose your city')->options($cities)!!}
+
+// With model collection
+$cities = \App\City::all();
+{!!Form::select('city', 'Choose your city')->options($cities)!!}
+
+// Your model should have id and name attributes. If these keys are different, you can pass second and/or third parameters (you can use the second parameter to access some model acessor, also)
+$cities = \App\City::all();
+{!!Form::select('city', 'Choose your city')->options($cities, 'city_name', 'id_object_field')!!}
+
+// When you are using collections, you can use prepend method (https://laravel.com/docs/5.8/collections#method-prepend) to add an first empty value, like "Choose your city"
+$cities = \App\City::all();
+{!!Form::select('city', 'Choose your city')->options($cities->prepend('Choose your city', ''))!!}
 ```
 
 ##### Checkbox

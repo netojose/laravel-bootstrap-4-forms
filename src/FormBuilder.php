@@ -3,7 +3,6 @@
 namespace NetoJose\Bootstrap4Forms;
 
 use Illuminate\Support\ViewErrorBag;
-use Illuminate\Support\MessageBag;
 
 class FormBuilder
 {
@@ -19,12 +18,35 @@ class FormBuilder
         $this->attrs[$key] = $value;
     }
 
+    private function formatMethod($value)
+    {
+        return strtolower($value);
+    }
+
     private function formatFormData($value)
     {
         if (is_object($value) && method_exists($value, 'toArray')) {
             return $value->toArray();
         }
         return $value;
+    }
+
+    private function formatOptions($value)
+    {
+        extract($this->get('optionIdKey', 'optionValueKey'));
+
+        $idKey = $optionIdKey ?? 'id';
+        $valueKey = $optionValueKey ?? 'name';
+
+        $options = [];
+        foreach ($value as $key => $item) {
+            if (is_object($item)) {
+                $options[$item->{$idKey}] = $item->{$valueKey};
+                continue;
+            }
+            $options[$key] = $item;
+        }
+        return $options;
     }
 
     public function render(): string
@@ -47,7 +69,7 @@ class FormBuilder
         $enctype = $formMultipart ? 'multipart/form-data' : null;
 
         $attrs = $this->buildHtmlAttrs([
-            'method' => $method,
+            'method' => in_array($method, ['get', 'post']) ? $method : 'post',
             'action' => $url,
             'enctype' => $enctype,
             'autocomplete' => $autocomplete,
@@ -271,7 +293,7 @@ class FormBuilder
         $attrs = $this->buildHtmlAttrs([
             'for' => $id,
             'class' => $class
-        ]);
+        ], false);
         return '<label ' . $attrs . '>' . $this->getText($label) . '</label>';
     }
 
@@ -322,12 +344,18 @@ class FormBuilder
 
     private function wrapperRadioCheckbox(string $input): string
     {
-        extract($this->get('inline', 'name'));
+        extract($this->get('inline', 'name', 'wrapperAttrs'));
 
-        $class = $this->createAttrsList('form-check', [$inline, 'form-check-inline']);
+        $attrs = $wrapperAttrs ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            'form-check',
+            [$inline, 'form-check-inline'],
+            $attrs['class'] ?? null
+        );
+        $attributes = $this->buildHtmlAttrs($attrs, false);
         $label = $this->renderLabel();
         $error = $this->getInputErrorMarkup($name);
-        return '<div class="' . $class . '">' . $input . $label . $error . '</div>';
+        return '<div ' . $attributes . '>' . $input . $label . $error . '</div>';
     }
 
     private function getInputErrorMarkup(string $name): string
@@ -358,7 +386,7 @@ class FormBuilder
 
     private function hasOldInput()
     {
-        return count((array)old()) != 0;
+        return count((array) old()) != 0;
     }
 
     private function getValue()
@@ -367,7 +395,12 @@ class FormBuilder
         if ($this->isRadioOrCheckbox()) {
             return $value;
         }
-        return old($name, $value) ?? ($formData[$name] ?? null);
+
+        if ($this->hasOldInput()) {
+            return old($name, $value);
+        }
+
+        return $formData[$name] ?? null;
     }
 
     private function buildHtmlAttrs(array $attributes, $appendAttrs = true): string
@@ -408,7 +441,7 @@ class FormBuilder
         return join(' ', array_filter($attrs));
     }
 
-    private function errors(): MessageBag
+    private function errors()
     {
         $errors = session('errors', app(ViewErrorBag::class));
         extract($this->get('formErrorBag'));

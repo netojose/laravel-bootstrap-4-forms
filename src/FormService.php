@@ -188,6 +188,7 @@ class FormService
 
     /**
      * Set inline form style
+     * 
      * @param bool $inline
      * @return FormService
      */
@@ -195,16 +196,6 @@ class FormService
     {
         return $this->_set('formInline', $inline);
     }
-
-	/**
-	 * Set error bag name
-	 * @param string $value
-	 * @return FormService
-	 */
-	public function errorBag(string $value = null): FormService
-	{
-		return $this->_set('FerrorBag', $value);
-	}
 
     /**
      * Set url for links and form action
@@ -353,6 +344,7 @@ class FormService
 
     /**
      * Set a minimum value for a field
+     * 
      * @param string $value
      * @return FormService
      */
@@ -363,6 +355,7 @@ class FormService
 
     /**
      * Set a maximum value for a field
+     * 
      * @param string $value
      * @return FormService
      */
@@ -400,12 +393,14 @@ class FormService
     /**
      * Set options for a select field
      *
-     * @param array $options
+     * @param mixed  $options
+     * @param string $valueKey
+     * @param string $idKey
      * @return FormService
      */
-    public function options(array $options = []): FormService
+    public function options($options = [], string $valueKey = null, string $idKey = null): FormService
     {
-        return $this->_set('options', $options);
+        return $this->_set('optionValueKey', $valueKey)->_set('optionIdKey', $idKey)->_set('options', $options);
     }
 
     /**
@@ -491,7 +486,7 @@ class FormService
      */
     public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
-        return $this->_set('render', 'button')->value($value)->color($color)->size($size);
+        return $this->type('button')->set('render', 'button')->value($value)->color($color)->size($size);
     }
 
     /**
@@ -504,7 +499,7 @@ class FormService
      */
     public function submit(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->type('submit')->button($value, $color, $size);
+        return $this->button($value, $color, $size)->type('submit');
     }
 
     /**
@@ -517,7 +512,7 @@ class FormService
      */
     public function reset(string $value, $color = 'primary', $size = null): FormService
     {
-        return $this->type('reset')->button($value, $color, $size);
+        return $this->button($value, $color, $size)->type('reset');
     }
 
     /**
