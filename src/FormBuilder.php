@@ -501,7 +501,6 @@ class FormBuilder
 			    break;
 		    default:
 		    	// do nothing
-			    dd('type', $type);
 	    }
 	    return $class;
     }
