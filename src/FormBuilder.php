@@ -400,7 +400,7 @@ class FormBuilder
             return old($name, $value);
         }
 
-        return $formData[$name] ?? null;
+        return $formData[$name] ?? $value;
     }
 
     private function buildHtmlAttrs(array $attributes, $appendAttrs = true): string
