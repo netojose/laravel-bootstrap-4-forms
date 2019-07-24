@@ -486,7 +486,7 @@ class FormService
      */
     public function button(string $value = null, $color = 'primary', $size = null): FormService
     {
-        return $this->type('button')->set('render', 'button')->value($value)->color($color)->size($size);
+        return $this->type('button')->_set('render', 'button')->value($value)->color($color)->size($size);
     }
 
     /**
