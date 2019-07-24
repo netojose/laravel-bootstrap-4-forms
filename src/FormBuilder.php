@@ -60,7 +60,7 @@ class FormBuilder
 
     private function renderFormOpen(): string
     {
-        extract($this->get('method', 'url', 'formMultipart', 'formInline', 'autocomplete'));
+        extract($this->get('id','method', 'url', 'formMultipart', 'formInline', 'autocomplete'));
 
         if (!$method) {
             $method = 'post';
@@ -76,7 +76,7 @@ class FormBuilder
             'class' => $formInline ? 'form-inline' : null,
         ]);
 
-        $output = '<form ' . $attrs . '>';
+        $output = '<form id=' .$id. ' ' . $attrs . '>';
 
         if ($method !== 'get') {
             $output .= csrf_field();

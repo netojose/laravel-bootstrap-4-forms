@@ -1,7 +1,8 @@
 # Bootstrap 4 forms for Laravel 5
 
 This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
-
+Forked project from  netojose/laravel-bootstrap-4-forms
+https://github.com/netojose/laravel-bootstrap-4-forms
 ## Features
 
 -   Labels
