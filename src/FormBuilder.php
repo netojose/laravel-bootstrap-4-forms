@@ -263,6 +263,7 @@ class FormBuilder
             if ($this->hasOldInput()) {
                 $isChecked = old($name) === $value;
             } else {
+                $value = $value === 'on' ? true : false;
                 $isChecked = isset($formData[$name]) ? $formData[$name] === $value : $checked;
             }
             $attributes['checked'] = $isChecked;
