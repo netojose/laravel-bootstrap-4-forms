@@ -3,7 +3,7 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-This is a package for creating Bootstrap 4 styled form elements in Laravel 5.
+This is a package for creating Bootstrap 4 styled form elements in Laravel 5/6.
 
 ## Features
 
