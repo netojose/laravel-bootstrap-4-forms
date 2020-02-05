@@ -147,7 +147,7 @@ class FormBuilder
         $optionsList = '';
         foreach ($options as $value => $label) {
             $attrs = $this->buildHtmlAttrs(['value' => $value, 'selected' => in_array($value, $arrValues)], false);
-            $optionsList .= '<option ' . $attrs . '>' . $label . '</option>';
+            $optionsList .= '<option ' . $attrs . ($value ?:' disabled hidden') . '>' . $label . '</option>';
         }
 
         $attributes = $this->getInputAttributes();
