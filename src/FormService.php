@@ -494,7 +494,7 @@ class FormService
      * @param array $attrs
      * @return FormService
      */
-    public function label(string $label, array $attrs = []): FormService
+    public function label($label, array $attrs = []): FormService
     {
         return $this->_set('label', $label)->labelAttrs($attrs);
     }
