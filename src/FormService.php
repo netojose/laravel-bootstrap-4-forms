@@ -365,6 +365,28 @@ class FormService
     }
 
     /**
+     * Set a append for a field
+     *
+     * @param mixed $value
+     * @return FormService
+     */
+    public function append(string $value, array $attrs = null, bool $style = true): FormService
+    {
+        return $this->_set('append', $value)->_set('appendAttrs', $attrs)->_set('appendStyle', $style);
+    }
+
+    /**
+     * Set a prepend for a field
+     *
+     * @param mixed $value
+     * @return FormService
+     */
+    public function prepend(string $value, array $attrs = null, bool $style = true): FormService
+    {
+        return $this->_set('prepend', $value)->_set('prependAttrs', $attrs)->_set('prependStyle', $style);
+    }
+
+    /**
      * Create a hidden input
      *
      * @param string $name
@@ -469,11 +491,12 @@ class FormService
      * Set a label
      *
      * @param string $label
+     * @param array $attrs
      * @return FormService
      */
-    public function label($label): FormService
+    public function label(string $label, array $attrs = []): FormService
     {
-        return $this->_set('label', $label);
+        return $this->_set('label', $label)->labelAttrs($attrs);
     }
 
     /**
@@ -803,6 +826,17 @@ class FormService
     }
 
     /**
+     * Set custom attributes for a label input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function labelAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('labelAttrs', $attrs);
+    }
+
+    /**
      * Disable input states (valid and invalid classes) and error message
      *
      * @param string $disable
@@ -822,6 +856,39 @@ class FormService
     public function wrapperAttrs(array $attrs = []): FormService
     {
         return $this->_set('wrapperAttrs', $attrs);
+    }
+
+    /**
+     * Set custom attributes for a wrapper input group
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperGroupAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperGroupAttrs', $attrs);
+    }
+
+    /**
+     * Set custom attributes for a wrapper append input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperAppendAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperAppendAttrs', $attrs);
+    }
+
+    /**
+     * Set custom attributes for a wrapper prepend input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperPrependAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperPrependAttrs', $attrs);
     }
 
     /**
