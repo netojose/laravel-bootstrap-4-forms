@@ -60,7 +60,7 @@ class FormBuilder
 
     private function renderFormOpen(): string
     {
-        extract($this->get('id', 'method', 'url', 'formMultipart', 'formInline', 'autocomplete'));
+        extract($this->get('id', 'method', 'url', 'formMultipart', 'formInline', 'autocomplete', 'attrs'));
 
         if (!$method) {
             $method = 'post';
@@ -68,14 +68,19 @@ class FormBuilder
 
         $enctype = $formMultipart ? 'multipart/form-data' : null;
 
-        $attrs = $this->buildHtmlAttrs([
+        $attrs          = $attrs ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            ($formInline ? 'form-inline' : null),
+            $attrs['class'] ?? null,
+        );
+
+        $attrs = $this->buildHtmlAttrs(array_merge($attrs, [
             'method' => in_array($method, ['get', 'post']) ? $method : 'post',
             'action' => $url,
             'enctype' => $enctype,
             'autocomplete' => $autocomplete,
-            'class' => $formInline ? 'form-inline' : null,
             'id' => $id
-        ]);
+        ]));
 
         $output = '<form ' . $attrs . '>';
 
