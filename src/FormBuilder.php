@@ -71,7 +71,7 @@ class FormBuilder
         $attrs          = $attrs ?? [];
         $attrs['class'] = $this->createAttrsList(
             ($formInline ? 'form-inline' : null),
-            $attrs['class'] ?? null,
+            $attrs['class'] ?? null
         );
 
         $attrs = $this->buildHtmlAttrs(array_merge($attrs, [
