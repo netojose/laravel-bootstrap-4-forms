@@ -239,7 +239,7 @@ class FormBuilder
         $id = $this->getId();
 
         if (!$disableValidation && $this->errors()->count() > 0) {
-            $class .= $this->errors()->has(\rtrim(\str_replace(['[', ']'], '.', $name), '.')) ? ' is-invalid' : ' is-valid';
+            $class .= $this->errors()->has(\rtrim(\str_replace(['][', '[', ']'], '.', $name), '.')) ? ' is-invalid' : ' is-valid';
         }
 
         $attributes = [
