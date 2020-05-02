@@ -151,6 +151,9 @@ class FormBuilder
         }
 
         $attributes = $this->getInputAttributes();
+        if(isset($attributes['multiple'])) {
+            $attributes['name'] .= "[]";
+        }
         $attrs = $this->buildHtmlAttrs($attributes);
         return $this->wrapperInput('<select ' . $attrs . '>' . $optionsList . '</select>');
     }
