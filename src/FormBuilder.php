@@ -399,7 +399,7 @@ class FormBuilder
         }
 
         if ($this->hasOldInput()) {
-            return old($name, $value);
+            return old(preg_replace("/\\[\\]/mui","",$name), $value);
         }
 
         $fromFill = $formData[$name] ?? null;
