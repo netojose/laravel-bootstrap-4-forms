@@ -212,10 +212,10 @@ class FormService
      * Set route for links and form action
      *
      * @param string $route
-     * @param array $params
+     * @param array|string $params
      * @return FormService
      */
-    public function route(string $route, array $params = []): FormService
+    public function route(string $route, $params = []): FormService
     {
         return $this->_set('url', route($route, $params));
     }
@@ -839,7 +839,7 @@ class FormService
     /**
      * Disable input states (valid and invalid classes) and error message
      *
-     * @param string $disable
+     * @param bool $disable
      * @return FormService
      */
     public function disableValidation(bool $disable = true): FormService
