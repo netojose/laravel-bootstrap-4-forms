@@ -257,6 +257,9 @@ class FormBuilder
             $attributes['value'] = $this->getValue();
         } else {
             $attributes['multiple'] = $multiple;
+            if ($multiple) {
+                $attributes['name'] .= '[]';
+            }
         }
 
         // If the field is a hidden field, we don't need add more attributes
@@ -495,7 +498,7 @@ class FormBuilder
         }
 
         if ($this->hasOldInput()) {
-            return old($name, $value);
+            return old(preg_replace("/\[\]/", "", $name), $value);
         }
 
         $fromFill = $formData[$name] ?? null;
