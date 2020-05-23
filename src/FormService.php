@@ -562,6 +562,17 @@ class FormService
     }
 
     /**
+     * Set optgroup label inside options value
+     *
+     * @param bool $optgroup
+     * @return FormService
+     */
+    public function optgroup(bool $optgroup = true): FormService
+    {
+        return $this->_set('optgroup', $optgroup);
+    }
+
+    /**
      * Set a input value
      *
      * @param string $value

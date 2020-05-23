@@ -271,7 +271,7 @@ class FormBuilder
             if ($this->hasOldInput()) {
                 $isChecked = old($name) === $value;
             } else {
-                $isChecked = isset($formData[$name]) ? $formData[$name] === $value : $checked;
+                $isChecked = isset($formData[$name]) ? boolval($formData[$name]) === boolval($value) : $checked;
             }
             $attributes['checked'] = $isChecked;
         }
@@ -289,14 +289,23 @@ class FormBuilder
         ]);
     }
 
-    private function getSelectOptions($arrValues, $options)
+    private function getSelectOptions($arrValues, $options, $optgroup_label = '')
     {
+        extract($this->get('optgroup'));
+
         $optionsList = '';
         foreach ($options as $value => $label) {
             if (is_array($label)) {
-                $optionsList .= '<optgroup label="' . $value . '">' . $this->getSelectOptions($arrValues, $label) . '</optgroup>';
+                $optionsList .= '<optgroup label="' . $value . '">'
+                    . $this->getSelectOptions($arrValues, $label, $value.';') . '</optgroup>';
             }else{
-                $attrs = $this->buildHtmlAttrs(['value' => $value, 'selected' => in_array($value, $arrValues)], false);
+                if ($optgroup) {
+                    $value = $optgroup_label.$value;
+                }
+                $attrs = $this->buildHtmlAttrs([
+                    'value' => $value,
+                    'selected' => in_array($value, $arrValues)
+                ], false);
                 $optionsList .= '<option ' . $attrs . ($value ? '>' : ' disabled hidden>') . $label . '</option>';
             }
         }
