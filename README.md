@@ -99,6 +99,16 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 {!!Form::open()->formInline(false)!!}
 ```
 
+#### Multipart form
+
+```php
+// Changes enctype of form to "multipart/form-data"
+{!!Form::open()->multipart()!!}
+
+// You can use FALSE to turn off form multipart
+{!!Form::open()->multipart(false)!!}
+```
+
 #### Fieldset
 
 | Param    | Type   | Default | Description     |
