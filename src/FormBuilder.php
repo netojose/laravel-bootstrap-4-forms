@@ -60,7 +60,7 @@ class FormBuilder
 
     protected function renderFormOpen(): string
     {
-        extract($this->get('id', 'method', 'url', 'formMultipart', 'formInline', 'autocomplete'));
+        extract($this->get('id', 'method', 'url', 'formMultipart', 'formInline', 'autocomplete', 'attrs'));
 
         if (!$method) {
             $method = 'post';
@@ -68,14 +68,19 @@ class FormBuilder
 
         $enctype = $formMultipart ? 'multipart/form-data' : null;
 
-        $attrs = $this->buildHtmlAttrs([
+        $attrs          = $attrs ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            ($formInline ? 'form-inline' : null),
+            $attrs['class'] ?? null
+        );
+
+        $attrs = $this->buildHtmlAttrs(array_merge($attrs, [
             'method' => in_array($method, ['get', 'post']) ? $method : 'post',
             'action' => $url,
             'enctype' => $enctype,
             'autocomplete' => $autocomplete,
-            'class' => $formInline ? 'form-inline' : null,
             'id' => $id
-        ]);
+        ]));
 
         $output = '<form ' . $attrs . '>';
 
@@ -140,14 +145,14 @@ class FormBuilder
 
     protected function renderSelect(): string
     {
-        extract($this->get('options'));
+        extract($this->get('options', 'placeholder'));
 
         $fieldValue = $this->getValue();
         $arrValues = is_array($fieldValue) ? $fieldValue : [$fieldValue];
-        $optionsList = '';
-        foreach ($options as $value => $label) {
-            $attrs = $this->buildHtmlAttrs(['value' => $value, 'selected' => in_array($value, $arrValues)], false);
-            $optionsList .= '<option ' . $attrs . '>' . $label . '</option>';
+        $optionsList = $this->getSelectOptions($arrValues, $options);
+
+        if ($placeholder) {
+            $optionsList = '<option value="" disabled hidden selected>' . $placeholder . '</option>' . $optionsList;
         }
 
         $attributes = $this->getInputAttributes();
@@ -252,6 +257,9 @@ class FormBuilder
             $attributes['value'] = $this->getValue();
         } else {
             $attributes['multiple'] = $multiple;
+            if ($multiple) {
+                $attributes['name'] .= '[]';
+            }
         }
 
         // If the field is a hidden field, we don't need add more attributes
@@ -263,8 +271,12 @@ class FormBuilder
             if ($this->hasOldInput()) {
                 $isChecked = old($name) === $value;
             } else {
+<<<<<<< HEAD
                 $value = $value === 'on' ? true : false;
                 $isChecked = isset($formData[$name]) ? $formData[$name] === $value : $checked;
+=======
+                $isChecked = isset($formData[$name]) ? boolval($formData[$name]) === boolval($value) : $checked;
+>>>>>>> 9db8ec84a92ea39f53118d2755e16557d8bddc58
             }
             $attributes['checked'] = $isChecked;
         }
@@ -282,24 +294,128 @@ class FormBuilder
         ]);
     }
 
+<<<<<<< HEAD
     protected function renderLabel(): string
+=======
+    private function getSelectOptions($arrValues, $options, $optgroup_label = '')
     {
-        extract($this->get('label', 'formInline', 'render'));
+        extract($this->get('optgroup'));
+
+        $optionsList = '';
+        foreach ($options as $value => $label) {
+            if (is_array($label)) {
+                $optionsList .= '<optgroup label="' . $value . '">'
+                    . $this->getSelectOptions($arrValues, $label, $value.';') . '</optgroup>';
+            }else{
+                if ($optgroup) {
+                    $value = $optgroup_label.$value;
+                }
+                $attrs = $this->buildHtmlAttrs([
+                    'value' => $value,
+                    'selected' => in_array($value, $arrValues)
+                ], false);
+                $optionsList .= '<option ' . $attrs . ($value ? '>' : ' disabled hidden>') . $label . '</option>';
+            }
+        }
+        return $optionsList;
+    }
+
+    private function renderLabel(): string
+>>>>>>> 9db8ec84a92ea39f53118d2755e16557d8bddc58
+    {
+        extract($this->get('label', 'formInline', 'render', 'labelAttrs'));
+
+        if (is_null($label)) {
+            return '';
+        }
 
         $class = in_array($render, ['checkbox', 'radio']) ? 'form-check-label' : '';
         if ($formInline) {
             $class = join(' ', [$class, 'mx-sm-2']);
         }
 
-        $id = $this->getId();
-        $attrs = $this->buildHtmlAttrs([
-            'for' => $id,
-            'class' => $class
-        ], false);
+        $attrs          = $labelAttrs ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            $attrs['class'] ?? null,
+            $class
+        );
+        $attrs['for'] = $this->getId();
+        $attrs = $this->buildHtmlAttrs($attrs, false);
         return '<label ' . $attrs . '>' . $this->getText($label) . '</label>';
     }
 
+<<<<<<< HEAD
     protected function getText($key)
+=======
+    private function wrapperInputGroup(string $input): string
+    {
+        extract($this->get('append', 'prepend', 'formInline', 'wrapperGroupAttrs', 'type', 'options'));
+
+        if ((!$append && !$prepend) || !(in_array($type, ['text', 'date', 'time', 'tel', 'url']) || is_array($options))) {
+            return $input;
+        }
+
+        $output = ($prepend ? $this->getInputGroup('prepend', $prepend) : '') . $input;
+        $output .= $append ? $this->getInputGroup('append', $append) : '';
+        $attrs = $wrapperGroupAttrs ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            'input-group',
+            $attrs['class'] ?? null
+        );
+        $attrs = $this->buildHtmlAttrs($attrs, false);
+
+        if (!$formInline) {
+           $output = '<div ' . $attrs. '>' . $output . '</div>';
+        }
+
+        return $output;
+    }
+
+    private function getInputGroup(string $type, $value): string
+    {
+        $wrapperType = 'wrapper'. ucwords($type) . 'Attrs';
+        extract($this->get('onlyInput', $wrapperType));
+
+        $attrs = $$wrapperType ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            'input-group-' . $type,
+            $attrs['class'] ?? null
+        );
+
+        $attrs = $this->buildHtmlAttrs($attrs, false);
+        $output = '<div ' . $attrs . '>';
+
+        if (is_array($value)) {
+            foreach ($value as $text) {
+              $output .= $this->getInputGroupText($type, $text);
+            }
+        }else{
+            $output .= $this->getInputGroupText($type, $value);
+        }
+
+        return $output . '</div>';
+    }
+
+    private function getInputGroupText(string $type, string $value): string
+    {
+        extract($this->get($type . 'Attrs', $type . 'Style'));
+
+        $attrs = ${$type . 'Attrs'} ?? [];
+        $attrs['class'] = $this->createAttrsList(
+            ( ${$type . 'Style'} ? 'input-group-text' : ''),
+            $attrs['class'] ?? null
+        );
+
+        if (!array_key_exists('id', $attrs)) {
+            $attrs['id'] = $type . '-' . $this->getId();
+        }
+
+        $attrs = $this->buildHtmlAttrs($attrs, false);
+        return '<div ' . $attrs . '>' . $this->getText($value) . '</div>';
+    }
+
+    private function getText($key)
+>>>>>>> 9db8ec84a92ea39f53118d2755e16557d8bddc58
     {
         extract($this->get('formLocale'));
         if ($formLocale) {
@@ -340,13 +456,18 @@ class FormBuilder
             $formInline ? 'input-group' : 'form-group'
         );
         $attributes = $this->buildHtmlAttrs($attrs, false);
+        $input = $this->wrapperInputGroup($input);
 
         return '<div ' . $attributes . '>' . $label . $input . $helpText . $error . '</div>';
     }
 
     protected function wrapperRadioCheckbox(string $input): string
     {
-        extract($this->get('inline', 'name', 'wrapperAttrs'));
+        extract($this->get('inline', 'name', 'wrapperAttrs', 'onlyInput'));
+
+        if ($onlyInput) {
+            return $input;
+        }
 
         $attrs = $wrapperAttrs ?? [];
         $attrs['class'] = $this->createAttrsList(
@@ -399,7 +520,7 @@ class FormBuilder
         }
 
         if ($this->hasOldInput()) {
-            return old($name, $value);
+            return old(preg_replace("/\[\]/", "", $name), $value);
         }
 
         $fromFill = $formData[$name] ?? null;
