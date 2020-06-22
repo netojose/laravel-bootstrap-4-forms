@@ -239,7 +239,7 @@ class FormBuilder
         $id = $this->getId();
 
         if (!$disableValidation && $this->errors()->count() > 0) {
-            $class .= $this->errors()->has($name) ? ' is-invalid' : ' is-valid';
+            $class .= $this->errors()->has(\rtrim(\str_replace(['][', '[', ']'], '.', $name), '.')) ? ' is-invalid' : ' is-valid';
         }
 
         $attributes = [
@@ -368,11 +368,11 @@ class FormBuilder
             return '';
         }
 
-        $error = $this->errors()->first($name);
+        $error = $this->errors()->has(\rtrim(\str_replace(['][', '[', ']'], '.', $name), '.'));
         if (!$error) {
             return '';
         }
-        return '<div class="invalid-feedback">' . $this->errors()->first($name) . '</div>';
+        return '<div class="invalid-feedback">' . $this->errors()->first(\rtrim(\str_replace(['][', '[', ']'], '.', $name), '.')) . '</div>';
     }
 
     protected function getId()
