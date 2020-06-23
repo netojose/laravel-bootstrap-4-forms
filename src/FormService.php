@@ -30,7 +30,7 @@ class FormService
 
     /**
      * Set error bag name
-     * 
+     *
      * @param string $value
      * @return FormService
      */
@@ -188,7 +188,7 @@ class FormService
 
     /**
      * Set inline form style
-     * 
+     *
      * @param bool $inline
      * @return FormService
      */
@@ -261,7 +261,7 @@ class FormService
      */
     public function file(string $name = null, string $label = null): FormService
     {
-        return $this->render('input')->type('file')->name($name)->label($label);
+        return $this->render('input')->type('file')->name($name)->label($label)->custom()->placeholder('Choose file');
     }
 
     /**
@@ -339,12 +339,12 @@ class FormService
      */
     public function range(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->render('input')->type('range')->name($name)->label($label)->value($default);
+        return $this->render('input')->type('range')->name($name)->label($label)->value($default)->custom();
     }
 
     /**
      * Set a minimum value for a field
-     * 
+     *
      * @param string $value
      * @return FormService
      */
@@ -355,7 +355,7 @@ class FormService
 
     /**
      * Set a maximum value for a field
-     * 
+     *
      * @param string $value
      * @return FormService
      */
@@ -409,7 +409,7 @@ class FormService
      */
     public function select(string $name = null, string $label = null, $options = [], $default = null): FormService
     {
-        return $this->render('select')->name($name)->label($label)->options($options)->value($default);
+        return $this->render('select')->name($name)->label($label)->options($options)->value($default)->custom();
     }
 
     /**
@@ -463,6 +463,20 @@ class FormService
     {
         return $this->_radioOrCheckbox('radio', $name, $label, $value, $checked);
     }
+
+	/**
+	 * Create a switch input
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @param string $label
+	 * @param bool   $checked
+	 * @return FormService
+	 */
+	public function switch(string $name = null, string $label = null, string $value = null, bool $checked = null): FormService
+	{
+		return $this->_radioOrCheckbox('checkbox', $name, $label, $value, $checked)->type('switch');
+	}
 
     /**
      * Set inline input style
@@ -637,6 +651,17 @@ class FormService
     {
         return $this->_set('size', $size);
     }
+
+	/**
+	 * Set the field as bootstrap custom
+	 *
+	 * @param bool $custom
+	 * @return FormService
+	 */
+	public function custom(bool $custom = true): FormService
+	{
+		return $this->_set('custom', $custom);
+	}
 
     /**
      * Set the size as lg
@@ -912,12 +937,12 @@ class FormService
      * @param mixed  $checked
      * @return FormService
      */
-    private function _radioOrCheckbox($render, $name, $label, $value, $checked): FormService
+    protected function _radioOrCheckbox($render, $name, $label, $value, $checked): FormService
     {
         if (is_bool($checked)) {
             $this->checked($checked);
         }
-        return $this->_set('render', $render)->name($name)->label($label)->value($value);
+        return $this->_set('render', $render)->name($name)->label($label)->value($value)->custom();
     }
 
     /**
@@ -926,7 +951,7 @@ class FormService
      * @param string $size
      * @return FormService
      */
-    private function _set(string $key, $value): FormService
+    protected function _set(string $key, $value): FormService
     {
         $this->_builder->set($key, $value);
         return $this;
