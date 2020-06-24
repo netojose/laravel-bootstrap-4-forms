@@ -3,18 +3,25 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-This is a package for creating Bootstrap 4 styled form elements in Laravel 5/6.
+This is a package for creating Bootstrap 4 styled form elements in Laravel 5/6. 
+Forked from https://github.com/netojose/laravel-bootstrap-4-forms that seems abandoned.
+Contains unmerged pull request from original repository:
+https://github.com/netojose/laravel-bootstrap-4-forms/pull/102
+https://github.com/netojose/laravel-bootstrap-4-forms/pull/99
+https://github.com/netojose/laravel-bootstrap-4-forms/pull/97
+https://github.com/netojose/laravel-bootstrap-4-forms/pull/86
 
 ## Features
 
 -   Labels
 -   Error messages
--   Bootstrap 4 markup and classes (including state, colors, and sizes)
+-   Bootstrap 4 markup and classes (including state, colors, grouping and sizes)
 -   Error validation messages
 -   Form fill (using Model instance, array or after form submission when a validation error occurs)
 -   Internationalization
 -   Add parameters using php chaining approach
 -   Zero dependences (no Laravel Collective dependency)
+-   Optional [TwigBridge](https://github.com/rcrowe/TwigBridge) extension
 
 ## Introduction
 
@@ -70,6 +77,17 @@ If you is using Laravel 5.5, the auto discovery feature will make everything for
 'aliases' => [
     //...
     'Form' => NetoJose\Bootstrap4Forms\Bootstrap4FormsFacade::class,
+],
+```
+
+#### [Optional] Add TwigBridge support to config/twigbridge.php:
+
+```php
+'extensions' => [
+    //...
+    'enabled' => [
+        'NetoJose\Bootstrap4Forms\Extension\TwigBridge'
+    ]
 ],
 ```
 
@@ -889,6 +907,75 @@ Set max attribute for input
 {!!Form::text('name', 'Name')->disableIsValid()!!}
 ```
 
+### Input group
+Currently it only works with Select and Inputs of text, date, time, tel and url.
+
+### Append
+| Param   | Type   | Default | Description             |
+|---------|--------|---------|-------------------------|
+| $append | string | null    | Append text             |
+| $attrs  | array  | null    | Append input attributes |
+
+```php
+// Example
+{!!Form::text('name', 'Name')->append('Input group append')!!}
+
+{!!Form::tel('phone', 'Phone')->append('<em>Input group append</em>')!!}
+```
+
+### Prepend
+| Param    | Type   | Default | Description              |
+|----------|--------|---------|--------------------------|
+| $prepend | string | null    | Prepend text             |
+| $attrs   | array  | null    | Prepend input attributes |
+
+```php
+// Example
+{!!Form::select('cars', 'Cars', [])->prepend('Input group prepend')!!}
+
+{!!Form::date('date', 'Date')->prepend('<strong>Input group append</strong>')!!}
+```
+
+### Group attributes in wrapper div
+|  Param |  Type | Default |       Description      |
+|:------:|:-----:|:-------:|:----------------------:|
+| $attrs | array | null    | Group input attributes |
+
+```php
+// Example
+{!!Form::text('name', 'Name')->prepend('Input group')
+    ->wrapperGroupAttrs([['id'=> 'group-wrapper']])!!}
+    
+// will output <div class="input-group">...</div>
+```
+
+### Append attributes in wrapper div
+|  Param |  Type | Default |       Description      |
+|:------:|:-----:|:-------:|:----------------------:|
+| $attrs | array | null    | Append input attributes |
+
+```php
+// Example
+{!!Form::text('name', 'Name')->append('Input group append')
+    ->wrapperAppendAttrs([['id'=> 'append-wrapper']])!!}
+    
+    
+// will output <div class="input-group-append">...</div>
+```
+
+### Prepend attributes in wrapper div
+|  Param |  Type | Default |       Description      |
+|:------:|:-----:|:-------:|:----------------------:|
+| $attrs | array | null    | Prepend input attributes |
+
+```php
+// Example
+{!!Form::text('name', 'Name')->append('Input group prepend')
+    ->wrapperPrependAttrs([['id'=> 'prepend-wrapper']])!!}
+    
+// will output <div class="input-group-append">...</div>
+```
+
 ### Chaining properties
 
 You can use chaining feature to use a lot of settings for each component
@@ -905,6 +992,18 @@ You can use chaining feature to use a lot of settings for each component
 {!!Form::submit('Awesome button')->id('my-btn')->disabled()->danger()->lg()!!}
 
 {!!Form::close()!!}
+```
+
+### Use in Twig templates
+```
+// Examples
+
+{{ form_open().put().multipart().route('user.add').fill(user) | raw }}
+
+    {{ form_text('name', 'Name').placeholder('Type your name').lg() | raw }}
+    {{ form_submit('Save') }}
+
+{{ form_close() }}
 ```
 
 [ico-version]: https://img.shields.io/packagist/v/netojose/laravel-bootstrap-4-forms.svg?style=flat-square
