@@ -30,7 +30,7 @@ class FormService
 
     /**
      * Set error bag name
-     * 
+     *
      * @param string $value
      * @return FormService
      */
@@ -188,7 +188,7 @@ class FormService
 
     /**
      * Set inline form style
-     * 
+     *
      * @param bool $inline
      * @return FormService
      */
@@ -212,10 +212,10 @@ class FormService
      * Set route for links and form action
      *
      * @param string $route
-     * @param array $params
+     * @param array|string $params
      * @return FormService
      */
-    public function route(string $route, array $params = []): FormService
+    public function route(string $route, $params = []): FormService
     {
         return $this->_set('url', route($route, $params));
     }
@@ -261,7 +261,7 @@ class FormService
      */
     public function file(string $name = null, string $label = null): FormService
     {
-        return $this->render('input')->type('file')->name($name)->label($label);
+        return $this->render('input')->type('file')->name($name)->label($label)->custom()->placeholder('Choose file');
     }
 
     /**
@@ -339,12 +339,12 @@ class FormService
      */
     public function range(string $name = null, $label = null, string $default = null): FormService
     {
-        return $this->render('input')->type('range')->name($name)->label($label)->value($default);
+        return $this->render('input')->type('range')->name($name)->label($label)->value($default)->custom();
     }
 
     /**
      * Set a minimum value for a field
-     * 
+     *
      * @param string $value
      * @return FormService
      */
@@ -355,13 +355,35 @@ class FormService
 
     /**
      * Set a maximum value for a field
-     * 
+     *
      * @param string $value
      * @return FormService
      */
     public function max($value)
     {
         return $this->_set('max', $value);
+    }
+
+    /**
+     * Set a append for a field
+     *
+     * @param mixed $value
+     * @return FormService
+     */
+    public function append(string $value, array $attrs = null, bool $style = true): FormService
+    {
+        return $this->_set('append', $value)->_set('appendAttrs', $attrs)->_set('appendStyle', $style);
+    }
+
+    /**
+     * Set a prepend for a field
+     *
+     * @param mixed $value
+     * @return FormService
+     */
+    public function prepend(string $value, array $attrs = null, bool $style = true): FormService
+    {
+        return $this->_set('prepend', $value)->_set('prependAttrs', $attrs)->_set('prependStyle', $style);
     }
 
     /**
@@ -387,7 +409,7 @@ class FormService
      */
     public function select(string $name = null, string $label = null, $options = [], $default = null): FormService
     {
-        return $this->render('select')->name($name)->label($label)->options($options)->value($default);
+        return $this->render('select')->name($name)->label($label)->options($options)->value($default)->custom();
     }
 
     /**
@@ -442,6 +464,20 @@ class FormService
         return $this->_radioOrCheckbox('radio', $name, $label, $value, $checked);
     }
 
+	/**
+	 * Create a switch input
+	 *
+	 * @param string $name
+	 * @param string $value
+	 * @param string $label
+	 * @param bool   $checked
+	 * @return FormService
+	 */
+	public function switch(string $name = null, string $label = null, string $value = null, bool $checked = null): FormService
+	{
+		return $this->_radioOrCheckbox('checkbox', $name, $label, $value, $checked)->type('switch');
+	}
+
     /**
      * Set inline input style
      * @param bool $inline
@@ -469,11 +505,12 @@ class FormService
      * Set a label
      *
      * @param string $label
+     * @param array $attrs
      * @return FormService
      */
-    public function label($label): FormService
+    public function label($label, array $attrs = []): FormService
     {
-        return $this->_set('label', $label);
+        return $this->_set('label', $label)->labelAttrs($attrs);
     }
 
     /**
@@ -536,6 +573,17 @@ class FormService
     public function checked(bool $checked = true): FormService
     {
         return $this->_set('checked', $checked);
+    }
+
+    /**
+     * Set optgroup label inside options value
+     *
+     * @param bool $optgroup
+     * @return FormService
+     */
+    public function optgroup(bool $optgroup = true): FormService
+    {
+        return $this->_set('optgroup', $optgroup);
     }
 
     /**
@@ -603,6 +651,17 @@ class FormService
     {
         return $this->_set('size', $size);
     }
+
+	/**
+	 * Set the field as bootstrap custom
+	 *
+	 * @param bool $custom
+	 * @return FormService
+	 */
+	public function custom(bool $custom = true): FormService
+	{
+		return $this->_set('custom', $custom);
+	}
 
     /**
      * Set the size as lg
@@ -803,9 +862,20 @@ class FormService
     }
 
     /**
+     * Set custom attributes for a label input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function labelAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('labelAttrs', $attrs);
+    }
+
+    /**
      * Disable input states (valid and invalid classes) and error message
      *
-     * @param string $disable
+     * @param bool $disable
      * @return FormService
      */
     public function disableValidation(bool $disable = true): FormService
@@ -825,6 +895,39 @@ class FormService
     }
 
     /**
+     * Set custom attributes for a wrapper input group
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperGroupAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperGroupAttrs', $attrs);
+    }
+
+    /**
+     * Set custom attributes for a wrapper append input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperAppendAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperAppendAttrs', $attrs);
+    }
+
+    /**
+     * Set custom attributes for a wrapper prepend input
+     *
+     * @param array $attrs
+     * @return FormService
+     */
+    public function wrapperPrependAttrs(array $attrs = []): FormService
+    {
+        return $this->_set('wrapperPrependAttrs', $attrs);
+    }
+
+    /**
      * Create radio or checkbox input
      *
      * @param string $render
@@ -834,12 +937,12 @@ class FormService
      * @param mixed  $checked
      * @return FormService
      */
-    private function _radioOrCheckbox($render, $name, $label, $value, $checked): FormService
+    protected function _radioOrCheckbox($render, $name, $label, $value, $checked): FormService
     {
         if (is_bool($checked)) {
             $this->checked($checked);
         }
-        return $this->_set('render', $render)->name($name)->label($label)->value($value);
+        return $this->_set('render', $render)->name($name)->label($label)->value($value)->custom();
     }
 
     /**
@@ -848,7 +951,7 @@ class FormService
      * @param string $size
      * @return FormService
      */
-    private function _set(string $key, $value): FormService
+    protected function _set(string $key, $value): FormService
     {
         $this->_builder->set($key, $value);
         return $this;
