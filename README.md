@@ -1,4 +1,4 @@
-# Bootstrap 4 forms for Laravel 5/6
+# Bootstrap 4 forms for Laravel 5/6/7/8
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
