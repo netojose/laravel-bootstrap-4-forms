@@ -357,7 +357,7 @@ class FormBuilder
     {
         extract($this->get('append', 'prepend', 'formInline', 'wrapperGroupAttrs', 'type', 'options'));
 
-        if ((!$append && !$prepend) || !(in_array($type, ['text', 'date', 'time', 'tel', 'url']) || is_array($options))) {
+        if ((!$append && !$prepend) || !(in_array($type, ['text', 'date', 'time', 'tel', 'url', 'password']) || is_array($options))) {
             return $input;
         }
 
