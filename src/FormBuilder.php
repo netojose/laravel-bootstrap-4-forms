@@ -355,7 +355,7 @@ class FormBuilder
 
     protected function wrapperInputGroup(string $input): string
     {
-        extract($this->get('append', 'prepend', 'formInline', 'wrapperGroupAttrs', 'type', 'options'));
+        extract($this->get('append', 'prepend', 'formInline', 'wrapperGroupAttrs', 'type', 'options', 'disableValidation', 'name'));
 
         if ((!$append && !$prepend) || !(in_array($type, ['text', 'date', 'time', 'tel', 'url', 'password']) || is_array($options))) {
             return $input;
@@ -364,8 +364,15 @@ class FormBuilder
         $output = ($prepend ? $this->getInputGroup('prepend', $prepend) : '') . $input;
         $output .= $append ? $this->getInputGroup('append', $append) : '';
         $attrs = $wrapperGroupAttrs ?? [];
+
+        $class = 'input-group';
+
+        if (!$disableValidation && $this->errors()->count() > 0) {
+            $class .= $this->errors()->has(\rtrim(\str_replace(['][', '[', ']'], '.', $name), '.')) ? ' is-invalid' : ' is-valid';
+        }
+
         $attrs['class'] = $this->createAttrsList(
-            'input-group',
+            $class,
             $attrs['class'] ?? null
         );
         $attrs = $this->buildHtmlAttrs($attrs, false);
