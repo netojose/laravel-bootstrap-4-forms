@@ -309,7 +309,7 @@ class FormBuilder
                     'value' => $value,
                     'selected' => in_array($value, $arrValues)
                 ], false);
-                $optionsList .= '<option ' . $attrs . ($value ? '>' : ' disabled hidden>') . $label . '</option>';
+                $optionsList .= '<option ' . $attrs . ($value || $value === 0 ? '>' : ' disabled hidden>') . $label . '</option>';
             }
         }
         return $optionsList;
