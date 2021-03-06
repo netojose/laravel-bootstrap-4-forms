@@ -264,7 +264,7 @@ $cities = \App\City::all();
 {!!Form::time('hour', 'Meeting hour')!!}
 ```
 
-#### Time inputs
+#### URL inputs
 
 | Param     | Type   | Default | Description   |
 | --------- | ------ | ------- | ------------- |
