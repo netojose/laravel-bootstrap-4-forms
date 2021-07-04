@@ -826,6 +826,13 @@ class FormService
     {
         return $this->_set('attrs', $attrs);
     }
+	
+    /**
+     * Set dusk attribute for an input
+     */
+    public function dusk($duskAttribute): FormService {
+        return $this->_set('dusk', $duskAttribute);
+    }
 
     /**
      * Disable input states (valid and invalid classes) and error message
