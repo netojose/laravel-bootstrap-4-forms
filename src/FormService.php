@@ -29,13 +29,17 @@ class FormService
     }
 
     /**
-     * Set error bag name
+     * Set error bag name or provide errorBag object
      *
      * @param string $value
      * @return FormService
      */
-    public function errorBag(string $value = null): FormService
+    public function errorBag($value = null): FormService
     {
+        if (!is_string($value) && !$value instanceof \Illuminate\Support\MessageBag) {
+            throw new \InvalidArgumentException('$value must be a string or a MessageBag object.');
+        }
+
         return $this->_set('formErrorBag', $value);
     }
 
