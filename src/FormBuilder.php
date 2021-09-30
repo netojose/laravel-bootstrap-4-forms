@@ -522,11 +522,18 @@ class FormBuilder
 
     private function errors()
     {
-        $errors = session('errors', app(ViewErrorBag::class));
         extract($this->get('formErrorBag'));
-        if ($formErrorBag) {
-            $errors = $errors->{$formErrorBag};
+
+        if($formErrorBag instanceof \Illuminate\Support\MessageBag) {
+            $errors = $formErrorBag;    
         }
+        else {
+            $errors = session('errors', app(ViewErrorBag::class));
+                if ($formErrorBag) {
+                    $errors = $errors->{$formErrorBag};
+                }
+        }
+
         return $errors;
     }
 
