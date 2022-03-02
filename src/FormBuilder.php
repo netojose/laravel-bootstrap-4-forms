@@ -146,7 +146,17 @@ class FormBuilder
         $arrValues = is_array($fieldValue) ? $fieldValue : [$fieldValue];
         $optionsList = '';
         foreach ($options as $value => $label) {
-            $attrs = $this->buildHtmlAttrs(['value' => $value, 'selected' => in_array(strval($value), $arrValues)], false);
+            $config = [];
+            if (is_array($label)) {
+                $config = explode(' ', $label['config']);
+                $label = $label['label'];
+            }
+            $attrs = $this->buildHtmlAttrs([
+                'value'		=> $value,
+                'hidden'	=> in_array('hidden', $config),
+                'disabled'	=> in_array('disabled', $config),
+                'selected'	=> in_array(strval($value), $arrValues),
+            ], false);
             $optionsList .= '<option ' . $attrs . '>' . $label . '</option>';
         }
 
