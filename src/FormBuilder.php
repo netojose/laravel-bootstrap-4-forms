@@ -425,7 +425,9 @@ class FormBuilder
         }
 
         if ($this->hasOldInput()) {
-            return old($name, $value);
+            if (isset(old()[$name])) {
+                return old($name, $value);
+            }
         }
 
         $fromFill = $formData[$name] ?? null;
