@@ -224,7 +224,7 @@ class FormBuilder
 
     private function getInputAttributes(): array
     {
-        extract($this->get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData', 'disableValidation', 'custom'));
+        extract($this->get('render', 'type', 'multiple', 'name', 'size', 'placeholder', 'help', 'disabled', 'readonly', 'required', 'autocomplete', 'min', 'max', 'value', 'checked', 'formData', 'disableValidation', 'custom', 'dusk'));
 
         $isRadioOrCheckbox = $this->isRadioOrCheckbox();
         $type = $isRadioOrCheckbox ? $render : $type;
@@ -289,7 +289,8 @@ class FormBuilder
             'aria-describedby' => $help ? 'help-' . $id : null,
             'disabled' => $disabled,
             'readonly' => $readonly,
-            'required' => $required
+            'required' => $required,
+	    'dusk' => $dusk,
         ]);
     }
 
