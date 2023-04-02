@@ -432,6 +432,7 @@ class FormBuilder
 
          if(str_contains($name,'[')) {
             $name = str_replace("]","",str_replace("[",".",str_replace("][",".",$name)));
+	    $name = trim($name, '.');
         }
         if(str_contains($name,'.')){
             $fromFill = $this->get_multi($formData,$name);
