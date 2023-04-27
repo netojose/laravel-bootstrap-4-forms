@@ -430,9 +430,27 @@ class FormBuilder
             }
         }
 
-        $fromFill = $formData[$name] ?? null;
-
+         if(str_contains($name,'[')) {
+            $name = str_replace("]","",str_replace("[",".",str_replace("][",".",$name)));
+	    $name = trim($name, '.');
+        }
+        if(str_contains($name,'.')){
+            $fromFill = $this->get_multi($formData,$name);
+        }else {
+            $fromFill = $formData[$name] ?? null;
+        }
         return $value ?? $fromFill;
+    }
+
+    function get_multi($arr, $str) {
+        foreach (explode('.', $str) as $key) {
+            if (!array_key_exists($key, $arr)) {
+                return NULL;
+            }
+            $arr = $arr[$key];
+        }
+
+        return $arr;
     }
 
     private function buildHtmlAttrs(array $attributes, $appendAttrs = true): string
